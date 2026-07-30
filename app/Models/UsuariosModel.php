@@ -1,0 +1,52 @@
+<?php
+namespace App\Models;
+
+use CodeIgniter\Model;
+
+class UsuariosModel extends Model
+{
+    protected $table = 'usuarios';
+    protected $primaryKey = 'id';
+
+    // Adicionados 'nome_empresa' e 'whatsapp' aqui:
+    protected $allowedFields = [
+        'nome_empresa', 
+        'nome', 
+        'email', 
+        'whatsapp', 
+        'senha', 
+        'tentativas_login', 
+        'bloqueado_ate', 
+        'token'
+    ];
+    
+    protected $useTimestamps = false;
+
+    /**
+     * Atualiza tentativas de login, bloqueio e token do usuário
+     *
+     * @param int $id
+     * @param int $tentativas
+     * @param string|null $bloqueado_ate
+     * @param string|null $token
+     * @return bool
+     */
+    public function atualizarTentativas($id, $tentativas, $bloqueado_ate = null, $token = null)
+    {
+        return $this->update($id, [
+            'tentativas_login' => $tentativas,
+            'bloqueado_ate'    => $bloqueado_ate,
+            'token'            => $token
+        ]);
+    }
+
+    /**
+     * Gera um token único para o usuário
+     *
+     * @return string
+     */
+    public function gerarToken()
+    {
+        return bin2hex(random_bytes(16));  // Gera um token de 32 caracteres
+    }
+}
