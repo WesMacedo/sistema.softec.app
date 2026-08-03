@@ -13,6 +13,7 @@
     <title>Softec</title>
     <link rel="stylesheet" href="assets/css/dashlite9b70.css">
     <link id="skin-default" rel="stylesheet" href="assets/css/theme9b70.css">
+    <link rel="manifest" href="/manifest.json">
 </head>
 
 <body class="nk-body npc-default has-apps-sidebar has-sidebar ">  
