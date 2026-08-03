@@ -194,23 +194,27 @@
                             window.location.href = response.redirect;
                         } else {
                             const alertaErro = ` 
-                             <div class="alert alert-fill alert-danger alert-dismissible alert-icon">
-                                 ${response.message} 
-                                <button class="close" data-bs-dismiss="alert"></button>
+                            <div class="alert alert-fill alert-danger alert-dismissible alert-icon">
+                                ${response.message} 
+                               <button class="close" data-bs-dismiss="alert"></button>
                             </div>`;
                             $('#mensagem').html(alertaErro);
                         }
                     },
-                    error: function () {
+                    error: function (xhr, status, error) {
+                        // ADICIONE ESTE LOG PARA VER O ERRO REAL NO CONSOLE (F12)
+                        console.log("XHR Response:", xhr.responseText);
+                        
                         const alertaErro = `
                     <div class="alert alert-fill alert-danger alert-dismissible alert-icon">
-                      Erro ao processar a requisição. 
+                        Erro ao processar a requisição. 
                     <button class="close" data-bs-dismiss="alert"></button>
                     </div>   
                 `;
                         $('#mensagem').html(alertaErro);
                     }
                 });
+                     
             });
         });
 
