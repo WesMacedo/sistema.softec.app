@@ -26,7 +26,7 @@ class PushApi extends BaseController
         // 1. Segurança Básica (Token de API secreto)
         // O sistema externo precisa enviar um cabeçalho 'Authorization' ou um campo 'api_token'
         $tokenRecebido = $this->request->getHeaderLine('Authorization') ?: $this->request->getVar('api_token');
-        $tokenSecreto = 'SEU_TOKEN_SECRETO_EXTERNO_AQUI'; // Troque por uma senha/token forte
+        $tokenSecreto = '8755'; // Troque por uma senha/token forte
 
         if ($tokenRecebido !== 'Bearer ' . $tokenSecreto && $tokenRecebido !== $tokenSecreto) {
             return $this->response->setStatusCode(401)->setJSON([
