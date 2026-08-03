@@ -16,6 +16,10 @@
     <em class="icon ni ni-bell"></em>
     <span>Ativar Notificações</span>
 </button>
+<a href="<?= base_url('push/enviarteste') ?>" target="_blank" class="btn btn-success">
+    <em class="icon ni ni-send"></em>
+    <span>Enviar Notificação de Teste</span>
+</a>
                      <p>Aqui está o resumo do dia</p>
                   </div>
                </div>
