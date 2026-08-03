@@ -5,15 +5,15 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="author" content="Softec">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Softec"> 
     <meta name="description"
         content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
     <link rel="shortcut icon" href="images/favicon.png">
     <title>Softec</title>
     <link rel="stylesheet" href="assets/css/dashlite9b70.css">
     <link id="skin-default" rel="stylesheet" href="assets/css/theme9b70.css">
-    <link rel="manifest" href="/manifest.json"> 
+            <link rel="manifest" href="/manifest.json"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
 
 <body class="nk-body npc-default has-apps-sidebar has-sidebar ">  
