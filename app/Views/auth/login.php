@@ -34,9 +34,8 @@
         <div class="pwa-icon">
             <i class="fas fa-mobile-alt"></i> <!-- Ícone de celular (ou use uma tag <img> se preferir) -->
         </div>
-        <div class="pwa-text">
-            <h4>Instalar aplicativo:</h4>
-            <p>Deseja instalar o aplicativo no seu dispositivo? Clique no botão ao lado.</p>
+        <div class="pwa-text"> 
+            <p>Deseja instalar o aplicativo no seu dispositivo?</p>
         </div>
         <div class="pwa-actions">
             <button id="btn-install" class="pwa-btn-install">Instalar Agora</button>
