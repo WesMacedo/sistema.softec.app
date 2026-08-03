@@ -1,21 +1,10 @@
 {
-  "name": "Softec",
-  "short_name": "Softec",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#0965AF",
-  "orientation": "portrait",
-  "icons": [
-    {
-      "src": "assets/images/logo_icon.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "assets/images/logo_icon.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+    "name": "Softec System",
+    "short_name": "Softec",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#317EFB",
+    "orientation": "portrait-primary"
 }
