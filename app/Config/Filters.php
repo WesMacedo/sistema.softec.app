@@ -71,9 +71,15 @@ class Filters extends BaseFilters
  
     public array $globals = [
         'before' => [
+            'csrf' => [
+                'except' => [
+                    'api/push/enviar' // Libera a API do bloqueio CSRF do CodeIgniter
+                ]
+            ],
             'auth' => [
                 'except' => [
-                    'auth/*',   // Libera todas as rotas dentro de auth (login, autenticar, cadastro)
+                    'auth/*',         // Libera as telas de login
+                    'api/push/enviar' // Libera a nossa mini API de push para acesso externo
                 ]
             ],
         ],
