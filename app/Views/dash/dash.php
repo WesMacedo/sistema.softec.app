@@ -12,6 +12,10 @@
 <p><strong>E-mail:</strong> <?php echo htmlspecialchars($usuario['email']); ?></p>
 <p><strong>WhatsApp:</strong> <?php echo htmlspecialchars($usuario['whatsapp']); ?></p>
                   <div class="nk-block-des text-soft">
+                     <button type="button" class="btn btn-primary" onclick="ativarPush()">
+    <em class="icon ni ni-bell"></em>
+    <span>Ativar Notificações</span>
+</button>
                      <p>Aqui está o resumo do dia</p>
                   </div>
                </div>
