@@ -179,4 +179,4 @@ class Auth extends BaseController
         session()->destroy();
         return redirect()->to(base_url('auth/login'))->with('msg', 'Você saiu da conta.');
     }
-}
+} 
