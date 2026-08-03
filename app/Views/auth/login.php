@@ -290,31 +290,29 @@
     const installBtn = document.getElementById('btn-install');
     const closeBtn = document.getElementById('btn-close-banner');
 
-    // Ouve o evento do navegador que avisa que o app pode ser instalado
+    // Ouve o evento do navegador quando o PWA está pronto para ser instalado
     window.addEventListener('beforeinstallprompt', (e) => {
-        // Impede que o mini-infobar padrão do Chrome apareça automaticamente
+        // Evita que o navegador mostre o mini-infobar padrão
         e.preventDefault();
-        // Guarda o evento para disparar quando o usuário clicar no botão
+        // Salva o evento para usar depois
         deferredPrompt = e;
         
-        // Exibe o nosso banner customizado
+        // Exibe o nosso banner bonito
         if (installBanner) {
             installBanner.classList.remove('d-none');
         }
     });
 
-    // Quando o usuário clica no botão "Instalar Agora"
+    // Ação ao clicar no botão "Instalar Agora"
     if (installBtn) {
         installBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
-                // Mostra a janela nativa de instalação do navegador
+                // Dispara o prompt nativo de instalação do navegador
                 deferredPrompt.prompt();
-                // Espera a escolha do usuário
+                // Aguarda a resposta do usuário
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
-                    console.log('Usuário aceitou instalar o PWA');
-                } else {
-                    console.log('Usuário recusou instalar o PWA');
+                    console.log('Usuário aceitou a instalação');
                 }
                 deferredPrompt = null;
                 installBanner.classList.add('d-none');
@@ -322,17 +320,17 @@
         });
     }
 
-    // Botão para fechar/esconder o banner se o usuário não quiser agora
+    // Botão para fechar o banner (caso o usuário recuse no momento)
     if (closeBtn) {
         closeBtn.addEventListener('click', () => {
             installBanner.classList.add('d-none');
         });
     }
 
-    // Esconde o banner caso o app já tenha sido instalado com sucesso
+    // Esconde o banner automaticamente se o app já foi instalado
     window.addEventListener('appinstalled', () => {
         installBanner.classList.add('d-none');
-        console.log('PWA instalado com sucesso!');
+        console.log('Softec System instalado com sucesso!');
     });
 </script>
 
