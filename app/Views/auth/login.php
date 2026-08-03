@@ -11,6 +11,7 @@
     <title>Softec - Login</title>
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/dashlite9b70.css?ver=3.3.0">
     <link id="skin-default" rel="stylesheet" href="<?= base_url() ?>assets/css/theme9b70.css?ver=3.3.0">
+        <link rel="manifest" href="/manifest.json"> 
 </head>
 
 <body class="nk-body npc-default pg-auth">
