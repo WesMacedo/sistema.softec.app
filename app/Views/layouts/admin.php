@@ -17,6 +17,32 @@
 </head>
 
 <body class="nk-body npc-default has-apps-sidebar has-sidebar ">  
+    <!-- Tela de Loading Inicial do PWA -->
+<div id="pwa-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f5f6fa; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999999; transition: opacity 0.3s ease;">
+    <img src="<?= base_url() ?>images/logo.png" alt="Softec" style="width: 120px; margin-bottom: 20px; animation: pulse 1.5s infinite;">
+    <div class="spinner-border text-primary" role="status"></div>
+</div>
+
+<style>
+@keyframes pulse {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.8; }
+}
+</style>
+
+<script>
+    // Assim que a página carregar por completo, esmaece e remove o loader suavemente
+    window.addEventListener('load', function() {
+        const loader = document.getElementById('pwa-loader');
+        if (loader) {
+            loader.style.opacity = '0';
+            setTimeout(function() {
+                loader.style.display = 'none';
+            }, 300);
+        }
+    });
+</script>
     <div class="nk-app-root">
         <div class="nk-main "> 
             <div class="nk-wrap "> 
