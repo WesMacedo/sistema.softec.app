@@ -218,7 +218,8 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (response) {
                 if (response.success) {
-                    window.location.href = response.redirect;
+                    // Redireciona passando a mensagem codificada na URL para a tela de login exibir
+                    window.location.href = response.redirect + '?sucesso=' + encodeURIComponent(response.message);
                 } else {
                     exibirAlerta(response.message || 'Erro ao realizar o cadastro.', 'danger');
                     $btn.prop('disabled', false).text('Cadastrar');

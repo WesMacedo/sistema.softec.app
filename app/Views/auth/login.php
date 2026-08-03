@@ -289,5 +289,23 @@
         installBanner.classList.add('d-none');
     });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Pega parâmetros da URL (ex: ?sucesso=...)
+        const urlParams = new URLSearchParams(window.location.search);
+        const mensagemSucesso = urlParams.get('sucesso');
 
+        if (mensagemSucesso) {
+            const alertaHTML = `
+                <div class="alert alert-fill alert-success alert-dismissible fade show shadow-sm mb-3" role="alert">
+                    ${decodeURIComponent(mensagemSucesso)}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>`;
+            
+            // Insira no seu container de mensagens da tela de login
+            // Substitua '#mensagem-login' pelo ID real da div de alerta da sua view de login
+            $('#mensagem-login').html(alertaHTML);
+        }
+    });
+</script>
 </html>

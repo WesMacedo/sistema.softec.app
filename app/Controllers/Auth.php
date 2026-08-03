@@ -27,57 +27,59 @@ class Auth extends BaseController
     }
 
    public function registrar()
-{
-    $model = new UsuariosModel();
+    {
+        $model = new UsuariosModel();
 
-    $email = trim($this->request->getPost('email'));
-    $senha = $this->request->getPost('senha');
-    $confirmaSenha = $this->request->getPost('confirma_senha');
+        $email = trim($this->request->getPost('email'));
+        $senha = $this->request->getPost('senha');
+        $confirmaSenha = $this->request->getPost('confirma_senha');
 
-    // 1. Validação de senha no backend
-    if (empty($senha) || $senha !== $confirmaSenha) {
+        // 1. Validação de senha no backend
+        if (empty($senha) || $senha !== $confirmaSenha) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'As senhas informadas não coincidem.'
+            ]);
+        }
+
+        // 2. Verificação se o e-mail já existe no banco de dados
+        $usuarioExistente = $model->where('email', $email)->first();
+        if ($usuarioExistente) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Este e-mail já está cadastrado no sistema.'
+            ]);
+        }
+
+        // 3. Montagem dos dados
+        $data = [
+            'nome_empresa'     => $this->request->getPost('nome_empresa'),
+            'nome'             => $this->request->getPost('nome'),
+            'email'            => $email,
+            'whatsapp'         => $this->request->getPost('whatsapp'),
+            'senha'            => password_hash($senha, PASSWORD_DEFAULT),
+            'tentativas_login' => 0,
+            'bloqueado_ate'    => null,
+            'token'            => null
+        ];
+
+        // 4. Inserção
+        if ($model->insert($data)) {
+            // Mantém o flashdata caso queira ler via PHP puro em outra página
+            session()->setFlashdata('msg', 'Cadastro realizado com sucesso! Faça login para continuar.');
+
+            return $this->response->setJSON([
+                'success'  => true,
+                'message'  => 'Cadastro realizado com sucesso! Faça login para continuar.',
+                'redirect' => base_url('auth/login')
+            ]);
+        }
+
         return $this->response->setJSON([
             'success' => false,
-            'message' => 'As senhas informadas não coincidem.'
+            'message' => 'Erro ao salvar o cadastro no banco de dados.'
         ]);
     }
-
-    // 2. Verificação se o e-mail já existe no banco de dados
-    $usuarioExistente = $model->where('email', $email)->first();
-    if ($usuarioExistente) {
-        return $this->response->setJSON([
-            'success' => false,
-            'message' => 'Este e-mail já está cadastrado no sistema.'
-        ]);
-    }
-
-    // 3. Montagem dos dados
-    $data = [
-        'nome_empresa'     => $this->request->getPost('nome_empresa'),
-        'nome'             => $this->request->getPost('nome'),
-        'email'            => $email,
-        'whatsapp'         => $this->request->getPost('whatsapp'),
-        'senha'            => password_hash($senha, PASSWORD_DEFAULT),
-        'tentativas_login' => 0,
-        'bloqueado_ate'    => null,
-        'token'            => null
-    ];
-
-    // 4. Inserção
-    if ($model->insert($data)) {
-        session()->setFlashdata('msg', 'Cadastro realizado com sucesso!');
-
-        return $this->response->setJSON([
-            'success'  => true,
-            'redirect' => base_url('auth/login')
-        ]);
-    }
-
-    return $this->response->setJSON([
-        'success' => false,
-        'message' => 'Erro ao salvar o cadastro no banco de dados.'
-    ]);
-}
 
     public function autenticar()
     {
