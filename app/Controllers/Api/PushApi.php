@@ -9,7 +9,6 @@ use Minishlink\WebPush\Subscription;
 
 class PushApi extends BaseController
 {
-    // Credenciais VAPID
     private function getWebPushConfig()
     {
         return [
@@ -23,10 +22,8 @@ class PushApi extends BaseController
 
     public function enviar()
     {
-        // 1. Segurança Básica (Token de API secreto)
-        // O sistema externo precisa enviar um cabeçalho 'Authorization' ou um campo 'api_token'
         $tokenRecebido = $this->request->getHeaderLine('Authorization') ?: $this->request->getVar('api_token');
-        $tokenSecreto = '8755'; // Troque por uma senha/token forte
+        $tokenSecreto = '8755';
 
         if ($tokenRecebido !== 'Bearer ' . $tokenSecreto && $tokenRecebido !== $tokenSecreto) {
             return $this->response->setStatusCode(401)->setJSON([
@@ -35,8 +32,7 @@ class PushApi extends BaseController
             ]);
         }
 
-        // 2. Coletando os dados enviados via requisição POST
-        $usuarioId = $this->request->getVar('usuario_id'); // Pode ser um ID ou 'todos'
+        $usuarioId = $this->request->getVar('usuario_id');
         $titulo    = $this->request->getVar('titulo') ?? 'Softec';
         $corpo     = $this->request->getVar('corpo') ?? 'Você tem uma nova notificação';
         $url       = $this->request->getVar('url') ?? '/';
@@ -44,17 +40,15 @@ class PushApi extends BaseController
         if (empty($usuarioId)) {
             return $this->response->setStatusCode(400)->setJSON([
                 'sucesso' => false,
-                'mensagem' => 'O parâmetro usuario_id é obrigatório (use um ID específico ou "todos").'
+                'mensagem' => 'O parâmetro usuario_id é obrigatório.'
             ]);
         }
 
         $pushModel = new PushModel();
 
-        // 3. Busca as inscrições no banco com base no destinatário informado
         if (strtolower($usuarioId) === 'todos') {
             $inscricoes = $pushModel->findAll();
         } else {
-            // Suporta múltiplos IDs separados por vírgula (ex: "1,5,8") ou ID único (ex: "12")
             if (strpos($usuarioId, ',') !== false) {
                 $idsArray = array_map('trim', explode(',', $usuarioId));
                 $inscricoes = $pushModel->whereIn('usuario_id', $idsArray)->findAll();
@@ -63,17 +57,15 @@ class PushApi extends BaseController
             }
         }
 
-        // Filtra nulos caso algum ID não tenha inscrição válida
         $inscricoes = array_filter($inscricoes);
 
         if (empty($inscricoes)) {
             return $this->response->setStatusCode(404)->setJSON([
                 'sucesso' => false,
-                'mensagem' => 'Nenhuma inscrição push encontrada para o(s) usuário(s) informado(s).'
+                'mensagem' => 'Nenhuma inscrição push encontrada.'
             ]);
         }
 
-        // 4. Disparando as notificações via WebPush
         $webPush = new WebPush($this->getWebPushConfig());
         $payload = json_encode([
             'titulo' => $titulo,
@@ -104,7 +96,6 @@ class PushApi extends BaseController
             }
         }
 
-        // 5. Retorna a resposta em JSON para quem chamou a API
         return $this->response->setJSON([
             'sucesso' => true,
             'total_enviados' => $enviados,

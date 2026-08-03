@@ -73,13 +73,13 @@ class Filters extends BaseFilters
         'before' => [
             'csrf' => [
                 'except' => [
-                    'api/push/enviar' // Libera a API do bloqueio CSRF do CodeIgniter
+                    'push/enviar'
                 ]
             ],
             'auth' => [
                 'except' => [
-                    'auth/*',         // Libera as telas de login
-                    'api/push/enviar' // Libera a nossa mini API de push para acesso externo
+                    'auth/*',       
+                    'push/enviar'
                 ]
             ],
         ],
