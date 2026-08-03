@@ -35,9 +35,9 @@
             <i class="fas fa-mobile-alt"></i> <!-- Ícone de celular (ou use uma tag <img> se preferir) -->
         </div>
         <div class="pwa-text">
-            <h4>Instale o Softec System</h4>
-            <p>Tenha acesso rápido direto na tela inicial do seu dispositivo, sem ocupar espaço.</p>
-        </div>
+    <h4>Instale o nosso aplicativo!</h4>
+    <p>Clique no botão ao lado para instalar o Softec System no seu dispositivo.</p>
+</div>
         <div class="pwa-actions">
             <button id="btn-install" class="pwa-btn-install">Instalar Agora</button>
             <button id="btn-close-banner" class="pwa-btn-close" title="Fechar">&times;</button>
