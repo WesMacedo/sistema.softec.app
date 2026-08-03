@@ -26,58 +26,58 @@ class Auth extends BaseController
         return view('auth/cadastro');
     }
 
-   public function registrar()
-{
-    $model = new UsuariosModel();
+    public function registrar()
+    {
+        $model = new UsuariosModel();
 
-    $email = trim($this->request->getPost('email'));
-    $senha = $this->request->getPost('senha');
-    $confirmaSenha = $this->request->getPost('confirma_senha');
+        $email = trim($this->request->getPost('email'));
+        $senha = $this->request->getPost('senha');
+        $confirmaSenha = $this->request->getPost('confirma_senha');
 
-    // 1. Validação de senha no backend
-    if (empty($senha) || $senha !== $confirmaSenha) {
+        // 1. Validação de senha no backend
+        if (empty($senha) || $senha !== $confirmaSenha) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'As senhas informadas não coincidem.'
+            ]);
+        }
+
+        // 2. Verificação se o e-mail já existe no banco de dados
+        $usuarioExistente = $model->where('email', $email)->first();
+        if ($usuarioExistente) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Este e-mail já está cadastrado no sistema.'
+            ]);
+        }
+
+        // 3. Montagem dos dados
+        $data = [
+            'nome_empresa'     => $this->request->getPost('nome_empresa'),
+            'nome'             => $this->request->getPost('nome'),
+            'email'            => $email,
+            'whatsapp'         => $this->request->getPost('whatsapp'),
+            'senha'            => password_hash($senha, PASSWORD_DEFAULT),
+            'tentativas_login' => 0,
+            'bloqueado_ate'    => null,
+            'token'            => null
+        ];
+
+        // 4. Inserção
+        if ($model->insert($data)) {
+            session()->setFlashdata('msg', 'Cadastro realizado com sucesso!');
+
+            return $this->response->setJSON([
+                'success'  => true,
+                'redirect' => base_url('auth/login')
+            ]);
+        }
+
         return $this->response->setJSON([
             'success' => false,
-            'message' => 'As senhas informadas não coincidem.'
+            'message' => 'Erro ao salvar o cadastro no banco de dados.'
         ]);
     }
-
-    // 2. Verificação se o e-mail já existe no banco de dados
-    $usuarioExistente = $model->where('email', $email)->first();
-    if ($usuarioExistente) {
-        return $this->response->setJSON([
-            'success' => false,
-            'message' => 'Este e-mail já está cadastrado no sistema.'
-        ]);
-    }
-
-    // 3. Montagem dos dados
-    $data = [
-        'nome_empresa'     => $this->request->getPost('nome_empresa'),
-        'nome'             => $this->request->getPost('nome'),
-        'email'            => $email,
-        'whatsapp'         => $this->request->getPost('whatsapp'),
-        'senha'            => password_hash($senha, PASSWORD_DEFAULT),
-        'tentativas_login' => 0,
-        'bloqueado_ate'    => null,
-        'token'            => null
-    ];
-
-    // 4. Inserção
-    if ($model->insert($data)) {
-        session()->setFlashdata('msg', 'Cadastro realizado com sucesso!');
-
-        return $this->response->setJSON([
-            'success'  => true,
-            'redirect' => base_url('auth/login')
-        ]);
-    }
-
-    return $this->response->setJSON([
-        'success' => false,
-        'message' => 'Erro ao salvar o cadastro no banco de dados.'
-    ]);
-}
 
     public function autenticar()
     {
@@ -134,11 +134,15 @@ class Auth extends BaseController
             session()->set([
                 'user_token' => $token,  // Usamos o token no lugar do ID ou e-mail
             ]);
+
+            // FORÇA O COOKIE E A SESSÃO A DURAR 30 DIAS NO PWA / NAVEGADOR
+            session()->setExpiration(2592000); 
+
             session()->regenerate();
 
             return $this->response->setJSON([
                 'success' => true,
-                'redirect' => base_url('dash')  // ajuste conforme sua rota de sucesso
+                'redirect' => base_url('dash')
             ]);
         }
 
@@ -151,7 +155,7 @@ class Auth extends BaseController
             $bloqueado_ate = date('Y-m-d H:i:s', time() + (5 * 60)); // 5 minutos
         }
 
-        // Atualiza o banco com as novas tentativas e bloqueio (usando ID do usuário)
+        // Atualiza o banco com as novas tentativas e bloqueio
         $result = $model->atualizarTentativas($usuario['id'], $tentativas, $bloqueado_ate);
 
         // Verificar se a atualização foi bem-sucedida

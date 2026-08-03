@@ -4,80 +4,47 @@ namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Session\Handlers\BaseHandler;
-use CodeIgniter\Session\Handlers\FileHandler;
+use CodeIgniter\Session\Handlers\DatabaseHandler;
 
 class Session extends BaseConfig
 {
     /**
-     * --------------------------------------------------------------------------
-     * Session Driver
-     * --------------------------------------------------------------------------
+     * Usa o banco de dados em vez de arquivos locais para evitar perda de sessão
      */
-    public string $driver = FileHandler::class;
+    public string $driver = DatabaseHandler::class;
 
     /**
-     * --------------------------------------------------------------------------
-     * Session Cookie Name
-     * --------------------------------------------------------------------------
+     * Nome do cookie de sessão (garanta que seja exclusivo do seu projeto)
      */
-    public string $cookieName = 'ci_session';
+    public string $cookieName = 'softec_session';
 
     /**
-     * --------------------------------------------------------------------------
-     * Session Expiration
-     * --------------------------------------------------------------------------
-     * 
-     * Alterado para 2592000 segundos (30 dias) para manter o usuário logado
-     * mesmo após fechar o navegador ou o aplicativo PWA.
+     * Tempo de expiração em segundos (2592000 segundos = 30 dias)
      */
     public int $expiration = 2592000;
 
     /**
-     * --------------------------------------------------------------------------
-     * Session Save Path
-     * --------------------------------------------------------------------------
+     * Nome da tabela que você acabou de criar no banco de dados
      */
-    public string $savePath = WRITEPATH . 'session';
+    public string $savePath = 'ci_sessions';
 
-    /**
-     * --------------------------------------------------------------------------
-     * Session Match IP
-     * --------------------------------------------------------------------------
-     */
     public bool $matchIP = false;
 
-    /**
-     * --------------------------------------------------------------------------
-     * Session Time to Update
-     * --------------------------------------------------------------------------
-     */
     public int $timeToUpdate = 300;
 
-    /**
-     * --------------------------------------------------------------------------
-     * Session Regenerate Destroy
-     * --------------------------------------------------------------------------
-     */
     public bool $regenerateDestroy = false;
 
-    /**
-     * --------------------------------------------------------------------------
-     * Session Database Group
-     * --------------------------------------------------------------------------
-     */
     public ?string $DBGroup = null;
 
     /**
-     * --------------------------------------------------------------------------
-     * Lock Retry Interval (microseconds)
-     * --------------------------------------------------------------------------
+     * Configurações cruciais de Cookies para PWAs e HTTPS
      */
-    public int $lockRetryInterval = 100_000;
+    public string $cookiePath = '/';
+    public ?string $cookieDomain = '';
+    public bool $cookieSecure = true;       // Mantenha true já que seu app roda em HTTPS
+    public bool $cookieHTTPOnly = true;
+    public ?string $cookieSameSite = 'Lax';
 
-    /**
-     * --------------------------------------------------------------------------
-     * Lock Max Retries
-     * --------------------------------------------------------------------------
-     */
+    public int $lockRetryInterval = 100_000;
     public int $lockMaxRetries = 300;
 }
