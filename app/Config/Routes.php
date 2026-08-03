@@ -9,4 +9,5 @@ use CodeIgniter\Router\RouteCollection;
 // --- Rota de Notificações Push ---
 $routes->post('push/salvar-inscricao', 'Push::salvarInscricao');
 
-// (Aqui continuam as suas outras rotas existentes, como login, dash, etc.)
+// Rota para o disparo externo de push sem login
+$routes->post('api/push/enviar', 'Api\PushApi::enviar');
