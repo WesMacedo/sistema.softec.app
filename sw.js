@@ -1,6 +1,6 @@
-const CACHE_NAME = 'softec-pwa-v2'; // Subimos a versão para limpar o cache antigo
+const CACHE_NAME = 'softec-pwa-v2';
 
-// Deixe a lista vazia ou apenas com assets estáticos (ex: ícones, css)
+// Lista de assets estáticos essenciais para cache
 const urlsToCache = [
     '/images/icon.svg'
 ];
@@ -39,7 +39,6 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // Para páginas HTML/Requisições normais: Tenta a rede primeiro. Se falhar (offline), usa o cache.
     event.respondWith(
         fetch(event.request)
             .then(response => {
@@ -48,5 +47,49 @@ self.addEventListener('fetch', event => {
             .catch(() => {
                 return caches.match(event.request);
             })
+    );
+});
+
+// 4. Ouvinte de Notificações Push (Essencial para o iOS/Android exibirem o alerta)
+self.addEventListener('push', event => {
+    let data = {};
+    
+    if (event.data) {
+        try {
+            data = event.data.json();
+        } catch (e) {
+            data = { titulo: 'Nova Notificação', corpo: event.data.text() };
+        }
+    }
+
+    const title = data.titulo || 'Softec';
+    const options = {
+        body: data.corpo || 'Você recebeu uma nova atualização.',
+        icon: '/images/icon.svg',
+        badge: '/images/icon.svg',
+        data: { url: data.url || '/' }
+    };
+
+    event.waitUntil(
+        self.registration.showNotification(title, options)
+    );
+});
+
+// 5. Ação ao clicar na notificação (Abre o app/página ao tocar)
+self.addEventListener('notificationclick', event => {
+    event.notification.close();
+
+    event.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
+            for (let i = 0; i < windowClients.length; i++) {
+                let client = windowClients[i];
+                if (client.url === event.notification.data.url && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+            if (clients.openWindow) {
+                return clients.openWindow(event.notification.data.url);
+            }
+        })
     );
 });
