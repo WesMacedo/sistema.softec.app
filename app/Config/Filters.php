@@ -68,20 +68,22 @@ class Filters extends BaseFilters
      *
      * @var array<string, array<string, array<string, string>>>|array<string, list<string>>
      */
- public array $globals = [
+public array $globals = [
         'before' => [
             'csrf' => [
                 'except' => [
                     'push/enviar',
-                    'auth/*',        // Libera o login/cadastro do bloqueio CSRF do CodeIgniter
-                    'login',          // Ajuste caso sua rota de login seja apenas 'login'
+                    'push/salvar-inscricao', // Libera o salvamento do token do CSRF
+                    'auth/*',
+                    'login',
                     'login/*'
                 ]
             ],
             'auth' => [
                 'except' => [
                     'auth/*',       
-                    'push/enviar'
+                    'push/enviar',
+                    'push/salvar-inscricao' // Libera para receber a requisição JS
                 ]
             ],
         ],
