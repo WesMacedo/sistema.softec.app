@@ -29,22 +29,28 @@
                                      
                         <div class=""> 
                            <!-- Banner de Instalação PWA Softec System -->
+<!-- Banner de Instalação PWA (Versão Universal) -->
 <div id="pwa-install-banner" class="pwa-banner d-none">
     <div class="pwa-banner-content">
         <div class="pwa-icon">
-            <i class="fas fa-mobile-alt"></i> <!-- Ícone de celular (ou use uma tag <img> se preferir) -->
+            <i class="fas fa-mobile-alt"></i>
         </div>
-        <div class="pwa-text"> 
-            <p>Deseja instalar o aplicativo no seu dispositivo?</p>
+        <div class="pwa-text">
+            <h4 id="pwa-title">Instale o Softec System</h4>
+            <p id="pwa-desc">Clique no botão ao lado para instalar o app no seu dispositivo.</p>
         </div>
         <div class="pwa-actions">
-            <button id="btn-install" class="pwa-btn-install">Instalar Agora</button>
+            <!-- Botão para Android/Desktop/Windows -->
+            <button id="btn-install" class="pwa-btn-install">Instalar</button>
+            <!-- Instrução visual para iOS -->
+            <div id="ios-instruction" class="ios-instruction d-none" style="font-size: 12px; color: #64748b; line-height: 1.3;">
+                Toque em <b>Compartilhar</b> <i class="fas fa-share-square"></i> e depois em <b>"Adicionar à Tela Inicial"</b>.
+            </div>
             <button id="btn-close-banner" class="pwa-btn-close" title="Fechar">&times;</button>
         </div>
     </div>
 </div>
 
-<!-- Estilos do Banner (Pode colocar no seu arquivo CSS principal ou dentro de <style>) -->
 <style>
 .pwa-banner {
     position: fixed;
@@ -52,100 +58,24 @@
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
-    max-width: 500px;
+    max-width: 450px;
     background: #ffffff;
     color: #333333;
-    padding: 16px 20px;
+    padding: 14px 18px;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    z-index: 9999; 
-    animation: slideUp 0.4s ease-out;
+    z-index: 9999;
+    border-left: 5px solid #317EFB;
 }
-
-.pwa-banner-content {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.pwa-icon {
-    background: #eef2ff;
-    color: #317EFB;
-    width: 45px;
-    height: 45px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
-}
-
-.pwa-text {
-    flex-grow: 1;
-}
-
-.pwa-text h4 {
-    margin: 0 0 4px 0;
-    font-size: 16px;
-    font-weight: 700;
-    color: #1e293b;
-}
-
-.pwa-text p {
-    margin: 0;
-    font-size: 13px;
-    color: #64748b;
-    line-height: 1.4;
-}
-
-.pwa-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.pwa-btn-install {
-    background-color: #317EFB;
-    color: #ffffff;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 13px;
-    cursor: pointer;
-    transition: background 0.2s;
-    white-space: nowrap;
-}
-
-.pwa-btn-install:hover {
-    background-color: #2563eb;
-}
-
-.pwa-btn-close {
-    background: transparent;
-    border: none;
-    font-size: 22px;
-    color: #94a3b8;
-    cursor: pointer;
-    padding: 0;
-    line-height: 1;
-}
-
-.pwa-btn-close:hover {
-    color: #334155;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translate(-50%, 20px);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-    }
-}
+.pwa-banner-content { display: flex; align-items: center; gap: 12px; }
+.pwa-icon { background: #eef2ff; color: #317EFB; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.pwa-text { flex-grow: 1; }
+.pwa-text h4 { margin: 0 0 2px 0; font-size: 15px; font-weight: 700; color: #1e293b; }
+.pwa-text p { margin: 0; font-size: 12px; color: #64748b; }
+.pwa-actions { display: flex; align-items: center; gap: 8px; }
+.pwa-btn-install { background-color: #317EFB; color: #ffffff; border: none; padding: 7px 12px; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer; white-space: nowrap; }
+.pwa-btn-close { background: transparent; border: none; font-size: 20px; color: #94a3b8; cursor: pointer; padding: 0; }
+.d-none { display: none !important; }
 </style>
                             <div class="card-inner card-inner-lg"> 
                                 <div class="nk-block-head">
@@ -287,48 +217,59 @@
     const installBanner = document.getElementById('pwa-install-banner');
     const installBtn = document.getElementById('btn-install');
     const closeBtn = document.getElementById('btn-close-banner');
+    const iosInstruction = document.getElementById('ios-instruction');
+    const pwaDesc = document.getElementById('pwa-desc');
 
-    // Ouve o evento do navegador quando o PWA está pronto para ser instalado
-    window.addEventListener('beforeinstallprompt', (e) => {
-        // Evita que o navegador mostre o mini-infobar padrão
-        e.preventDefault();
-        // Salva o evento para usar depois
-        deferredPrompt = e;
-        
-        // Exibe o nosso banner bonito
-        if (installBanner) {
-            installBanner.classList.remove('d-none');
+    // Função para detectar se é iOS (iPhone / iPad / iPod)
+    const isIOS = () => {
+        const userAgent = window.navigator.userAgent.toLowerCase();
+        return /iphone|ipad|ipod/.test(userAgent);
+    };
+
+    // Função para verificar se o app já está rodando instalado (modo standalone)
+    const isInStandaloneMode = () => {
+        return (window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone === true);
+    };
+
+    // Se já estiver instalado, nem mostra o banner
+    if (!isInStandaloneMode()) {
+        if (isIOS()) {
+            // Se for iPhone, mostra o banner adaptado com o passo a passo manual
+            if (pwaDesc) pwaDesc.style.display = 'none'; // Esconde o texto padrão
+            if (installBtn) installBtn.style.display = 'none'; // Esconde o botão de clique automático
+            if (iosInstruction) iosInstruction.classList.remove('d-none'); // Mostra o texto do Safari
+            if (installBanner) installBanner.classList.remove('d-none'); // Exibe o banner
+        } else {
+            // Para Android / Windows / Mac (comportamento padrão via evento)
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                if (installBanner) installBanner.classList.remove('d-none');
+            });
         }
-    });
+    }
 
-    // Ação ao clicar no botão "Instalar Agora"
+    // Ação do botão de instalar (para Android/Windows)
     if (installBtn) {
         installBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
-                // Dispara o prompt nativo de instalação do navegador
                 deferredPrompt.prompt();
-                // Aguarda a resposta do usuário
                 const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    console.log('Usuário aceitou a instalação');
-                }
                 deferredPrompt = null;
                 installBanner.classList.add('d-none');
             }
         });
     }
 
-    // Botão para fechar o banner (caso o usuário recuse no momento)
+    // Fechar banner
     if (closeBtn) {
         closeBtn.addEventListener('click', () => {
             installBanner.classList.add('d-none');
         });
     }
 
-    // Esconde o banner automaticamente se o app já foi instalado
     window.addEventListener('appinstalled', () => {
         installBanner.classList.add('d-none');
-        console.log('Softec System instalado com sucesso!');
     });
 </script>
 
