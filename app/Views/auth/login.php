@@ -18,7 +18,7 @@
     <div class="nk-app-root">
         <div class="nk-main ">
             <div class="nk-wrap nk-wrap-nosidebar">
-                <div class="nk-content ">
+                <div class="nk-content "> 
                     <div class="nk-block nk-block-middle nk-auth-body  wide-xs">
                         <div class="brand-logo pb-4 text-center"><div
                                 class="logo-link"><img class="logo-light logo-img logo-img-lg"
@@ -28,6 +28,127 @@
                                     srcset="/demo3/images/logo_1.png 2x" alt="logo-dark"></div><div id="mensagem" class="mt-3"></div></div>
                                      
                         <div class=""> 
+                           <!-- Banner de Instalação PWA Softec System -->
+<div id="pwa-install-banner" class="pwa-banner d-none">
+    <div class="pwa-banner-content">
+        <div class="pwa-icon">
+            <i class="fas fa-mobile-alt"></i> <!-- Ícone de celular (ou use uma tag <img> se preferir) -->
+        </div>
+        <div class="pwa-text">
+            <h4>Instale o Softec System</h4>
+            <p>Tenha acesso rápido direto na tela inicial do seu dispositivo, sem ocupar espaço.</p>
+        </div>
+        <div class="pwa-actions">
+            <button id="btn-install" class="pwa-btn-install">Instalar Agora</button>
+            <button id="btn-close-banner" class="pwa-btn-close" title="Fechar">&times;</button>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos do Banner (Pode colocar no seu arquivo CSS principal ou dentro de <style>) -->
+<style>
+.pwa-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 500px;
+    background: #ffffff;
+    color: #333333;
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    border-left: 5px solid #317EFB;
+    animation: slideUp 0.4s ease-out;
+}
+
+.pwa-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.pwa-icon {
+    background: #eef2ff;
+    color: #317EFB;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.pwa-text {
+    flex-grow: 1;
+}
+
+.pwa-text h4 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.pwa-text p {
+    margin: 0;
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+.pwa-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pwa-btn-install {
+    background-color: #317EFB;
+    color: #ffffff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.pwa-btn-install:hover {
+    background-color: #2563eb;
+}
+
+.pwa-btn-close {
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.pwa-btn-close:hover {
+    color: #334155;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+</style>
                             <div class="card-inner card-inner-lg"> 
                                 <div class="nk-block-head">
                                     <div class="nk-block-head-content">
@@ -67,19 +188,7 @@
                             </div>
                         </div>
                     </div>
-                     <!-- Banner de Instalação PWA -->
-<div id="pwa-install-banner" class="alert alert-primary alert-dismissible fade show m-3 d-none shadow" role="alert" style="background-color: #317EFB; color: white; border: none;">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-        <div>
-            <h5 class="alert-heading mb-1 font-weight-bold">📱 Instalar o Softec System</h5>
-            <p class="mb-0">Instale nosso aplicativo na sua tela inicial para um acesso mais rápido e prático!</p>
-        </div>
-        <div>
-            <button id="btn-install" class="btn btn-light btn-sm font-weight-bold px-3 py-2 text-primary">Instalar Agora</button>
-            <button type="button" class="close text-white border-0 bg-transparent ml-2" data-dismiss="alert" aria-label="Close" id="btn-close-banner" style="font-size: 1.5rem; cursor: pointer;">&times;</button>
-        </div>
-    </div>
-</div>
+                    
                 </div>
             </div>
         </div>
