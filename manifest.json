@@ -1,8 +1,8 @@
 {
     "id": "/",
     "name": "Softec",
-    "short_name": "softec",
-    "start_url": "/dash",
+    "short_name": "Sistema Softec",
+    "start_url": "/auth/login",
     "scope": "/",
     "display": "standalone",
     "background_color": "#ffffff",
