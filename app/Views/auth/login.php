@@ -67,7 +67,19 @@
                             </div>
                         </div>
                     </div>
-                     
+                     <!-- Banner de Instalação PWA -->
+<div id="pwa-install-banner" class="alert alert-primary alert-dismissible fade show m-3 d-none shadow" role="alert" style="background-color: #317EFB; color: white; border: none;">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <h5 class="alert-heading mb-1 font-weight-bold">📱 Instalar o Softec System</h5>
+            <p class="mb-0">Instale nosso aplicativo na sua tela inicial para um acesso mais rápido e prático!</p>
+        </div>
+        <div>
+            <button id="btn-install" class="btn btn-light btn-sm font-weight-bold px-3 py-2 text-primary">Instalar Agora</button>
+            <button type="button" class="close text-white border-0 bg-transparent ml-2" data-dismiss="alert" aria-label="Close" id="btn-close-banner" style="font-size: 1.5rem; cursor: pointer;">&times;</button>
+        </div>
+    </div>
+</div>
                 </div>
             </div>
         </div>
@@ -150,5 +162,69 @@
 
 
     </script>
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => {
+                    console.log('Service Worker registrado com sucesso:', reg.scope);
+                })
+                .catch(err => {
+                    console.log('Falha ao registrar o Service Worker:', err);
+                });
+        });
+    }
+</script>
+    <script>
+    let deferredPrompt;
+    const installBanner = document.getElementById('pwa-install-banner');
+    const installBtn = document.getElementById('btn-install');
+    const closeBtn = document.getElementById('btn-close-banner');
+
+    // Ouve o evento do navegador que avisa que o app pode ser instalado
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Impede que o mini-infobar padrão do Chrome apareça automaticamente
+        e.preventDefault();
+        // Guarda o evento para disparar quando o usuário clicar no botão
+        deferredPrompt = e;
+        
+        // Exibe o nosso banner customizado
+        if (installBanner) {
+            installBanner.classList.remove('d-none');
+        }
+    });
+
+    // Quando o usuário clica no botão "Instalar Agora"
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                // Mostra a janela nativa de instalação do navegador
+                deferredPrompt.prompt();
+                // Espera a escolha do usuário
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('Usuário aceitou instalar o PWA');
+                } else {
+                    console.log('Usuário recusou instalar o PWA');
+                }
+                deferredPrompt = null;
+                installBanner.classList.add('d-none');
+            }
+        });
+    }
+
+    // Botão para fechar/esconder o banner se o usuário não quiser agora
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            installBanner.classList.add('d-none');
+        });
+    }
+
+    // Esconde o banner caso o app já tenha sido instalado com sucesso
+    window.addEventListener('appinstalled', () => {
+        installBanner.classList.add('d-none');
+        console.log('PWA instalado com sucesso!');
+    });
+</script>
 
 </html>
