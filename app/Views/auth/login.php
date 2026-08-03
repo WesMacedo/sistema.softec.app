@@ -59,8 +59,7 @@
     padding: 16px 20px;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    z-index: 9999;
-    border-left: 5px solid #317EFB;
+    z-index: 9999; 
     animation: slideUp 0.4s ease-out;
 }
 
