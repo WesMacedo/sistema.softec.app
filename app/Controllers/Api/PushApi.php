@@ -36,9 +36,6 @@ class PushApi extends BaseController
         $titulo    = $this->request->getVar('titulo') ?? 'Softec';
         $corpo     = $this->request->getVar('corpo') ?? 'Você tem uma nova notificação';
         $url       = $this->request->getVar('url') ?? '/';
-        
-        // Recebe ações personalizadas caso sejam enviadas na requisição
-        $actions   = $this->request->getVar('actions');
 
         if (empty($usuarioId)) {
             return $this->response->setStatusCode(400)->setJSON([
@@ -70,19 +67,11 @@ class PushApi extends BaseController
         }
 
         $webPush = new WebPush($this->getWebPushConfig());
-        
-        // Monta o payload incluindo as actions se houverem
-        $dadosPayload = [
+        $payload = json_encode([
             'titulo' => $titulo,
             'corpo'  => $corpo,
             'url'    => $url
-        ];
-
-        if (!empty($actions) && is_array($actions)) {
-            $dadosPayload['actions'] = $actions;
-        }
-
-        $payload = json_encode($dadosPayload);
+        ]);
 
         foreach ($inscricoes as $inscricao) {
             $subscription = Subscription::create([
