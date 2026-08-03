@@ -137,3 +137,5 @@ application/.env.local
 
 
 application/logs/
+
+info.txt
