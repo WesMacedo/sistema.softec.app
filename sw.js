@@ -94,7 +94,7 @@ self.addEventListener('push', event => {
         }
     }
 
-    const title = data.titulo || 'Softec';
+    const title = data.titulo || 'Sistema softec';
     const options = {
         body: data.corpo || 'Você recebeu uma nova atualização.',
         icon: '/images/favicon.png', // Atualizado para usar o PNG padrão

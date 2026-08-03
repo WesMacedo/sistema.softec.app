@@ -1,6 +1,6 @@
 {
     "id": "/",
-    "name": "Softec",
+    "name": "Sistema Softec",
     "short_name": "Sistema Softec",
     "start_url": "/auth/login",
     "scope": "/",
