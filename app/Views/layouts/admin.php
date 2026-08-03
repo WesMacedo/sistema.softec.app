@@ -15,23 +15,7 @@
             <link rel="manifest" href="/manifest.json"> 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
-<style>
-    html, body {
-    overscroll-behavior-x: none; /* Desativa o efeito elástico e o gesto de voltar/avançar lateral */
-    touch-action: pan-y;         /* Permite apenas o scroll vertical padrão, bloqueando gestos horizontais livres na raiz */
-    position: fixed;
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-}
 
-/* Libera o scroll apenas dentro do conteúdo rolável da sua aplicação (ex: o container principal da Dash ou formulários) */
-.nk-wrap, .nk-content, .card-inner {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    height: 100%;
-}
-</style>
 <body class="nk-body npc-default has-apps-sidebar has-sidebar ">  
     <div class="nk-app-root">
         <div class="nk-main "> 
@@ -229,7 +213,21 @@ function urlBase64ToUint8Array(base64String) {
     }
     return outputArray;
 }
+
+document.addEventListener('touchstart', function(e) {
+    if (e.touches.length === 1) {
+        let touchX = e.touches[0].clientX;
+        
+        // Verifica se o toque começou exatamente nos primeiros 20 pixels da bordinha esquerda ou direita
+        // (que é onde o Android e o iOS acionam o gesto de voltar arrastando)
+        if (touchX < 20 || touchX > (window.innerWidth - 20)) {
+            // Cancela apenas esse gesto de arrastar nas bordas extremas, liberando cliques normais
+            e.preventDefault();
+        }
+    }
+}, { passive: false });
 </script>
+
 </body> 
 
 </html>
