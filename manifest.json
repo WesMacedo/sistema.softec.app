@@ -1,7 +1,6 @@
 {
     "id": "/",
     "name": "Softec System",
-    "short_name": "Softec",
     "start_url": "/dash",
     "scope": "/",
     "display": "standalone",
