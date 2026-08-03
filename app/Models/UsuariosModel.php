@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use CodeIgniter\Model;
@@ -9,6 +8,7 @@ class UsuariosModel extends Model
     protected $table = 'usuarios';
     protected $primaryKey = 'id';
 
+    // Adicionados 'nome_empresa' e 'whatsapp' aqui:
     protected $allowedFields = [
         'nome_empresa', 
         'nome', 
@@ -33,16 +33,11 @@ class UsuariosModel extends Model
      */
     public function atualizarTentativas($id, $tentativas, $bloqueado_ate = null, $token = null)
     {
-        $data = [
+        return $this->update($id, [
             'tentativas_login' => $tentativas,
-            'bloqueado_ate'    => $bloqueado_ate
-        ];
-
-        if ($token !== null) {
-            $data['token'] = $token;
-        }
-
-        return $this->update($id, $data);
+            'bloqueado_ate'    => $bloqueado_ate,
+            'token'            => $token
+        ]);
     }
 
     /**
@@ -52,7 +47,7 @@ class UsuariosModel extends Model
      */
     public function gerarToken()
     {
-        return bin2hex(random_bytes(16));  // Gera um token seguro de 32 caracteres
+        return bin2hex(random_bytes(16));  // Gera um token de 32 caracteres
     }
 
     /**
