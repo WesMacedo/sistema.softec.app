@@ -61,24 +61,16 @@ class Push extends BaseController
 
     public function enviarTeste()
     {
-        // Valida o usuário logado pelo token da sessão
-        $token = session()->get('user_token');
-        if (!$token) {
-            return 'Faça login no sistema primeiro.';
-        }
-
-        $usuariosModel = new UsuariosModel();
-        $usuario = $usuariosModel->getUsuarioPorToken($token);
-
-        // Busca a inscrição push do usuário no banco
         $db = Database::connect();
+        
+        // Pega diretamente a última inscrição salva no banco (qualquer usuário)
         $inscricao = $db->table('push_subscriptions')
-                        ->where('usuario_id', $usuario['id'])
+                        ->orderBy('id', 'DESC')
                         ->get()
                         ->getRowArray();
 
         if (!$inscricao) {
-            return 'Nenhuma inscrição push encontrada. Clique em ativar notificações primeiro!';
+            return 'Nenhuma inscrição push encontrada na tabela!';
         }
 
         // Configuração das Chaves VAPID
@@ -101,14 +93,14 @@ class Push extends BaseController
         ]);
 
         $payload = json_encode([
-            'titulo' => 'Olá, ' . $usuario['nome'] . '!',
-            'corpo'  => 'Teste de notificação push realizado com sucesso!'
+            'titulo' => 'Teste Softec',
+            'corpo'  => 'Notificação push disparada com sucesso!'
         ]);
 
         $report = $webPush->sendOneNotification($subscription, $payload);
 
         if ($report->isSuccess()) {
-            return 'Sucesso! Notificação enviada para o seu navegador.';
+            return 'Sucesso! Notificação enviada para o endpoint mais recente cadastrado.';
         } else {
             return 'Erro ao enviar: ' . $report->getReason();
         }
