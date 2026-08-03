@@ -49,4 +49,18 @@ class UsuariosModel extends Model
     {
         return bin2hex(random_bytes(16));  // Gera um token de 32 caracteres
     }
+
+    /**
+     * Busca o usuário em tempo real utilizando apenas o token de segurança
+     *
+     * @param string $token
+     * @return array|null
+     */
+    public function getUsuarioPorToken($token)
+    {
+        if (empty($token)) {
+            return null;
+        }
+        return $this->where('token', $token)->first();
+    }
 }

@@ -23,6 +23,60 @@
                 <?= $this->include('layouts/navbar') ?>
                 <?= $this->include('layouts/sidebar') ?>
                 <div class="nk-content "> 
+                    <button onclick="ativarNotificacoesSistema()">Ativar Notificações</button>
+
+<script>
+const publicVapidKey = 'BCyPg8VlqtHZOsIEmvhwLAIt9uU4rfF409XbwTLO0IChduRuVaecg-8Rt92lUSAkSdCJYqKtSLh4DPMI3ZogT2k';
+
+async function ativarNotificacoesSistema() {
+    if (!('serviceWorker' in navigator)) {
+        alert('Seu navegador não suporta Service Worker.');
+        return;
+    }
+
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+        alert('Você precisa permitir as notificações.');
+        return;
+    }
+
+    try {
+        const registration = await navigator.serviceWorker.ready;
+        const subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+        });
+
+        // Envia para o arquivo PHP salvar no SQL
+        const response = await fetch('salvar-inscricao.php', {
+            method: 'POST',
+            body: JSON.stringify(subscription),
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        const resultado = await response.json();
+        if (resultado.success) {
+            alert('Notificações ativadas com sucesso neste dispositivo!');
+        } else {
+            alert('Erro ao salvar: ' + resultado.message);
+        }
+
+    } catch (error) {
+        console.error('Erro ao ativar push:', error);
+    }
+}
+
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+</script>
                     <?= $this->renderSection('content') ?>
                 </div>
             </div>

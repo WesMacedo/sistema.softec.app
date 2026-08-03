@@ -6,7 +6,11 @@
          <div class="nk-block-head nk-block-head-sm">
             <div class="nk-block-between">
                <div class="nk-block-head-content">
-                  <h5 class="title nk-block-title">Olá, Wesley!</h5>
+                  <h5 class="title nk-block-title">Olá, <?php echo htmlspecialchars($usuario['nome'] ?? 'Usuário'); ?>!</h5>
+
+<p><strong>Empresa:</strong> <?php echo htmlspecialchars($usuario['nome_empresa']); ?></p>
+<p><strong>E-mail:</strong> <?php echo htmlspecialchars($usuario['email']); ?></p>
+<p><strong>WhatsApp:</strong> <?php echo htmlspecialchars($usuario['whatsapp']); ?></p>
                   <div class="nk-block-des text-soft">
                      <p>Aqui está o resumo do dia</p>
                   </div>

@@ -44,6 +44,7 @@
                                     srcset="/demo3/images/logo_1.png 2x" alt="logo-dark"></div><div id="mensagem" class="mt-3"></div></div>
                                      
                         <div class=""> 
+                            
                            <!-- Banner de Instalação PWA Softec System -->
 <!-- Banner de Instalação PWA (Versão Universal) -->
 <div id="pwa-install-banner" class="pwa-banner d-none">
