@@ -10,29 +10,16 @@
     "orientation": "portrait-primary",
     "icons": [
         {
-            "src": "https://via.placeholder.com/192.png/317EFB/FFFFFF?text=Softec",
+            "src": "/icon-192.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "https://via.placeholder.com/512.png/317EFB/FFFFFF?text=Softec",
+            "src": "/icon-512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
-        }
-    ],
-    "screenshots": [
-        {
-            "src": "https://via.placeholder.com/1280x800.png/317EFB/FFFFFF?text=Desktop+View",
-            "sizes": "1280x800",
-            "type": "image/png",
-            "form_factor": "wide"
-        },
-        {
-            "src": "https://via.placeholder.com/540x720.png/317EFB/FFFFFF?text=Mobile+View",
-            "sizes": "540x720",
-            "type": "image/png"
         }
     ]
 }
