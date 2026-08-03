@@ -174,9 +174,25 @@ class Auth extends BaseController
 
     public function logout()
     {
-        // Remove o token da sessão e destrói
-        session()->remove('user_token');
+        // 1. Remove dados específicos e destrói todos os dados da sessão
+        session()->remove(['user_token']);
         session()->destroy();
+
+        // 2. Expira e remove o cookie de sessão do navegador do usuário
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params['path'],
+                $params['domain'],
+                $params['secure'],
+                $params['httponly']
+            );
+        }
+
+        // 3. Redireciona para o login com a mensagem
         return redirect()->to(base_url('auth/login'))->with('msg', 'Você saiu da conta.');
     }
 }
