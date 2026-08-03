@@ -1,9 +1,11 @@
-const CACHE_NAME = 'softec-pwa-v1';
+const CACHE_NAME = 'softec-pwa-v2'; // Subimos a versão para limpar o cache antigo
+
+// Deixe a lista vazia ou apenas com assets estáticos (ex: ícones, css)
 const urlsToCache = [
-    '/'
+    '/images/icon.svg'
 ];
 
-// 1. Instalação: Cacheia os arquivos iniciais e força a ativação imediata
+// 1. Instalação
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -11,10 +13,10 @@ self.addEventListener('install', event => {
                 return cache.addAll(urlsToCache);
             })
     );
-    self.skipWaiting(); // Pula a espera e ativa na hora
+    self.skipWaiting();
 });
 
-// 2. Ativação: Limpa caches antigos e assume o controle de todas as abas abertas
+// 2. Ativação (Limpa caches antigos e assume o controle imediato)
 self.addEventListener('activate', event => {
     event.waitUntil(
         caches.keys().then(cacheNames => {
@@ -26,28 +28,25 @@ self.addEventListener('activate', event => {
                 })
             );
         }).then(() => {
-            return self.clients.claim(); // Reivindica o controle imediato (resolve o erro da 1ª visita)
+            return self.clients.claim();
         })
     );
 });
 
-// 3. Interceptação de requisições segura
+// 3. Estratégia de Rede Primeiro, com fallback para o Cache
 self.addEventListener('fetch', event => {
-    // Ignora requisições que não sejam HTTP ou HTTPS (evita erros em extensões e Safari)
     if (!event.request.url.startsWith('http')) {
         return;
     }
 
+    // Para páginas HTML/Requisições normais: Tenta a rede primeiro. Se falhar (offline), usa o cache.
     event.respondWith(
-        caches.match(event.request)
+        fetch(event.request)
             .then(response => {
-                // Retorna do cache se existir, senão busca na rede com tratamento de erro
-                if (response) {
-                    return response;
-                }
-                return fetch(event.request).catch(() => {
-                    // Opcional: Se cair a rede e não tiver cache, você pode retornar algo customizado aqui
-                });
+                return response;
+            })
+            .catch(() => {
+                return caches.match(event.request);
             })
     );
 });
