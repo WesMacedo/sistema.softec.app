@@ -30,8 +30,8 @@ git push origin master
 
 4. Baixar atualizações do github ( VPS )
 
-ssh root@52.87.33.111
-cd /www/wwwroot/test.softec.app
+ssh root@147.93.147.27
+cd /www/wwwroot/sistema.softec.app
 git pull origin master
 
  
