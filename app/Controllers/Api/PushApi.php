@@ -65,7 +65,7 @@ class PushApi extends BaseController
                 'mensagem' => 'Nenhuma inscrição push encontrada.'
             ]);
         }
-
+    
         $webPush = new WebPush($this->getWebPushConfig());
         $payload = json_encode([
             'titulo' => $titulo,
@@ -104,3 +104,4 @@ class PushApi extends BaseController
         ]);
     }
 }
+ 
