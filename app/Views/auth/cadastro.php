@@ -22,7 +22,7 @@
 					<div class="brand-logo text-center"> 
 							<img class="logo-light logo-img logo-img-lg" src="<?= base_url() ?>images/logo.png"
 							srcset="/demo3/images/logo2x.png 2x" alt="logo">
-							<img class="logo-dark logo-img logo-img-lg" src="<?= base_url() ?>images/logo.png"
+							<img class="logo-dark logo-img logo-img-lg" src="<?= base_url() ?>images/logo-dark.png"
 							srcset="/demo3/images/logo-dark2x.png 2x" alt="logo-dark">
 					 
 						<div id="mensagem" class="mt-3">
