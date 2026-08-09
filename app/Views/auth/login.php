@@ -123,9 +123,9 @@
                             <div class="card-inner card-inner-lg"> 
                                 <div class="nk-block-head">
                                     <div class="nk-block-head-content">
-                                        <h4 class="nk-block-title">Login no sistema.</h4>
+                                        <h4 class="nk-block-title">Olá, boa tarde !</h4>
                                         <div class="nk-block-des">
-                                            <p>Faça login com suas credênciais.</p>
+                                            <p>Bem vindo(a) ao sistema.</p>
                                         </div>
                                     </div>
                                 </div> 
