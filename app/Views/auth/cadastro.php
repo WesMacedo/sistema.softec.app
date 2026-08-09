@@ -19,13 +19,12 @@
 		<div class="nk-wrap nk-wrap-nosidebar">
 			<div class="nk-content ">
 				<div class="nk-block nk-block-middle nk-auth-body  wide-xs">
-					<div class="brand-logo text-center">
-						<a href="<?= base_url() ?>index.html" class="logo-link">
+					<div class="brand-logo text-center"> 
 							<img class="logo-light logo-img logo-img-lg" src="<?= base_url() ?>images/logo.png"
 							srcset="/demo3/images/logo2x.png 2x" alt="logo">
-							<img class="logo-dark logo-img logo-img-lg" src="<?= base_url() ?>images/logo-dark.png"
+							<img class="logo-dark logo-img logo-img-lg" src="<?= base_url() ?>images/logo.png"
 							srcset="/demo3/images/logo-dark2x.png 2x" alt="logo-dark">
-						</a>
+					 
 						<div id="mensagem" class="mt-3">
 						</div>
 					</div>
