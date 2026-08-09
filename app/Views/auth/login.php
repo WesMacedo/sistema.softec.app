@@ -64,10 +64,10 @@
                     <div class="nk-block nk-block-middle nk-auth-body  wide-xs">
                         <div class="brand-logo pb-4 text-center"><div
                                 class="logo-link"><img class="logo-light logo-img logo-img-lg"
-                                    src="<?= base_url() ?>images/logo_1.png" srcset="/demo3/images/logo_1.png 2x"
+                                    src="<?= base_url() ?>images/logo.png" srcset="/demo3/images/logo.png 2x"
                                     alt="logo"><img class="logo-dark logo-img logo-img-lg"
-                                    src="<?= base_url() ?>images/logo_1.png"
-                                    srcset="/demo3/images/logo_1.png 2x" alt="logo-dark"></div><div id="mensagem" class="mt-3"></div></div>
+                                    src="<?= base_url() ?>images/logo.png"
+                                    srcset="/demo3/images/logo.png 2x" alt="logo-dark"></div><div id="mensagem" class="mt-3"></div></div>
                                      
                         <div class=""> 
                             
