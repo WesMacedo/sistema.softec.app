@@ -65,12 +65,12 @@ class Auth extends BaseController
 
         // 4. Inserção
         if ($model->insert($data)) {
-            // Mantém o flashdata caso queira ler via PHP puro em outra página
+            // Cria a mensagem flash para a página de login
             session()->setFlashdata('msg', 'Cadastro realizado com sucesso! Faça login para continuar.');
 
+            // Retorna JSON indicando sucesso e a URL para onde o JS deve ir
             return $this->response->setJSON([
                 'success'  => true,
-                'message'  => 'Cadastro realizado com sucesso! Faça login para continuar.',
                 'redirect' => base_url('auth/login')
             ]);
         }
