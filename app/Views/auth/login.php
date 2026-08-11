@@ -272,35 +272,34 @@
 
           // Se passou na validação, faz o AJAX
           $.ajax({
-            url: '<?= base_url('
-            auth / autenticar ') ?>',
+            url: '<?= base_url('auth/autenticar') ?>',
             type: 'POST',
             data: $('#loginForm').serialize(),
             dataType: 'json',
             success: function(response) {
-              $('#mensagem').empty();
+                $('#mensagem').empty();
 
-              if (response.success) {
-                window.location.href = response.redirect;
-              } else {
-                const alertaErro = ` 
-                             <div class="alert alert-fill alert-danger alert-dismissible alert-icon">
-                                 ${response.message} 
-                                <button class="close" data-bs-dismiss="alert"></button>
-                            </div>`;
-                $('#mensagem').html(alertaErro);
-              }
+                if (response.success) {
+                    window.location.href = response.redirect;
+                } else {
+                    const alertaErro = ` 
+                      <div class="alert alert-fill alert-danger alert-dismissible alert-icon">
+                          ${response.message} 
+                          <button class="close" data-bs-dismiss="alert"></button>
+                      </div>`;
+                    $('#mensagem').html(alertaErro);
+                }
             },
             error: function() {
-              const alertaErro = `
+                const alertaErro = `
                     <div class="alert alert-fill alert-danger alert-dismissible alert-icon">
                       Erro ao processar a requisição. 
                     <button class="close" data-bs-dismiss="alert"></button>
                     </div>   
                 `;
-              $('#mensagem').html(alertaErro);
+                $('#mensagem').html(alertaErro);
             }
-          });
+        });
         });
       });
     </script>
