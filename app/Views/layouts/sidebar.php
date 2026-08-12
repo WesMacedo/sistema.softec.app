@@ -37,19 +37,22 @@
             class="nk-menu-icon"><em class="icon ni ni-speed"></em></span><span
             class="nk-menu-text">Dashboard</span></a>
          </li>
-         <li class="nk-menu-item has-sub">
-            <a href="#" class="nk-menu-link nk-menu-toggle"><span
-               class="nk-menu-icon"><em class="icon ni ni-tile-thumb"></em></span><span
-               class="nk-menu-text">Clientes</span></a>
-            <ul class="nk-menu-sub">
-               <li class="nk-menu-item"><a href="project-card.html" class="nk-menu-link"><span
-                  class="nk-menu-text">Serviços</span></a></li>
-               <li class="nk-menu-item"><a href="project-list.html" class="nk-menu-link"><span
-                  class="nk-menu-text">Ordens de Serviço</span></a></li>
-               <li class="nk-menu-item"><a href="project-list.html" class="nk-menu-link"><span
-                  class="nk-menu-text">Termos de garantia</span></a></li>
-            </ul>
+         <li class="nk-menu-item"><a href="index-sales.html" class="nk-menu-link"><span
+            class="nk-menu-icon"><em class="icon ni ni-users"></em></span><span
+            class="nk-menu-text">Clientes</span></a>
          </li>
+         <li class="nk-menu-item"><a href="index-sales.html" class="nk-menu-link"><span
+            class="nk-menu-icon"><em class="icon ni ni-package-fill"></em></span><span
+            class="nk-menu-text">Produtos</span></a>
+         </li> 
+         <li class="nk-menu-item"><a href="index-sales.html" class="nk-menu-link"><span
+            class="nk-menu-icon"></em><em class="ti ti-box"></em></span><span
+            class="nk-menu-text">Aparelhos</span></a>
+         </li> 
+         <li class="nk-menu-item"><a href="index-sales.html" class="nk-menu-link"><span
+            class="nk-menu-icon"><em class="icon ni ni-speed"></em></span><span
+            class="nk-menu-text">Loja virtual</span></a>
+         </li> 
          <li class="nk-menu-item has-sub">
             <a href="#" class="nk-menu-link nk-menu-toggle"><span
                class="nk-menu-icon"><em class="icon ni ni-tile-thumb"></em></span><span
@@ -59,6 +62,8 @@
                   class="nk-menu-text">Serviços</span></a></li>
                <li class="nk-menu-item"><a href="project-list.html" class="nk-menu-link"><span
                   class="nk-menu-text">Ordens de Serviço</span></a></li>
+                  <li class="nk-menu-item"><a href="project-list.html" class="nk-menu-link"><span
+                  class="nk-menu-text">Orçamentos</span></a></li>
                <li class="nk-menu-item"><a href="project-list.html" class="nk-menu-link"><span
                   class="nk-menu-text">Termos de garantia</span></a></li>
             </ul>

@@ -14,6 +14,16 @@
     <link id="skin-default" rel="stylesheet" href="assets/css/theme9b70.css">
             <link rel="manifest" href="/manifest.json"> 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        
+
+<!-- FontAwesome Icons --> 
+ <link rel="stylesheet" type="text/css" href="./assets/css/libs/fontawesome-icons9b70.css"> 
+
+ <!-- Themify Icons --> 
+ <link rel="stylesheet" type="text/css" href="./assets/css/libs/themify-icons9b70.css"> 
+
+ <!-- Bootstrap Icons --> 
+ <link rel="stylesheet" type="text/css" href="./assets/css/libs/bootstrap-icons9b70.css"> 
 </head>
 
 <body class="nk-body npc-default has-apps-sidebar has-sidebar ">  
