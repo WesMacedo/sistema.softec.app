@@ -104,10 +104,25 @@ class Clientes extends AdminController
         ]);
     } 
 
-    public function perfil()
+    public function perfil($id = null)
     {
+        $model = new ClienteModel();
+        
+        $idLoja = $this->usuario['id_loja'] ?? null;
+
+        // Busca o cliente pelo ID e valida se pertence à mesma loja do usuário
+        $cliente = $model->where('id', $id)
+                         ->where('id_loja', $idLoja)
+                         ->first();
+
+        // Se o cliente não existir ou não pertencer à loja, redireciona ou exibe erro 404
+        if (!$cliente) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Cliente não encontrado.");
+        }
+
         return view('clientes/perfil', [
-            'usuario' => $this->usuario
+            'usuario' => $this->usuario,
+            'cliente' => $cliente
         ]);
     }
 }
