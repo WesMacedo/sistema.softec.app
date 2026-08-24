@@ -32,18 +32,18 @@ class AuthFilter implements FilterInterface
             }
         }
 
-        // Cenário 1: A rota exige que o usuário ESTEJA logado (argumento 'auth')
-        if (in_array('auth', $arguments ?? [])) {
-            if (!$isLoggedIn) {
-                return redirect()->to(base_url('auth/login'));
-            }
-        }
-
-        // Cenário 2: A rota exige que o usuário NÃO esteja logado / seja visitante (argumento 'guest')
+        // Cenário: Se a rota exige que o usuário NÃO esteja logado (ex: login/cadastro)
         if (in_array('guest', $arguments ?? [])) {
             if ($isLoggedIn) {
                 return redirect()->to(base_url('dash'));
             }
+            return;
+        }
+
+        // BLOQUEIO GERAL: Como o filtro é global, se ele não estiver logado 
+        // E a rota não for uma exceção lá no Filters.php, ele bloqueia na hora!
+        if (!$isLoggedIn) {
+            return redirect()->to(base_url('auth/login'));
         }
     }
 

@@ -73,17 +73,20 @@ public array $globals = [
             'csrf' => [
                 'except' => [
                     'push/enviar',
-                    'push/salvar-inscricao', // Libera o salvamento do token do CSRF
+                    'push/salvar-inscricao',
+                    'clientes/salvar', // <-- ADICIONE ESTA LINHA AQUI
                     'auth/*',
                     'login',
-                    'login/*'
+                    'login/*',
+                    'assets/*'
                 ]
             ],
             'auth' => [
                 'except' => [
-                    'auth/*',       
+                    'auth/*',      
                     'push/enviar',
-                    'push/salvar-inscricao' // Libera para receber a requisição JS
+                    'push/salvar-inscricao',
+                    'assets/*'
                 ]
             ],
         ],
