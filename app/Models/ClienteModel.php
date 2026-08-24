@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class ClienteModel extends Model
 {
-    protected $table = 'clientes'; // Substitua pelo nome real da sua tabela se for diferente
+    protected $table = 'clientes'; 
     protected $primaryKey = 'id';
     protected $allowedFields = [
         'id_user',
@@ -27,5 +27,5 @@ class ClienteModel extends Model
         'cidade',
         'estado'
     ];
-    protected $useTimestamps = true; // Opcional, caso tenha created_at e updated_at
+    protected $useTimestamps = true; 
 }

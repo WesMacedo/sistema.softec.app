@@ -9,7 +9,7 @@
                   <div class="nk-block-head-content">
                      <div class="card-title-group">
                         <div class="card-title card-title-sm">
-                           <h4 class="nk-block-title"><em class="icon ni ni-user"></em> Cliente teste</h4>
+                           <h4 class="nk-block-title"><em class="icon ni ni-user"></em> <span><?= esc($cliente['nome_razaosocial']) ?></span></h4>
                            <div class="nk-block-des">
                               <p>ID: 1J53H52NR6</p>
                            </div>
