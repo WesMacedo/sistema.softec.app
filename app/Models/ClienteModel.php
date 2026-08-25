@@ -26,6 +26,7 @@ class ClienteModel extends Model
         'n_casa',
         'bairro',
         'cidade',
+        'saldo',
         'estado'
     ];
     protected $useTimestamps = true; 

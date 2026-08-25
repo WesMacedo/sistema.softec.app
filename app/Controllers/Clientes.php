@@ -162,36 +162,56 @@ class Clientes extends AdminController
         }
     }
 
-    public function perfil($id = null)
-    {
-        $model = new ClienteModel();
-        $idEmpresa = $this->usuario['id_empresa'] ?? null;
+   public function perfil($id_cliente = null)
+{
+    $model = new \App\Models\ClienteModel();
+    $idEmpresa = $this->usuario['id_empresa'] ?? null;
 
-        $cliente = $model->where('id_cliente', $id)
-                         ->where('id_empresa', $idEmpresa)
-                         ->first();
+    $cliente = $model->where('id_cliente', $id_cliente)
+                    ->where('id_empresa', $idEmpresa)
+                    ->first();
 
-        if (!$cliente) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Cliente não encontrado.");
-        }
-
-        // Busca as notas do cliente ordenadas da mais recente para a mais antiga
-        $db = \Config\Database::connect();
-        $notas = $db->table('cliente_notas')
-                    ->select('cliente_notas.*, usuarios.nome as nome_usuario') // Se tiver a tabela de usuários com campo 'nome'
-                    ->join('usuarios', 'usuarios.id = cliente_notas.id_user', 'left')
-                    ->where('cliente_notas.id_cliente', $id)
-                    ->orderBy('cliente_notas.id_nota', 'DESC')
-                    ->get()
-                    ->getResultArray();
-
-        return view('clientes/perfil', [
-            'usuario' => $this->usuario,
-            'cliente' => $cliente,
-            'notas'   => $notas
-        ]);
+    if (!$cliente) {
+        return redirect()->to('clientes')->with('erro', 'Cliente não encontrado.');
     }
 
+    // --- Processa as iniciais do nome ---
+    $nomeBruto = $cliente['nome_razaosocial'] ?? 'Cliente';
+    preg_match_all('/[a-zA-ZáàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ]+/u', $nomeBruto, $matches);
+    $palavras = $matches[0] ?? [];
+
+    if (count($palavras) >= 2) {
+        $iniciais = mb_strtoupper(mb_substr($palavras[0], 0, 1) . mb_substr($palavras[1], 0, 1));
+    } elseif (count($palavras) == 1) {
+        $iniciais = mb_strtoupper(mb_substr($palavras[0], 0, 2));
+    } else {
+        $iniciais = 'CL';
+    }
+    // ------------------------------------
+
+    // Converte de centavos para reais (ex: 10000 vira 100.00)
+    $saldoCliente = isset($cliente['saldo']) ? ($cliente['saldo'] / 100) : 0.00;
+
+    // --- BUSCA AS NOTAS DO CLIENTE NO BANCO ---
+    $db = \Config\Database::connect();
+    $notas = $db->table('cliente_notas')
+                ->select('cliente_notas.*, usuarios.nome as nome_usuario') // Se quiser trazer o nome de quem criou (opcional)
+                ->join('usuarios', 'usuarios.id = cliente_notas.id_user', 'left') // Opcional: para exibir quem escreveu
+                ->where('cliente_notas.id_cliente', $id_cliente)
+                ->orderBy('cliente_notas.created_at', 'DESC') // Ordena pelas mais recentes
+                ->get()
+                ->getResultArray();
+    // ------------------------------------------
+
+    $dados = [
+        'cliente'       => $cliente,
+        'iniciais'      => $iniciais,
+        'saldo_cliente' => $saldoCliente,
+        'notas'         => $notas // <-- ENVIANDO AS NOTAS PARA A VIEW
+    ];
+
+    return view('clientes/perfil', $dados);
+}
     // Método para deletar a nota via AJAX
     public function deletarNota($id_nota = null)
     {
@@ -267,6 +287,92 @@ class Clientes extends AdminController
             ]);
         }
     }
+
+
+    
+
+    public function attsaldo()
+{
+    if (!$this->request->isAJAX()) {
+        return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'mensagem' => 'Acesso negado.']);
+    }
+
+    $validacao = \Config\Services::validation();
+    $validacao->setRules([
+        'id_cliente' => 'required',
+        'operacao'   => 'required',
+        'valor'      => 'required|integer'
+    ]);
+
+    if (!$validacao->withRequest($this->request)->run()) {
+        return $this->response->setJSON([
+            'status'   => 'error',
+            'mensagem' => 'Preencha todos os campos corretamente.'
+        ]);
+    }
+
+    $idCliente = $this->request->getPost('id_cliente');
+    $operacao = $this->request->getPost('operacao');
+    $valorCentavos = intval($this->request->getPost('valor')); // Já chega em centavos inteiros
+
+    if ($valorCentavos <= 0) {
+        return $this->response->setJSON([
+            'status'   => 'error',
+            'mensagem' => 'O valor precisa ser maior que zero.'
+        ]);
+    }
+
+    $model = new \App\Models\ClienteModel();
+    $idEmpresa = $this->usuario['id_empresa'] ?? null;
+
+    $cliente = $model->where('id_cliente', $idCliente)
+                     ->where('id_empresa', $idEmpresa)
+                     ->first();
+
+    if (!$cliente) {
+        return $this->response->setJSON([
+            'status'   => 'error',
+            'mensagem' => 'Cliente não encontrado.'
+        ]);
+    }
+
+    $saldoAtualCentavos = intval($cliente['saldo'] ?? 0);
+
+    if ($operacao === 'adicionar') {
+        $novoSaldoCentavos = $saldoAtualCentavos + $valorCentavos;
+    } else {
+        $novoSaldoCentavos = $saldoAtualCentavos - $valorCentavos;
+        
+        if ($novoSaldoCentavos < 0) {
+            return $this->response->setJSON([
+                'status'   => 'error',
+                'mensagem' => 'O saldo não pode ficar negativo.'
+            ]);
+        }
+    }
+
+    try {
+        // Salva direto o inteiro em centavos no banco
+        if ($model->update($cliente['id'], ['saldo' => $novoSaldoCentavos])) {
+            $novoSaldoReais = $novoSaldoCentavos / 100;
+            return $this->response->setJSON([
+                'status'   => 'sucesso',
+                'mensagem' => 'Saldo atualizado com sucesso!',
+                'novo_saldo_formatado' => number_format($novoSaldoReais, 2, ',', '.')
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'status'   => 'error',
+                'mensagem' => 'Erro ao salvar o saldo no banco de dados.'
+            ]);
+        }
+    } catch (\Exception $e) {
+        return $this->response->setJSON([
+            'status'   => 'error',
+            'mensagem' => 'Erro: ' . $e->getMessage()
+        ]);
+    }
+}
 
     public function editar()
     {

@@ -182,9 +182,9 @@
                                  <div class="nk-divider divider md"></div>
                                  <div class="nk-block">
                                     <div class="nk-block-head nk-block-head-sm nk-block-between">
-                                       <h6 class="title">Observações sobre o cliente</h6>
+                                       <h6 class="title">Observações / Notas </h6>
                                        <a href="#" class="link link-sm" data-bs-toggle="modal"
-                                          data-bs-target="#modalForm">+ Adicionar nota</a>
+                                          data-bs-target="#modalForm">+ Adicionar observação</a>
                                     </div>
 
                                     <div class="bq-note">
@@ -276,7 +276,9 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
                         <div class="card-inner-group" data-simplebar>
                            <div class="card-inner">
                               <div class="user-card user-card-s2">
-                                 <div class="user-avatar lg bg-primary"><span>AB</span></div>
+                                 <div class="user-avatar lg bg-primary">
+   <span><?= $iniciais ?></span>
+</div>
                                  <div class="user-info">
                                     <div class="badge bg-outline-light rounded-pill ucap">
                                        <?= esc($cliente['tipo'] ?? '') ?></div>
@@ -286,32 +288,38 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
                               </div>
                            </div>
                            <div class="card-inner card-inner-sm">
-                              <ul class="btn-toolbar justify-center gx-1">
-                                 <li><a href="#" class="btn btn-trigger btn-icon"><em class="icon ni ni-shield-off"></em></a></li>
-                                 <li><a href="#" class="btn btn-trigger btn-icon"><em class="icon ni ni-mail"></em></a></li>
-                                 <!-- Adicionamos o atributo data-id com o ID do cliente da sua view -->
+                              <ul class="btn-toolbar justify-center gx-1"> 
+                                 <li><a href="<?= base_url('clientes/editar/' . esc($cliente['id_cliente'] ?? '', 'url')) ?>" class="btn btn-trigger btn-icon"><em class="icon ni ni-edit-profile"></em></a></li> 
                                  <li>
                                     <a href="#" class="btn btn-trigger btn-icon text-danger btn-excluir" data-id="<?= $cliente['id_cliente'] ?>">
-                                       <em class="icon ni ni-na"></em>
+                                      <em class="icon ni ni-trash-alt"></em>
                                     </a>
                                  </li>
                               </ul>
                            </div>
                            <div class="card-inner">
-                              <div class="overline-title-alt mb-2">Saldo</div>
+                              <div class="overline-title-alt mb-2">Saldo em conta</div>
                               <div class="profile-balance">
-                                 <div class="profile-balance-group gx-4">
+                                 <!-- ADICIONADO: d-flex justify-content-between align-items-center para jogar um pra cada ponta -->
+                                 <div class="profile-balance-group d-flex justify-content-between align-items-center">
                                     <div class="profile-balance-sub">
                                        <div class="profile-balance-amount">
-                                          <div class="number"><small class="currency currency-usd">R$</small> 100.00
-
+                                          <div class="number"> 
+                                             <span id="displaySaldo">R$ <?= number_format($saldo_cliente, 2, ',', '.') ?></span>
                                           </div>
                                        </div>
                                     </div>
-
+                                    <!-- Botão para abrir o modal alinhado à direita -->
+                                    <div class="profile-balance-sub text-end">
+                                       <button type="button" class="btn btn-outline-light btn-white btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarSaldo" title="Editar Saldo">
+                                          Atualizar saldo
+                                       </button>
+                                    </div>
                                  </div>
                               </div>
                            </div>
+
+                           
                            <div class="card-inner">
                               <div class="row text-center">
                                  <div class="col-6">
@@ -368,6 +376,52 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
                   </div>
                </div>
             </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="modal fade" id="modalEditarSaldo" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Saldo do cliente</h5>
+            <a href="#" class="close" data-bs-dismiss="modal" aria-label="Fechar">
+               <em class="icon ni ni-cross"></em>
+            </a>
+         </div>
+         <div class="modal-body">
+            <form id="formSaldo" class="form-validate is-alter">
+               <input type="hidden" name="id_cliente" value="<?= esc($cliente['id_cliente']) ?>">
+
+               <div class="form-group mb-3">
+                  <label class="form-label" for="operacao">Ação</label>
+                  <div class="form-control-wrap">
+                     <select class="form-select" id="operacao" name="operacao">
+                        <option value="adicionar">Adicionar Saldo (+)</option>
+                        <option value="remover">Remover Saldo (-)</option>
+                     </select>
+                  </div>
+               </div>
+
+               <div class="form-group mb-3">
+                  <label class="form-label" for="valorInputVisual">Valor</label>
+                  <div class="form-control-wrap">
+                     <!-- Input visual com máscara -->
+                     <input type="text" class="form-control" id="valorInputVisual" placeholder="0,00" autocomplete="off" required>
+                     <!-- Input real enviado em centavos inteiros -->
+                     <input type="hidden" id="valor" name="valor">
+                  </div>
+                  <!-- Texto dinâmico da prévia -->
+                  <div class="form-note mt-1">
+                     Novo saldo estimado: <strong id="previewSaldo" class="text-primary">R$ 0,00</strong>
+                  </div>
+               </div>
+
+               <div class="form-group text-end">
+                  <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="submit" id="btnSalvarSaldo" class="btn btn-primary">Salvar Alteração</button>
+               </div>
+            </form>
          </div>
       </div>
    </div>
@@ -631,6 +685,148 @@ itensParaCopiar.forEach(function(item) {
          }
       });
    });
+
+   // --- MÁSCARA E PRÉVIA EM TEMPO REAL ---
+const inputVisual = document.getElementById('valorInputVisual');
+const inputRealCentavos = document.getElementById('valor');
+const selectOperacao = document.getElementById('operacao');
+const previewSaldo = document.getElementById('previewSaldo');
+
+// Lê o saldo atual da tela de forma segura e converte para centavos
+function getSaldoAtualEmCentavos() {
+   const displayEl = document.getElementById('displaySaldo');
+   if (!displayEl) return 0;
+   
+   // Pega o texto (ex: "R$ 1.500,50" ou "1500,50")
+   let texto = displayEl.innerText.replace('R$', '').trim();
+   // Remove pontos de milhar e troca vírgula por ponto
+   texto = texto.replace(/\./g, '').replace(',', '.');
+   let valorFloat = parseFloat(texto) || 0;
+   return Math.round(valorFloat * 100);
+}
+
+function atualizarPreview() {
+   if (!previewSaldo || !inputRealCentavos) return;
+   
+   let centavosInput = parseInt(inputRealCentavos.value) || 0;
+   let saldoAtual = getSaldoAtualEmCentavos();
+   let operacao = selectOperacao ? selectOperacao.value : 'adicionar';
+   
+   let novoTotalCentavos = (operacao === 'adicionar') ? (saldoAtual + centavosInput) : (saldoAtual - centavosInput);
+   if (novoTotalCentavos < 0) novoTotalCentavos = 0;
+
+   // Formata para exibição em Reais
+   let formatado = (novoTotalCentavos / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+   previewSaldo.innerText = formatado;
+}
+
+if (inputVisual) {
+   inputVisual.addEventListener('input', function(e) {
+      let valorLimpo = e.target.value.replace(/\D/g, ''); 
+      if (valorLimpo === '') {
+         inputVisual.value = '';
+         inputRealCentavos.value = '';
+         atualizarPreview();
+         return;
+      }
+
+      let centavos = parseInt(valorLimpo, 10);
+      inputRealCentavos.value = centavos; // Envia o valor puro em centavos
+
+      // Formata o input visual como moeda (ex: 150 -> 1,50)
+      let reais = centavos / 100;
+      inputVisual.value = reais.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      atualizarPreview();
+   });
+}
+
+if (selectOperacao) {
+   selectOperacao.addEventListener('change', atualizarPreview);
+}
+
+// Atualiza a prévia sempre que o modal for aberto
+const modalEl = document.getElementById('modalEditarSaldo');
+if (modalEl) {
+   modalEl.addEventListener('shown.bs.modal', function () {
+      if (inputVisual) inputVisual.focus();
+      atualizarPreview();
+   });
+}
+
+
+// --- ATUALIZAR SALDO VIA AJAX ---
+const formSaldo = document.getElementById('formSaldo');
+if (formSaldo) {
+   formSaldo.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(formSaldo);
+      const btnSubmit = document.getElementById('btnSalvarSaldo');
+      btnSubmit.setAttribute('disabled', 'true');
+
+      // Token CSRF padrão do sistema
+      const csrfName = '<?= csrf_token() ?>';
+      const csrfHash = '<?= csrf_hash() ?>';
+      formData.append(csrfName, csrfHash);
+
+      fetch('<?= base_url('clientes/attsaldo') ?>', {
+         method: 'POST',
+         body: formData,
+         headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+         }
+      })
+      .then(response => response.json())
+      .then(data => {
+         btnSubmit.removeAttribute('disabled');
+
+         if (data.status === 'sucesso') {
+            // Fecha o modal
+            const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+            modalInstance.hide();
+
+            // Reseta o form e campos visuais
+            formSaldo.reset();
+            if (inputVisual) inputVisual.value = '';
+            if (inputRealCentavos) inputRealCentavos.value = '';
+            if (previewSaldo) previewSaldo.innerText = 'R$ 0,00';
+
+            // Atualiza o saldo na tela em tempo real sem precisar recarregar
+            const displaySaldo = document.getElementById('displaySaldo');
+            if (displaySaldo) {
+               displaySaldo.innerText =  'R$ '+data.novo_saldo_formatado;
+            }
+
+            Swal.fire({
+               icon: 'success',
+               title: 'Sucesso!',
+               text: data.mensagem,
+               timer: 500,
+               showConfirmButton: false
+            }).then(() => {
+               location.reload(); 
+            });
+
+         } else {
+            Swal.fire({
+               icon: 'error',
+               title: 'Atenção',
+               text: data.mensagem || 'Ocorreu um erro.'
+            });
+         }
+      })
+      .catch(error => {
+         btnSubmit.removeAttribute('disabled');
+         console.error('Erro:', error);
+         Swal.fire({
+            icon: 'error',
+            title: 'Erro',
+            text: 'Ocorreu um erro ao processar a requisição.'
+         });
+      });
+   });
+}
 
 });
 </script>

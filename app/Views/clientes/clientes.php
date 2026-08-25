@@ -50,7 +50,7 @@
                                  </span>
                               </td>
                               <td class="text-end">
-                                 <a href="<?= base_url('clientes/perfil/' . $cliente['id_cliente']) ?>" class="btn btn-outline-light btn-white"><em class="icon ni ni-external"></em></a> 
+                                 <a href="<?= base_url('clientes/perfil/' . $cliente['id_cliente']) ?>" class="btn btn-outline-light btn-white btn-sm"><em class="icon ni ni-external"></em></a> 
                               </td>
                            </tr>
                            <?php endforeach; ?>
