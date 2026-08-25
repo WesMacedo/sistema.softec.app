@@ -207,7 +207,6 @@ body {
     <div class="nk-block-head-content">
         <h4 class="nk-block-title">
             <?php
-            // Define o fuso horário para garantir que o horário do servidor esteja correto (ex: Brasil/São Paulo)
             date_default_timezone_set('America/Sao_Paulo');
             
             $hora = date('H');
