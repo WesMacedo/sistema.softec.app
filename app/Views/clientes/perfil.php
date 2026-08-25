@@ -49,7 +49,7 @@
                               <div class="card-inner">
                                  <div class="nk-block">
                                     <div class="nk-block-head">
-                                       <h5 class="title">Informações pessoais</h5>
+                                       <h6 class="title">Informações pessoais</h6>
                                        <p>Dados cadastrados do cliente no sistema.</p>
                                     </div>
                                     <div class="profile-ud-list">
@@ -182,7 +182,7 @@
                                  <div class="nk-divider divider md"></div>
                                  <div class="nk-block">
                                     <div class="nk-block-head nk-block-head-sm nk-block-between">
-                                       <h5 class="title">Observações sobre o cliente</h5>
+                                       <h6 class="title">Observações sobre o cliente</h6>
                                        <a href="#" class="link link-sm" data-bs-toggle="modal"
                                           data-bs-target="#modalForm">+ Adicionar nota</a>
                                     </div>
@@ -226,7 +226,7 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
                                        </div>
                                        <?php endforeach; ?>
                                        <?php else: ?>
-                                       <div class="text-soft p-3">Nenhuma observação cadastrada para este cliente.</div>
+                                       <div class="text-soft p-3">Sem observações.</div>
                                        <?php endif; ?>
                                     </div>
                                  </div>
@@ -278,8 +278,10 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
                               <div class="user-card user-card-s2">
                                  <div class="user-avatar lg bg-primary"><span>AB</span></div>
                                  <div class="user-info">
-                                    <div class="badge bg-outline-light rounded-pill ucap"><?= esc($cliente['tipo'] ?? '') ?></div>
-                                    <h5><?= esc($cliente['nome_razaosocial'] ?? '') ?></h5><span class="sub-text"><?= esc($cliente['email'] ?? '') ?></span>
+                                    <div class="badge bg-outline-light rounded-pill ucap">
+                                       <?= esc($cliente['tipo'] ?? '') ?></div>
+                                    <h6><?= esc($cliente['nome_razaosocial'] ?? '') ?></h6><span
+                                       class="sub-text"><?= esc($cliente['email'] ?? '') ?></span>
                                  </div>
                               </div>
                            </div>
@@ -298,13 +300,13 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
                               <div class="profile-balance">
                                  <div class="profile-balance-group gx-4">
                                     <div class="profile-balance-sub">
-                                       <div class="profile-balance-amount"> 
+                                       <div class="profile-balance-amount">
                                           <div class="number"><small class="currency currency-usd">R$</small> 100.00
-                                              
+
                                           </div>
-                                       </div> 
+                                       </div>
                                     </div>
-                                     
+
                                  </div>
                               </div>
                            </div>
@@ -317,41 +319,46 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
                                  <div class="col-6">
                                     <div class="profile-stats"><span class="amount">20</span><span
                                           class="sub-text">Consertos</span></div>
-                                 </div> 
+                                 </div>
                               </div>
                            </div>
                            <div class="card-inner">
                               <h6 class="overline-title-alt mb-2">Informações adicionais</h6>
                               <div class="row g-3">
-                                 <div class="col-6"><span class="sub-text">Código:</span><span><?= esc($cliente['id_cliente'] ?? '') ?></span></div>
+                                 <div class="col-6"><span
+                                       class="sub-text">Código:</span><span><?= esc($cliente['id_cliente'] ?? '') ?></span>
+                                 </div>
                                  <div class="col-6"><span class="sub-text">Último acesso:</span><span>15 Feb,
                                        2019 01:02
                                        PM</span></div>
-                                 <div class="col-6"><span class="sub-text">Status:</span><span class="lead-text text-success">Conta ativa</span>
+                                 <div class="col-6"><span class="sub-text">Status:</span><span
+                                       class="lead-text text-success">Conta ativa</span>
                                  </div>
                                  <?php 
-// Array de tradução dos meses em português
-$mesesPt = [
-    'January' => 'janeiro', 'February' => 'fevereiro', 'March' => 'março', 
-    'April' => 'abril', 'May' => 'maio', 'June' => 'junho', 
-    'July' => 'julho', 'August' => 'agosto', 'September' => 'setembro', 
-    'October' => 'outubro', 'November' => 'novembro', 'December' => 'dezembro'
-];
+                                 // Array de tradução dos meses em português
+                                 $mesesPt = [
+                                    'January' => 'janeiro', 'February' => 'fevereiro', 'March' => 'março', 
+                                    'April' => 'abril', 'May' => 'maio', 'June' => 'junho', 
+                                    'July' => 'julho', 'August' => 'agosto', 'September' => 'setembro', 
+                                    'October' => 'outubro', 'November' => 'novembro', 'December' => 'dezembro'
+                                 ];
 
-$dataRegistro = $cliente['created_at'] ?? null;
-if (!empty($dataRegistro)) {
-    $mesIngles = date('F', strtotime($dataRegistro));
-    $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
-    $dataFormatada = date('d', strtotime($dataRegistro)) . ' de ' . $mesPt . ' de ' . date('Y', strtotime($dataRegistro));
-} else {
-    $dataFormatada = 'Data não disponível';
-}
-?>
+                                 $dataRegistro = $cliente['created_at'] ?? null;
+                                 if (!empty($dataRegistro)) {
+                                    $mesIngles = date('F', strtotime($dataRegistro));
+                                    $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
+                                    
+                                    // Formata a data (dia, mês, ano) + hora e minuto (H:i)
+                                    $dataFormatada = date('d', strtotime($dataRegistro)) . ' de ' . $mesPt . ' de ' . date('Y', strtotime($dataRegistro)) . ' às ' . date('H:i', strtotime($dataRegistro));
+                                 } else {
+                                    $dataFormatada = 'Data não disponível';
+                                 }
+                                 ?>
 
-<div class="col-6">
-    <span class="sub-text">Registrado em:</span>
-    <span><?= $dataFormatada ?></span>
-</div>
+                                 <div class="col-6">
+                                    <span class="sub-text">Registrado em:</span>
+                                    <span><?= $dataFormatada ?></span>
+                                 </div>
                               </div>
                            </div>
                         </div>
@@ -368,7 +375,7 @@ if (!empty($dataRegistro)) {
    <div class="modal-dialog" role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title">Adicionar Nova Nota</h5>
+            <h5 class="modal-title">Adicionar observação.</h5>
             <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
                <em class="icon ni ni-cross"></em>
             </a>
@@ -378,7 +385,7 @@ if (!empty($dataRegistro)) {
                <input type="hidden" name="id_cliente" value="<?= esc($cliente['id_cliente']) ?>">
 
                <div class="form-group">
-                  <label class="form-label" for="nota">Conteúdo da Nota</label>
+                  <label class="form-label" for="nota">Descrição</label>
                   <div class="form-control-wrap">
                      <textarea class="form-control" id="nota" name="nota" rows="4"
                         placeholder="Digite a observação sobre o cliente..." required></textarea>
@@ -386,11 +393,11 @@ if (!empty($dataRegistro)) {
                </div>
 
                <div class="form-group">
-                  <button type="submit" id="btnSalvarNota" class="btn btn-lg btn-primary">Salvar Nota</button>
+                  <button type="submit" id="btnSalvarNota" class="btn btn-lg btn-primary">Salvar</button>
                </div>
             </form>
          </div>
-         <div class="modal-footer bg-light"><span class="sub-text">Insira informações úteis para a equipe.</span></div>
+         <div class="modal-footer bg-light"><span class="sub-text">Apenas a equipe poderá ver as observações</span></div>
       </div>
    </div>
 </div>
@@ -399,39 +406,35 @@ if (!empty($dataRegistro)) {
 document.addEventListener("DOMContentLoaded", function() {
 
    // --- 1. FUNÇÃO DE COPIAR TEXTO ---
-   const itensParaCopiar = document.querySelectorAll('.copiar-texto');
-   itensParaCopiar.forEach(function(item) {
-      item.addEventListener('click', function() {
-         let valorElemento = this.querySelector('.profile-ud-value') || this.querySelector(
-            '#texto-endereco');
-         if (!valorElemento) return;
+const itensParaCopiar = document.querySelectorAll('.copiar-texto');
+itensParaCopiar.forEach(function(item) {
+    item.addEventListener('click', function() {
+        let valorElemento = this.querySelector('.profile-ud-value') || this.querySelector('#texto-endereco');
+        if (!valorElemento) return;
 
-         const textoParaCopiar = valorElemento.innerText.trim();
-         if (textoParaCopiar === '') return;
+        const textoParaCopiar = valorElemento.innerText.trim();
+        if (textoParaCopiar === '') return;
 
-         navigator.clipboard.writeText(textoParaCopiar).then(function() {
+        navigator.clipboard.writeText(textoParaCopiar).then(function() {
             item.style.transition = 'background-color 0.2s';
             item.style.backgroundColor = 'rgba(78, 140, 255, 0.1)';
             setTimeout(function() {
-               item.style.backgroundColor = '';
+                item.style.backgroundColor = '';
             }, 300);
 
-            if (typeof Swal !== 'undefined') {
-               Swal.fire({
-                  toast: true,
-                  position: 'bottom-end',
-                  icon: 'success',
-                  title: 'Copiado para a área de transferência!',
-                  showConfirmButton: false,
-                  timer: 2000
-               });
+            // Alerta nativo do DashLite (NioApp.Toast)
+            if (typeof NioApp !== 'undefined' && NioApp.Toast) {
+                NioApp.Toast('Copiado para a área de transferência!', 'success', {
+                    position: 'bottom-right'
+                });
+            } else {
+                console.log('Copiado: ' + textoParaCopiar);
             }
-         }).catch(function(err) {
+        }).catch(function(err) {
             console.error('Erro ao tentar copiar: ', err);
-         });
-      });
-   });
-
+        });
+    });
+});
 
    // --- 2. SALVAR NOTA VIA AJAX ---
    const formNota = document.getElementById('formAdicionarNota');

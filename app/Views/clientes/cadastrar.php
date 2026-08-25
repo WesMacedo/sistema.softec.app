@@ -248,7 +248,8 @@ document.addEventListener("DOMContentLoaded", function() {
       inputCpfCnpj.addEventListener("input", function(e) {
          let value = e.target.value.replace(/\D/g, "");
 
-         if (value.length < 14) {
+         // SÓ LIMPA SE ESTIVER APAGANDO UM CNPJ (tamanho entre 12 e 13 dígitos)
+         if (value.length < 14 && value.length > 11) {
             limparCamposCnpj();
          }
 
@@ -279,8 +280,7 @@ document.addEventListener("DOMContentLoaded", function() {
                .then(data => {
                   buscandoCnpj = false;
 
-                  preencherEAtivarLabel("nome_razaosocial", data.razao_social || data.nome_fantasia,
-                     true);
+                  preencherEAtivarLabel("nome_razaosocial", data.razao_social || data.nome_fantasia, true);
 
                   if (data.email) {
                      preencherEAtivarLabel("email", data.email, false, true);
@@ -299,14 +299,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
                         // TRATAMENTO DO NÚMERO: Remove o zero à esquerda se houver
                         let numeroTratado = data.numero ? String(parseInt(data.numero, 10)) : null;
-                        if (numeroTratado === "NaN") numeroTratado = data
-                        .numero; // Fallback caso venha algo não numérico
+                        if (numeroTratado === "NaN") numeroTratado = data.numero; // Fallback caso venha algo não numérico
 
                         inputCep.value = cepFormatado.replace(/^(\d{5})(\d)/, "$1-$2");
                         inputCep.classList.add("focused");
 
-                        const parentCep = inputCep.closest('.form-control-wrap') || inputCep
-                           .parentElement;
+                        const parentCep = inputCep.closest('.form-control-wrap') || inputCep.parentElement;
                         if (parentCep) parentCep.classList.add("focused");
 
                         // Passa o número já tratado para a função do ViaCEP
@@ -582,23 +580,25 @@ document.addEventListener("DOMContentLoaded", function() {
                btnSalvar.innerHTML = htmlOriginal; // Restaura o botão original
 
                if (data.status === "sucesso") {
+                  // Exibe o alerta na tela atual e só redireciona APÓS clicar em OK
                   Swal.fire({
                      icon: 'success',
                      title: 'Sucesso!',
                      text: data.mensagem,
-                     confirmButtonText: 'OK' // <-- AQUI VOCÊ MUDA O TEXTO DO BOTÃO DE SUCESSO
+                     confirmButtonText: 'OK'
+                  }).then((result) => {
+                     if (result.isConfirmed) {
+                        // Redireciona para a página de perfil usando o ID retornado pelo PHP
+                        window.location.href = `<?= base_url('clientes/perfil/') ?>` + data.id_cliente;
+                     }
                   });
 
-                  campos.forEach(id => {
-                     preencherEAtivarLabel(id, "");
-                  });
-                  limparCamposCnpj();
                } else {
                   Swal.fire({
                      icon: 'error',
                      title: 'Atenção!',
                      text: data.mensagem || 'Ocorreu um erro ao salvar os dados.',
-                     confirmButtonText: 'OK' // <-- AQUI VOCÊ MUDA O TEXTO DO BOTÃO DE ERRO
+                     confirmButtonText: 'OK'
                   });
                }
             })
@@ -611,7 +611,7 @@ document.addEventListener("DOMContentLoaded", function() {
                   icon: 'error',
                   title: 'Erro Inesperado',
                   text: 'Não foi possível processar a requisição no momento.',
-                  confirmButtonText: 'Fechar' // <-- AQUI VOCÊ MUDA O TEXTO DO BOTÃO DE FALHA DE REDE
+                  confirmButtonText: 'Fechar'
                });
             });
       });

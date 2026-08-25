@@ -27,7 +27,7 @@ class Clientes extends AdminController
         ]);
     }
 
-    // --- MÉTODO PARA SALVAR VIA AJAX ---
+   // --- MÉTODO PARA SALVAR VIA AJAX ---
     public function salvar()
     {
         if (!$this->request->isAJAX()) {
@@ -49,6 +49,18 @@ class Clientes extends AdminController
 
         $model = new \App\Models\ClienteModel();
         $dados = $this->request->getPost();
+
+        // Campos que NÃO devem sofrer alteração de maiúsculas/minúsculas
+        $camposExcecao = ['email', 'cpf_cnpj', 'whatsapp', 'telefone', 'cep', 'id_cliente', 'id_loja', 'id_user'];
+
+        // Percorre todos os dados enviados e capitaliza as palavras dos campos de texto
+        foreach ($dados as $campo => $valor) {
+            if (!in_array($campo, $camposExcecao) && is_string($valor)) {
+                // mb_strtolower garante que o restante fique minúsculo corretamente 
+                // e ucwords deixa a primeira letra de cada palavra maiúscula
+                $dados[$campo] = ucwords(mb_strtolower(trim($valor), 'UTF-8'));
+            }
+        }
 
         // 1. Associa os dados do usuário logado e da loja
         $dados['id_user']  = $this->usuario['id'] ?? null; 
@@ -73,8 +85,8 @@ class Clientes extends AdminController
         // 4. Verifica se já existe um cliente com este CPF/CNPJ para a mesma loja
         if (!empty($cpfCnpjLimpo) && !empty($dados['id_loja'])) {
             $clienteExistente = $model->where('id_loja', $dados['id_loja'])
-                                    ->where('cpf_cnpj', $dados['cpf_cnpj']) 
-                                    ->first();
+                                     ->where('cpf_cnpj', $dados['cpf_cnpj']) 
+                                     ->first();
 
             if ($clienteExistente) {
                 return $this->response->setJSON([
@@ -88,7 +100,8 @@ class Clientes extends AdminController
             if ($model->insert($dados)) {
                 return $this->response->setJSON([
                     'status' => 'sucesso',
-                    'mensagem' => 'Cliente cadastrado com sucesso.'
+                    'mensagem' => 'Cliente cadastrado com sucesso.',
+                    'id_cliente' => $dados['id_cliente']
                 ]);
             } else {
                 return $this->response->setJSON([
