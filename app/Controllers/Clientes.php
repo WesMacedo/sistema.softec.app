@@ -11,8 +11,8 @@ class Clientes extends AdminController
         $model = new ClienteModel();
 
         // Busca apenas os clientes da loja do usuário logado
-        $idLoja = $this->usuario['id_loja'] ?? null;
-        $clientes = $model->where('id_loja', $idLoja)->orderBy('id', 'DESC')->findAll();
+        $idLoja = $this->usuario['id_empresa'] ?? null;
+        $clientes = $model->where('id_empresa', $idLoja)->orderBy('id', 'DESC')->findAll();
 
         return view('clientes/clientes', [
             'usuario'  => $this->usuario,
@@ -51,7 +51,7 @@ class Clientes extends AdminController
         $dados = $this->request->getPost();
 
         // Campos que NÃO devem sofrer alteração de maiúsculas/minúsculas
-        $camposExcecao = ['email', 'cpf_cnpj', 'whatsapp', 'telefone', 'cep', 'id_cliente', 'id_loja', 'id_user'];
+        $camposExcecao = ['email', 'cpf_cnpj', 'whatsapp', 'telefone', 'cep', 'id_cliente', 'id_empresa', 'id_user'];
 
         // Percorre todos os dados enviados e capitaliza as palavras dos campos de texto
         foreach ($dados as $campo => $valor) {
@@ -64,7 +64,7 @@ class Clientes extends AdminController
 
         // 1. Associa os dados do usuário logado e da loja
         $dados['id_user']  = $this->usuario['id'] ?? null; 
-        $dados['id_loja']  = $this->usuario['id_loja'] ?? null; 
+        $dados['id_empresa']  = $this->usuario['id_empresa'] ?? null; 
 
         // 2. Gera um ID único alfanumérico (Ex: H44HF83G874) com garantia de que jamais se repete
         do {
@@ -83,8 +83,8 @@ class Clientes extends AdminController
         }
 
         // 4. Verifica se já existe um cliente com este CPF/CNPJ para a mesma loja
-        if (!empty($cpfCnpjLimpo) && !empty($dados['id_loja'])) {
-            $clienteExistente = $model->where('id_loja', $dados['id_loja'])
+        if (!empty($cpfCnpjLimpo) && !empty($dados['id_empresa'])) {
+            $clienteExistente = $model->where('id_empresa', $dados['id_empresa'])
                                      ->where('cpf_cnpj', $dados['cpf_cnpj']) 
                                      ->first();
 
@@ -177,10 +177,10 @@ class Clientes extends AdminController
     public function perfil($id = null)
     {
         $model = new ClienteModel();
-        $idLoja = $this->usuario['id_loja'] ?? null;
+        $idLoja = $this->usuario['id_empresa'] ?? null;
 
         $cliente = $model->where('id_cliente', $id)
-                         ->where('id_loja', $idLoja)
+                         ->where('id_empresa', $idLoja)
                          ->first();
 
         if (!$cliente) {

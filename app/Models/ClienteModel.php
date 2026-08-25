@@ -11,7 +11,7 @@ class ClienteModel extends Model
     protected $allowedFields = [
         'id_user',
         'id_cliente',
-        'id_loja',
+        'id_empresa',
         'tipo',
         'cpf_cnpj',
         'nome_razaosocial',
