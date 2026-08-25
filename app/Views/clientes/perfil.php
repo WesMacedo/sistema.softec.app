@@ -9,14 +9,13 @@
                   <div class="nk-block-head-content">
                      <div class="card-title-group">
                         <div class="card-title card-title-sm">
-                           <h4 class="nk-block-title"><em class="icon ni ni-user"></em> <span><?= esc($cliente['nome_razaosocial']) ?></span></h4>
-                           <div class="nk-block-des">
-                              <p>ID: 1J53H52NR6</p>
-                           </div>
+                           <h5 class="nk-block-title"><em
+                                 class="icon ni ni-user"></em><span><?= esc($cliente['nome_razaosocial']) ?></span></h4>
+
                         </div>
                         <div class="card-tools">
                            <a href="<?= base_url('clientes') ?>" class="btn btn-outline-light btn-white"><em
-                                 class="icon ni ni-user-add"></em><span>Voltar</span> </a>
+                                 class="icon ni ni-arrow-left"></em><span>Voltar</span> </a>
                         </div>
                      </div>
                   </div>
@@ -26,16 +25,17 @@
                      <div class="card-content">
                         <!-- Menu de Abas (Modificado apenas para adicionar o controle do Bootstrap) -->
                         <ul class="nav nav-tabs nav-tabs-mb-icon nav-tabs-card" role="tablist">
-                           <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-personal" role="tab"><em
-                                    class="icon ni ni-user-circle"></em><span>Personal</span></a></li>
-                           <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-transactions" role="tab"><em
-                                    class="icon ni ni-repeat"></em><span>Transactions</span></a></li>
-                           <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-documents" role="tab"><em
-                                    class="icon ni ni-file-text"></em><span>Documents</span></a></li>
-                           <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-notifications" role="tab"><em
-                                    class="icon ni ni-bell"></em><span>Notifications</span></a></li>
-                           <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-activities" role="tab"><em
-                                    class="icon ni ni-activity"></em><span>Activities</span></a></li>
+                           <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-personal"
+                                 role="tab"><em class="icon ni ni-user-circle"></em><span>Dados do cliente</span></a>
+                           </li>
+                           <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-transactions"
+                                 role="tab"><em class="icon ni ni-repeat"></em><span>Transactions</span></a></li>
+                           <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-documents"
+                                 role="tab"><em class="icon ni ni-file-text"></em><span>Documents</span></a></li>
+                           <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-notifications"
+                                 role="tab"><em class="icon ni ni-bell"></em><span>Notifications</span></a></li>
+                           <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-activities"
+                                 role="tab"><em class="icon ni ni-activity"></em><span>Activities</span></a></li>
                            <li class="nav-item nav-item-trigger d-xxl-none"><a href="#"
                                  class="toggle btn btn-icon btn-trigger" data-target="userAside"><em
                                     class="icon ni ni-user-list-fill"></em></a></li>
@@ -43,134 +43,191 @@
 
                         <!-- Container das Abas -->
                         <div class="tab-content">
-                           
+
                            <!-- ABA 1: PERSONAL (Contém todo o seu HTML original) -->
                            <div class="tab-pane active" id="tab-personal" role="tabpanel">
                               <div class="card-inner">
                                  <div class="nk-block">
                                     <div class="nk-block-head">
-                                       <h5 class="title">Personal
-                                          Information</h5>
-                                       <p>Basic
-                                          info, like your name and
-                                          address, that you use on Nio
-                                          Platform.</p>
+                                       <h5 class="title">Informações pessoais</h5>
+                                       <p>Dados cadastrados do cliente no sistema.</p>
                                     </div>
                                     <div class="profile-ud-list">
-                                       <div class="profile-ud-item">
-                                          <div class="profile-ud wider"><span class="profile-ud-label">Title</span><span
-                                                class="profile-ud-value">Mr.</span></div>
-                                       </div>
-                                       <div class="profile-ud-item">
-                                          <div class="profile-ud wider"><span class="profile-ud-label">Full
-                                                Name</span><span class="profile-ud-value">Abu
-                                                Bin
-                                                Ishtiyak</span></div>
-                                       </div>
-                                       <div class="profile-ud-item">
-                                          <div class="profile-ud wider"><span class="profile-ud-label">Date
-                                                of Birth</span><span class="profile-ud-value">10
-                                                Aug,
-                                                1980</span></div>
-                                       </div>
-                                       <div class="profile-ud-item">
-                                          <div class="profile-ud wider"><span class="profile-ud-label">Surname</span><span
-                                                class="profile-ud-value">IO</span></div>
-                                       </div>
-                                       <div class="profile-ud-item">
-                                          <div class="profile-ud wider"><span class="profile-ud-label">Mobile
-                                                Number</span><span class="profile-ud-value">01713040400</span>
+
+                                       <!-- ID / Código do Cliente -->
+                                       <div class="profile-ud-item copiar-texto" style="cursor: pointer;"
+                                          title="Clique para copiar">
+                                          <div class="profile-ud wider">
+                                             <span class="profile-ud-label">Código:</span>
+                                             <span
+                                                class="profile-ud-value"><?= esc($cliente['id_cliente'] ?? '') ?></span>
                                           </div>
                                        </div>
-                                       <div class="profile-ud-item">
-                                          <div class="profile-ud wider"><span class="profile-ud-label">Email
-                                                Address</span><span class="profile-ud-value">info@softnio.com</span></div>
+
+                                       <!-- Nome / Razão Social -->
+                                       <div class="profile-ud-item copiar-texto" style="cursor: pointer;"
+                                          title="Clique para copiar">
+                                          <div class="profile-ud wider">
+                                             <span class="profile-ud-label">Cliente:</span>
+                                             <span
+                                                class="profile-ud-value"><?= esc($cliente['nome_razaosocial'] ?? '') ?></span>
+                                          </div>
                                        </div>
+
+                                       <!-- Tipo (PF / PJ) -->
+                                       <div class="profile-ud-item copiar-texto" style="cursor: pointer;"
+                                          title="Clique para copiar">
+                                          <div class="profile-ud wider">
+                                             <span class="profile-ud-label">Tipo:</span>
+                                             <span class="profile-ud-value"><?= esc($cliente['tipo'] ?? '') ?></span>
+                                          </div>
+                                       </div>
+
+                                       <!-- CPF / CNPJ -->
+                                       <div class="profile-ud-item copiar-texto" style="cursor: pointer;"
+                                          title="Clique para copiar">
+                                          <div class="profile-ud wider">
+                                             <span class="profile-ud-label">CPF / CNPJ:</span>
+                                             <span
+                                                class="profile-ud-value"><?= esc($cliente['cpf_cnpj'] ?? '') ?></span>
+                                          </div>
+                                       </div>
+
+                                       <!-- Inscrição Estadual -->
+                                       <div class="profile-ud-item copiar-texto" style="cursor: pointer;"
+                                          title="Clique para copiar">
+                                          <div class="profile-ud wider">
+                                             <span class="profile-ud-label">Insc. Estadual:</span>
+                                             <span
+                                                class="profile-ud-value"><?= esc($cliente['insc_estadual'] ?? '') ?></span>
+                                          </div>
+                                       </div>
+
+                                       <!-- Inscrição Municipal -->
+                                       <div class="profile-ud-item copiar-texto" style="cursor: pointer;"
+                                          title="Clique para copiar">
+                                          <div class="profile-ud wider">
+                                             <span class="profile-ud-label">Insc. Municipal:</span>
+                                             <span
+                                                class="profile-ud-value"><?= esc($cliente['insc_municipal'] ?? '') ?></span>
+                                          </div>
+                                       </div>
+
+                                       <!-- WhatsApp -->
+                                       <div class="profile-ud-item copiar-texto" style="cursor: pointer;"
+                                          title="Clique para copiar">
+                                          <div class="profile-ud wider">
+                                             <span class="profile-ud-label">WhatsApp:</span>
+                                             <span
+                                                class="profile-ud-value"><?= esc($cliente['whatsapp'] ?? '') ?></span>
+                                          </div>
+                                       </div>
+
+                                       <!-- Celular -->
+                                       <div class="profile-ud-item copiar-texto" style="cursor: pointer;"
+                                          title="Clique para copiar">
+                                          <div class="profile-ud wider">
+                                             <span class="profile-ud-label">Celular:</span>
+                                             <span class="profile-ud-value"><?= esc($cliente['celular'] ?? '') ?></span>
+                                          </div>
+                                       </div>
+
+                                       <!-- Telefone -->
+                                       <div class="profile-ud-item copiar-texto" style="cursor: pointer;"
+                                          title="Clique para copiar">
+                                          <div class="profile-ud wider">
+                                             <span class="profile-ud-label">Telefone:</span>
+                                             <span
+                                                class="profile-ud-value"><?= esc($cliente['telefone'] ?? '') ?></span>
+                                          </div>
+                                       </div>
+
+                                       <!-- E-mail -->
+                                       <div class="profile-ud-item copiar-texto" style="cursor: pointer;"
+                                          title="Clique para copiar">
+                                          <div class="profile-ud wider">
+                                             <span class="profile-ud-label">E-mail:</span>
+                                             <span class="profile-ud-value"><?= esc($cliente['email'] ?? '') ?></span>
+                                          </div>
+                                       </div>
+
                                     </div>
                                  </div>
+
                                  <div class="nk-block">
                                     <div class="nk-block-head nk-block-head-line">
-                                       <h6 class="title overline-title text-base">Additional
-                                          Information</h6>
+                                       <h6 class="title overline-title text-base">Endereço</h6>
                                     </div>
                                     <div class="profile-ud-list">
-                                       <div class="profile-ud-item">
-                                          <div class="profile-ud wider"><span class="profile-ud-label">Joining
-                                                Date</span><span class="profile-ud-value">08-16-2018
-                                                09:04PM</span></div>
+
+                                       <!-- Endereço Completo expandido mantendo a estrutura de label/value -->
+                                       <div class="profile-ud-item w-100 copiar-texto"
+                                          style="flex-basis: 100%; cursor: pointer;" title="Clique para copiar">
+                                          <div class="profile-ud wider w-100">
+                                             <span class="profile-ud-label">Endereço:</span>
+                                             <span class="profile-ud-value" id="texto-endereco">
+                                                <?= esc($cliente['rua'] ?? '') ?>,
+                                                <?= esc($cliente['n_casa'] ?? '') ?> -
+                                                <?= esc($cliente['bairro'] ?? '') ?>,
+                                                <?= esc($cliente['cidade'] ?? '') ?>/<?= esc($cliente['estado'] ?? '') ?>
+                                                -
+                                                CEP: <?= esc($cliente['cep'] ?? '') ?>
+                                             </span>
+                                          </div>
                                        </div>
-                                       <div class="profile-ud-item">
-                                          <div class="profile-ud wider"><span class="profile-ud-label">Reg
-                                                Method</span><span class="profile-ud-value">Email</span></div>
-                                       </div>
-                                       <div class="profile-ud-item">
-                                          <div class="profile-ud wider"><span class="profile-ud-label">Country</span><span
-                                                class="profile-ud-value">United
-                                                State</span></div>
-                                       </div>
-                                       <div class="profile-ud-item">
-                                          <div class="profile-ud wider"><span class="profile-ud-label">Nationality</span><span
-                                                class="profile-ud-value">United
-                                                State</span></div>
-                                       </div>
+
                                     </div>
                                  </div>
+
                                  <div class="nk-divider divider md"></div>
                                  <div class="nk-block">
                                     <div class="nk-block-head nk-block-head-sm nk-block-between">
-                                       <h5 class="title">Admin
-                                          Note</h5><a href="#" class="link link-sm">+ Add
-                                          Note</a>
+                                       <h5 class="title">Observações sobre o cliente</h5>
+                                       <a href="#" class="link link-sm" data-bs-toggle="modal"
+                                          data-bs-target="#modalForm">+ Adicionar nota</a>
                                     </div>
+
                                     <div class="bq-note">
-                                       <div class="bq-note-item">
+                                       <?php if (!empty($notas)): ?>
+                                       <?php foreach ($notas as $n): ?>
+                                       <div class="bq-note-item" id="nota-item-<?= $n['id_nota'] ?>">
                                           <div class="bq-note-text">
-                                             <p>Aproin
-                                                at metus et dolor
-                                                tincidunt feugiat eu id
-                                                quam. Pellentesque
-                                                habitant morbi
-                                                tristique senectus et
-                                                netus et malesuada
-                                                fames ac turpis
-                                                egestas. Aenean
-                                                sollicitudin non nunc
-                                                vel pharetra.
-                                             </p>
+                                             <p><?= nl2br(esc($n['nota'])) ?></p>
                                           </div>
-                                          <div class="bq-note-meta"><span class="bq-note-added">Added
-                                                on <span class="date">November
-                                                   18, 2019</span> at
-                                                <span class="time">5:34
-                                                   PM</span></span><span class="bq-note-sep sep">|</span><span
-                                                class="bq-note-by">By
-                                                <span>Softnio</span></span><a href="#" class="link link-sm link-danger">Delete
-                                                Note</a></div>
-                                       </div>
-                                       <div class="bq-note-item">
-                                          <div class="bq-note-text">
-                                             <p>Aproin
-                                                at metus et dolor
-                                                tincidunt feugiat eu id
-                                                quam. Pellentesque
-                                                habitant morbi
-                                                tristique senectus et
-                                                netus et malesuada
-                                                fames ac turpis
-                                                egestas. Aenean
-                                                sollicitudin non nunc
-                                                vel pharetra.
-                                             </p>
+                                          <div class="bq-note-meta">
+
+                                             <?php 
+// Array de tradução dos meses
+$mesesPt = [
+    'January' => 'janeiro', 'February' => 'fevereiro', 'March' => 'março', 
+    'April' => 'abril', 'May' => 'maio', 'June' => 'junho', 
+    'July' => 'julho', 'August' => 'agosto', 'September' => 'setembro', 
+    'October' => 'outubro', 'November' => 'novembro', 'December' => 'dezembro'
+];
+$mesIngles = date('F', strtotime($n['created_at']));
+$mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
+?>
+
+                                             <span class="bq-note-added">
+                                                Criada em <span
+                                                   class="date"><?= date('d', strtotime($n['created_at'])) ?> de
+                                                   <?= $mesPt ?> de <?= date('Y', strtotime($n['created_at'])) ?></span>
+                                                ás
+                                                <span
+                                                   class="time"><?= date('H:i', strtotime($n['created_at'])) ?></span>
+                                             </span>
+                                             <span class="bq-note-sep sep">|</span>
+                                             <span class="bq-note-by">Por
+                                                <span><?= esc($n['nome_usuario'] ?? 'Funcionário') ?></span>
+                                             </span>
+                                             <a href="#" class="link link-sm link-danger btn-deletar-nota"
+                                                data-id="<?= $n['id_nota'] ?>">Excluir observação</a>
                                           </div>
-                                          <div class="bq-note-meta"><span class="bq-note-added">Added
-                                                on <span class="date">November
-                                                   18, 2019</span> at
-                                                <span class="time">5:34
-                                                   PM</span></span><span class="bq-note-sep sep">|</span><span
-                                                class="bq-note-by">By
-                                                <span>Softnio</span></span><a href="#" class="link link-sm link-danger">Delete
-                                                Note</a></div>
                                        </div>
+                                       <?php endforeach; ?>
+                                       <?php else: ?>
+                                       <div class="text-soft p-3">Nenhuma observação cadastrada para este cliente.</div>
+                                       <?php endif; ?>
                                     </div>
                                  </div>
                               </div>
@@ -221,9 +278,8 @@
                               <div class="user-card user-card-s2">
                                  <div class="user-avatar lg bg-primary"><span>AB</span></div>
                                  <div class="user-info">
-                                    <div class="badge bg-outline-light rounded-pill ucap">Investor</div>
-                                    <h5>Abu
-                                       Bin Ishtiyak</h5><span class="sub-text">info@softnio.com</span>
+                                    <div class="badge bg-outline-light rounded-pill ucap"><?= esc($cliente['tipo'] ?? '') ?></div>
+                                    <h5><?= esc($cliente['nome_razaosocial'] ?? '') ?></h5><span class="sub-text"><?= esc($cliente['email'] ?? '') ?></span>
                                  </div>
                               </div>
                            </div>
@@ -233,86 +289,70 @@
                                           class="icon ni ni-shield-off"></em></a></li>
                                  <li><a href="#" class="btn btn-trigger btn-icon"><em class="icon ni ni-mail"></em></a>
                                  </li>
-                                 <li><a href="#" class="btn btn-trigger btn-icon"><em
-                                          class="icon ni ni-download-cloud"></em></a></li>
-                                 <li><a href="#" class="btn btn-trigger btn-icon"><em
-                                          class="icon ni ni-bookmark"></em></a></li>
                                  <li><a href="#" class="btn btn-trigger btn-icon text-danger"><em
                                           class="icon ni ni-na"></em></a></li>
                               </ul>
                            </div>
                            <div class="card-inner">
-                              <div class="overline-title-alt mb-2">In
-                                 Account</div>
+                              <div class="overline-title-alt mb-2">Saldo</div>
                               <div class="profile-balance">
                                  <div class="profile-balance-group gx-4">
                                     <div class="profile-balance-sub">
-                                       <div class="profile-balance-amount">
-                                          <div class="number">2,500.00
-                                             <small class="currency currency-usd">USD</small>
+                                       <div class="profile-balance-amount"> 
+                                          <div class="number"><small class="currency currency-usd">R$</small> 100.00
+                                              
                                           </div>
-                                       </div>
-                                       <div class="profile-balance-subtitle">Invested
-                                          Amount</div>
+                                       </div> 
                                     </div>
-                                    <div class="profile-balance-sub"><span class="profile-balance-plus text-soft"><em
-                                             class="icon ni ni-plus"></em></span>
-                                       <div class="profile-balance-amount">
-                                          <div class="number">1,643.76</div>
-                                       </div>
-                                       <div class="profile-balance-subtitle">Profit
-                                          Earned</div>
-                                    </div>
+                                     
                                  </div>
                               </div>
                            </div>
                            <div class="card-inner">
                               <div class="row text-center">
-                                 <div class="col-4">
+                                 <div class="col-6">
                                     <div class="profile-stats"><span class="amount">23</span><span
-                                          class="sub-text">Total
-                                          Order</span></div>
+                                          class="sub-text">Compras</span></div>
                                  </div>
-                                 <div class="col-4">
+                                 <div class="col-6">
                                     <div class="profile-stats"><span class="amount">20</span><span
-                                          class="sub-text">Complete</span></div>
-                                 </div>
-                                 <div class="col-4">
-                                    <div class="profile-stats"><span class="amount">3</span><span
-                                          class="sub-text">Progress</span></div>
-                                 </div>
+                                          class="sub-text">Consertos</span></div>
+                                 </div> 
                               </div>
                            </div>
                            <div class="card-inner">
-                              <h6 class="overline-title-alt mb-2">Additional</h6>
+                              <h6 class="overline-title-alt mb-2">Informações adicionais</h6>
                               <div class="row g-3">
-                                 <div class="col-6"><span class="sub-text">User
-                                       ID:</span><span>UD003054</span></div>
-                                 <div class="col-6"><span class="sub-text">Last
-                                       Login:</span><span>15 Feb,
+                                 <div class="col-6"><span class="sub-text">Código:</span><span><?= esc($cliente['id_cliente'] ?? '') ?></span></div>
+                                 <div class="col-6"><span class="sub-text">Último acesso:</span><span>15 Feb,
                                        2019 01:02
                                        PM</span></div>
-                                 <div class="col-6"><span class="sub-text">KYC
-                                       Status:</span><span class="lead-text text-success">Approved</span>
+                                 <div class="col-6"><span class="sub-text">Status:</span><span class="lead-text text-success">Conta ativa</span>
                                  </div>
-                                 <div class="col-6"><span class="sub-text">Register
-                                       At:</span><span>Nov 24,
-                                       2019</span></div>
+                                 <?php 
+// Array de tradução dos meses em português
+$mesesPt = [
+    'January' => 'janeiro', 'February' => 'fevereiro', 'March' => 'março', 
+    'April' => 'abril', 'May' => 'maio', 'June' => 'junho', 
+    'July' => 'julho', 'August' => 'agosto', 'September' => 'setembro', 
+    'October' => 'outubro', 'November' => 'novembro', 'December' => 'dezembro'
+];
+
+$dataRegistro = $cliente['created_at'] ?? null;
+if (!empty($dataRegistro)) {
+    $mesIngles = date('F', strtotime($dataRegistro));
+    $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
+    $dataFormatada = date('d', strtotime($dataRegistro)) . ' de ' . $mesPt . ' de ' . date('Y', strtotime($dataRegistro));
+} else {
+    $dataFormatada = 'Data não disponível';
+}
+?>
+
+<div class="col-6">
+    <span class="sub-text">Registrado em:</span>
+    <span><?= $dataFormatada ?></span>
+</div>
                               </div>
-                           </div>
-                           <div class="card-inner">
-                              <h6 class="overline-title-alt mb-3">Groups</h6>
-                              <ul class="g-1">
-                                 <li class="btn-group"><a class="btn btn-xs btn-light btn-dim" href="#">investor</a><a
-                                       class="btn btn-xs btn-icon btn-light btn-dim" href="#"><em
-                                          class="icon ni ni-cross"></em></a></li>
-                                 <li class="btn-group"><a class="btn btn-xs btn-light btn-dim" href="#">support</a><a
-                                       class="btn btn-xs btn-icon btn-light btn-dim" href="#"><em
-                                          class="icon ni ni-cross"></em></a></li>
-                                 <li class="btn-group"><a class="btn btn-xs btn-light btn-dim" href="#">another
-                                       tag</a><a class="btn btn-xs btn-icon btn-light btn-dim" href="#"><em
-                                          class="icon ni ni-cross"></em></a></li>
-                              </ul>
                            </div>
                         </div>
                      </div>
@@ -323,9 +363,205 @@
       </div>
    </div>
 </div>
+<!-- Modal para Adicionar Nota -->
+<div class="modal fade" id="modalForm">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Adicionar Nova Nota</h5>
+            <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
+               <em class="icon ni ni-cross"></em>
+            </a>
+         </div>
+         <div class="modal-body">
+            <form id="formAdicionarNota" class="form-validate is-alter">
+               <input type="hidden" name="id_cliente" value="<?= esc($cliente['id_cliente']) ?>">
+
+               <div class="form-group">
+                  <label class="form-label" for="nota">Conteúdo da Nota</label>
+                  <div class="form-control-wrap">
+                     <textarea class="form-control" id="nota" name="nota" rows="4"
+                        placeholder="Digite a observação sobre o cliente..." required></textarea>
+                  </div>
+               </div>
+
+               <div class="form-group">
+                  <button type="submit" id="btnSalvarNota" class="btn btn-lg btn-primary">Salvar Nota</button>
+               </div>
+            </form>
+         </div>
+         <div class="modal-footer bg-light"><span class="sub-text">Insira informações úteis para a equipe.</span></div>
+      </div>
+   </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+   // --- 1. FUNÇÃO DE COPIAR TEXTO ---
+   const itensParaCopiar = document.querySelectorAll('.copiar-texto');
+   itensParaCopiar.forEach(function(item) {
+      item.addEventListener('click', function() {
+         let valorElemento = this.querySelector('.profile-ud-value') || this.querySelector(
+            '#texto-endereco');
+         if (!valorElemento) return;
+
+         const textoParaCopiar = valorElemento.innerText.trim();
+         if (textoParaCopiar === '') return;
+
+         navigator.clipboard.writeText(textoParaCopiar).then(function() {
+            item.style.transition = 'background-color 0.2s';
+            item.style.backgroundColor = 'rgba(78, 140, 255, 0.1)';
+            setTimeout(function() {
+               item.style.backgroundColor = '';
+            }, 300);
+
+            if (typeof Swal !== 'undefined') {
+               Swal.fire({
+                  toast: true,
+                  position: 'bottom-end',
+                  icon: 'success',
+                  title: 'Copiado para a área de transferência!',
+                  showConfirmButton: false,
+                  timer: 2000
+               });
+            }
+         }).catch(function(err) {
+            console.error('Erro ao tentar copiar: ', err);
+         });
+      });
+   });
 
 
+   // --- 2. SALVAR NOTA VIA AJAX ---
+   const formNota = document.getElementById('formAdicionarNota');
+   if (formNota) {
+      formNota.addEventListener('submit', function(e) {
+         e.preventDefault();
+
+         const formData = new FormData(formNota);
+         const btnSubmit = document.getElementById('btnSalvarNota');
+         btnSubmit.setAttribute('disabled', 'true');
+
+         // Token CSRF
+         const csrfName = '<?= csrf_token() ?>';
+         const csrfHash = '<?= csrf_hash() ?>';
+         formData.append(csrfName, csrfHash);
+
+         fetch('<?= base_url('clientes/salvarNota') ?>', {
+               method: 'POST',
+               body: formData,
+               headers: {
+                  'X-Requested-With': 'XMLHttpRequest'
+               }
+            })
+            .then(response => response.json())
+            .then(data => {
+               btnSubmit.removeAttribute('disabled');
+
+               if (data.status === 'sucesso') {
+                  // FECHA O MODAL IMEDIATAMENTE USANDO O BOOTSTRAP
+                  const modalElement = document.getElementById('modalForm');
+                  const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(
+                     modalElement);
+                  modalInstance.hide();
+
+                  // LIMPA O FORMULÁRIO
+                  formNota.reset();
+
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'Sucesso!',
+                     text: data.mensagem,
+                     timer: 1500,
+                     showConfirmButton: false
+                  }).then(() => {
+                     location.reload();
+                  });
+
+               } else {
+                  Swal.fire({
+                     icon: 'error',
+                     title: 'Atenção',
+                     text: data.mensagem || 'Ocorreu um erro.'
+                  });
+               }
+            })
+            .catch(error => {
+               btnSubmit.removeAttribute('disabled');
+               console.error('Erro:', error);
+               Swal.fire({
+                  icon: 'error',
+                  title: 'Erro',
+                  text: 'Ocorreu um erro ao processar a requisição.'
+               });
+            });
+      });
+   }
 
 
+   // --- 3. EXCLUIR NOTA VIA AJAX ---
+   document.body.addEventListener('click', function(e) {
+      const btnDelete = e.target.closest('.btn-deletar-nota');
+      if (!btnDelete) return;
 
+      e.preventDefault();
+      const idNota = btnDelete.getAttribute('data-id');
+
+      Swal.fire({
+         title: 'Deseja excluir esta nota?',
+         text: "Esta ação não poderá ser desfeita!",
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonColor: '#d33',
+         cancelButtonColor: '#3085d6',
+         confirmButtonText: 'Sim, excluir!',
+         cancelButtonText: 'Cancelar'
+      }).then((result) => {
+         if (result.isConfirmed) {
+            // Prepara os dados incluindo o token CSRF
+            const formData = new FormData();
+            formData.append('<?= csrf_token() ?>', '<?= csrf_hash() ?>');
+
+            fetch('<?= base_url('clientes/deletarNota/') ?>' + idNota, {
+                  method: 'POST',
+                  headers: {
+                     'X-Requested-With': 'XMLHttpRequest'
+                  },
+                  body: formData
+               })
+               .then(response => response.json())
+               .then(data => {
+                  if (data.status === 'sucesso') {
+                     Swal.fire({
+                        icon: 'success',
+                        title: 'Excluído!',
+                        text: data.mensagem,
+                        timer: 1200,
+                        showConfirmButton: false
+                     }).then(() => {
+                        location.reload();
+                     });
+                  } else {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Erro',
+                        text: data.mensagem || 'Não foi possível excluir a nota.'
+                     });
+                  }
+               })
+               .catch(err => {
+                  console.error('Erro na requisição:', err);
+                  Swal.fire({
+                     icon: 'error',
+                     title: 'Erro',
+                     text: 'Erro ao conectar com o servidor.'
+                  });
+               });
+         }
+      });
+   });
+
+});
+</script>
 <?= $this->endSection() ?>

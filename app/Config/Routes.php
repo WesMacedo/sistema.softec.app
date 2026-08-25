@@ -24,7 +24,8 @@ $routes->post('auth/autenticar', 'Auth::autenticar', ['filter' => 'auth:guest'])
 $routes->get('auth/logout', 'Auth::logout');
 
 // 4. Rotas Protegidas (Exigem login via 'auth:auth')
-$routes->get('dash', 'Dash::index', ['filter' => 'auth:auth']);
+$routes->get('dash', 'Dash::index', ['filter' => 'auth:auth']); 
+
 
 // 5. Rotas de Push (Mantenha conforme a sua lógica de segurança atual)
 $routes->post('push/salvar-inscricao', 'Push::salvarInscricao');
