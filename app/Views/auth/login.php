@@ -204,13 +204,30 @@ body {
                      <?php endif; ?>
                      <div class="card-inner card-inner-lg">
                         <div class="nk-block-head">
-                           <div class="nk-block-head-content">
-                              <h4 class="nk-block-title">Olá, boa tarde !</h4>
-                              <div class="nk-block-des">
-                                 <p>Bem vindo(a) ao sistema.</p>
-                              </div>
-                           </div>
-                        </div>
+    <div class="nk-block-head-content">
+        <h4 class="nk-block-title">
+            <?php
+            // Define o fuso horário para garantir que o horário do servidor esteja correto (ex: Brasil/São Paulo)
+            date_default_timezone_set('America/Sao_Paulo');
+            
+            $hora = date('H');
+
+            if ($hora >= 6 && $hora < 12) {
+                $saudacao = 'Bom dia!';
+            } elseif ($hora >= 12 && $hora < 18) {
+                $saudacao = 'Boa tarde!';
+            } else {
+                $saudacao = 'Boa noite!';
+            }
+
+            echo "Olá, " . $saudacao;
+            ?>
+        </h4>
+        <div class="nk-block-des">
+            <p>Bem-vindo(a) ao sistema.</p>
+        </div>
+    </div>
+</div>
                         <form id="loginForm">
                            <div class="form-group">
                               <div class="form-label-group"><label class="form-label" for="default-01">Email</label>
