@@ -287,12 +287,14 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
                            </div>
                            <div class="card-inner card-inner-sm">
                               <ul class="btn-toolbar justify-center gx-1">
-                                 <li><a href="#" class="btn btn-trigger btn-icon"><em
-                                          class="icon ni ni-shield-off"></em></a></li>
-                                 <li><a href="#" class="btn btn-trigger btn-icon"><em class="icon ni ni-mail"></em></a>
+                                 <li><a href="#" class="btn btn-trigger btn-icon"><em class="icon ni ni-shield-off"></em></a></li>
+                                 <li><a href="#" class="btn btn-trigger btn-icon"><em class="icon ni ni-mail"></em></a></li>
+                                 <!-- Adicionamos o atributo data-id com o ID do cliente da sua view -->
+                                 <li>
+                                    <a href="#" class="btn btn-trigger btn-icon text-danger btn-excluir" data-id="<?= $cliente['id_cliente'] ?>">
+                                       <em class="icon ni ni-na"></em>
+                                    </a>
                                  </li>
-                                 <li><a href="#" class="btn btn-trigger btn-icon text-danger"><em
-                                          class="icon ni ni-na"></em></a></li>
                               </ul>
                            </div>
                            <div class="card-inner">
@@ -561,6 +563,71 @@ itensParaCopiar.forEach(function(item) {
                      text: 'Erro ao conectar com o servidor.'
                   });
                });
+         }
+      });
+   });
+
+    
+// --- EXCLUIR CLIENTE VIA AJAX ---
+   document.body.addEventListener('click', function(e) {
+      const btnExcluir = e.target.closest('.btn-excluir');
+      if (!btnExcluir) return;
+
+      e.preventDefault();
+      const idCliente = btnExcluir.getAttribute('data-id');
+
+      Swal.fire({
+         title: 'Excluir cliente do sistema?',
+         text: "Esta ação não poderá ser revertida!",
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonColor: '#d33',
+         cancelButtonColor: '#3085d6',
+         confirmButtonText: 'Sim, excluir!',
+         cancelButtonText: 'Cancelar'
+      }).then((result) => {
+         if (result.isConfirmed) {
+            
+            // Prepara os dados incluindo o token CSRF exatamente como nas notas
+            const formData = new FormData();
+            formData.append('<?= csrf_token() ?>', '<?= csrf_hash() ?>');
+
+            fetch('<?= base_url('clientes/excluir/') ?>' + idCliente, {
+               method: 'POST',
+               headers: {
+                  'X-Requested-With': 'XMLHttpRequest'
+               },
+               body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+               if (data.status === 'sucesso') {
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'Excluído!',
+                     text: data.mensagem,
+                     timer: 1200,
+                     showConfirmButton: false
+                  }).then(() => {
+                     // Redireciona para a listagem geral de clientes
+                     window.location.href = '<?= base_url('clientes') ?>';
+                  });
+               } else {
+                  Swal.fire({
+                     icon: 'error',
+                     title: 'Atenção!',
+                     text: data.mensagem || 'Não foi possível excluir o cliente.'
+                  });
+               }
+            })
+            .catch(err => {
+               console.error('Erro na requisição:', err);
+               Swal.fire({
+                  icon: 'error',
+                  title: 'Erro',
+                  text: 'Erro ao conectar com o servidor.'
+               });
+            });
          }
       });
    });

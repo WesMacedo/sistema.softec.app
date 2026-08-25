@@ -11,8 +11,8 @@ class Clientes extends AdminController
         $model = new ClienteModel();
 
         // Busca apenas os clientes da loja do usuário logado
-        $idLoja = $this->usuario['id_empresa'] ?? null;
-        $clientes = $model->where('id_empresa', $idLoja)->orderBy('id', 'DESC')->findAll();
+        $idEmpresa = $this->usuario['id_empresa'] ?? null;
+        $clientes = $model->where('id_empresa', $idEmpresa)->orderBy('id', 'DESC')->findAll();
 
         return view('clientes/clientes', [
             'usuario'  => $this->usuario,
@@ -27,7 +27,7 @@ class Clientes extends AdminController
         ]);
     }
 
-   // --- MÉTODO PARA SALVAR VIA AJAX ---
+   // --- MÉTODO PARA SALVAR CLIENTE VIA AJAX ---
     public function salvar()
     {
         if (!$this->request->isAJAX()) {
@@ -51,18 +51,14 @@ class Clientes extends AdminController
         $dados = $this->request->getPost();
 
         // Campos que NÃO devem sofrer alteração de maiúsculas/minúsculas
-        $camposExcecao = ['email', 'cpf_cnpj', 'whatsapp', 'telefone', 'cep', 'id_cliente', 'id_empresa', 'id_user'];
-
-        // Percorre todos os dados enviados e capitaliza as palavras dos campos de texto
+        $camposExcecao = ['email', 'cpf_cnpj', 'whatsapp', 'telefone', 'cep', 'id_cliente', 'id_empresa', 'id_user']; 
         foreach ($dados as $campo => $valor) {
-            if (!in_array($campo, $camposExcecao) && is_string($valor)) {
-                // mb_strtolower garante que o restante fique minúsculo corretamente 
-                // e ucwords deixa a primeira letra de cada palavra maiúscula
+            if (!in_array($campo, $camposExcecao) && is_string($valor)) {  
                 $dados[$campo] = ucwords(mb_strtolower(trim($valor), 'UTF-8'));
             }
         }
 
-        // 1. Associa os dados do usuário logado e da loja
+        // 1. Associa os dados do usuário logado e da empresa
         $dados['id_user']  = $this->usuario['id'] ?? null; 
         $dados['id_empresa']  = $this->usuario['id_empresa'] ?? null; 
 
@@ -166,21 +162,13 @@ class Clientes extends AdminController
         }
     }
 
-
-    public function editar()
-    {
-        return view('clientes/editar', [
-            'usuario' => $this->usuario
-        ]);
-    } 
-
     public function perfil($id = null)
     {
         $model = new ClienteModel();
-        $idLoja = $this->usuario['id_empresa'] ?? null;
+        $idEmpresa = $this->usuario['id_empresa'] ?? null;
 
         $cliente = $model->where('id_cliente', $id)
-                         ->where('id_empresa', $idLoja)
+                         ->where('id_empresa', $idEmpresa)
                          ->first();
 
         if (!$cliente) {
@@ -226,4 +214,64 @@ class Clientes extends AdminController
             'mensagem' => 'Erro ao excluir a nota.'
         ]);
     }
+
+    
+// --- MÉTODO PARA EXCLUIR CLIENTE VIA AJAX ---
+    public function excluir($id_cliente = null)
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'mensagem' => 'Acesso negado.']);
+        }
+
+        if (empty($id_cliente)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'mensagem' => 'Cliente não identificado.'
+            ]);
+        }
+
+        $model = new \App\Models\ClienteModel();
+
+        // 1. Pega a empresa da sessão
+        $idEmpresa = $this->usuario['id_empresa'] ?? null;
+
+        // 2. Busca o cliente garantindo que pertence à empresa logada
+        $cliente = $model->where('id_cliente', $id_cliente)
+                         ->where('id_empresa', $idEmpresa)
+                         ->first();
+
+        if (!$cliente) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'mensagem' => 'Cliente não encontrado ou você não tem permissão para excluí-lo.'
+            ]);
+        }
+
+        try {
+            // 3. Deleta utilizando a chave primária real da tabela ('id') que veio no array $cliente
+            if ($model->delete($cliente['id'])) {
+                return $this->response->setJSON([
+                    'status' => 'sucesso',
+                    'mensagem' => 'Cliente excluído com sucesso.'
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'mensagem' => 'Não foi possível excluir o cliente no banco de dados.'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'mensagem' => 'Erro: ' . $e->getMessage()
+            ]);
+        }
+    }
+
+    public function editar()
+    {
+        return view('clientes/editar', [
+            'usuario' => $this->usuario
+        ]);
+    } 
 }

@@ -50,19 +50,7 @@
                                  </span>
                               </td>
                               <td class="text-end">
-                                 <div class="drodown">
-                                    <a href="#" class="dropdown-toggle btn btn-icon btn-trigger"
-                                       data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                       <ul class="link-list-opt no-bdr">
-                                          <li><a href="<?= base_url('clientes/perfil/' . $cliente['id_cliente']) ?>"><em class="icon ni ni-info"></em><span>informações</span></a></li>
-                                          <li><a href="<?= base_url('clientes/editar/' . $cliente['id_cliente']) ?>"><em
-                                                   class="icon ni ni-edit"></em><span>Alterar dados</span></a></li>
-                                          <li><a href="#" onclick="deletarCliente(<?= $cliente['id_cliente'] ?>)"><em
-                                                   class="icon ni ni-trash"></em><span>Excluir</span></a></li>
-                                       </ul>
-                                    </div>
-                                 </div>
+                                 <a href="<?= base_url('clientes/perfil/' . $cliente['id_cliente']) ?>" class="btn btn-outline-light btn-white"><em class="icon ni ni-external"></em></a> 
                               </td>
                            </tr>
                            <?php endforeach; ?>
