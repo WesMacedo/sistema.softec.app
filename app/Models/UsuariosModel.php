@@ -7,8 +7,7 @@ class UsuariosModel extends Model
 {
     protected $table = 'usuarios';
     protected $primaryKey = 'id';
-
-    // Adicionados 'nome_empresa' e 'whatsapp' aqui:
+ 
     protected $allowedFields = [
         'nome_empresa', 
         'nome', 
@@ -17,6 +16,7 @@ class UsuariosModel extends Model
         'senha', 
         'tentativas_login', 
         'bloqueado_ate', 
+        'remember_token',
         'token'
     ];
     

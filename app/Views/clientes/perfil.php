@@ -29,13 +29,11 @@
                                  role="tab"><em class="icon ni ni-user-circle"></em><span>Dados do cliente</span></a>
                            </li>
                            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-transactions"
-                                 role="tab"><em class="icon ni ni-repeat"></em><span>Transactions</span></a></li>
+                                 role="tab"><i class="icon bi bi-tools" style="font-size: 15px;"></i><span>Ordens de serviços</span></a></li>
                            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-documents"
-                                 role="tab"><em class="icon ni ni-file-text"></em><span>Documents</span></a></li>
-                           <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-notifications"
-                                 role="tab"><em class="icon ni ni-bell"></em><span>Notifications</span></a></li>
+                                 role="tab"><em class="icon ni ni-cart"></em><span>Compras e pedidos</span></a></li> 
                            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-activities"
-                                 role="tab"><em class="icon ni ni-activity"></em><span>Activities</span></a></li>
+                                 role="tab"><em class="icon ni ni-activity"></em><span>Logs da conta</span></a></li>
                            <li class="nav-item nav-item-trigger d-xxl-none"><a href="#"
                                  class="toggle btn btn-icon btn-trigger" data-target="userAside"><em
                                     class="icon ni ni-user-list-fill"></em></a></li>
@@ -197,16 +195,16 @@
                                           <div class="bq-note-meta">
 
                                              <?php 
-// Array de tradução dos meses
-$mesesPt = [
-    'January' => 'janeiro', 'February' => 'fevereiro', 'March' => 'março', 
-    'April' => 'abril', 'May' => 'maio', 'June' => 'junho', 
-    'July' => 'julho', 'August' => 'agosto', 'September' => 'setembro', 
-    'October' => 'outubro', 'November' => 'novembro', 'December' => 'dezembro'
-];
-$mesIngles = date('F', strtotime($n['created_at']));
-$mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
-?>
+                                    // Array de tradução dos meses
+                                    $mesesPt = [
+                                       'January' => 'janeiro', 'February' => 'fevereiro', 'March' => 'março', 
+                                       'April' => 'abril', 'May' => 'maio', 'June' => 'junho', 
+                                       'July' => 'julho', 'August' => 'agosto', 'September' => 'setembro', 
+                                       'October' => 'outubro', 'November' => 'novembro', 'December' => 'dezembro'
+                                    ];
+                                    $mesIngles = date('F', strtotime($n['created_at']));
+                                    $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
+                                    ?>
 
                                              <span class="bq-note-added">
                                                 Criada em <span
@@ -248,15 +246,7 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
                                  <p>Conteúdo da aba Documents...</p>
                               </div>
                            </div>
-
-                           <!-- ABA 4: NOTIFICATIONS -->
-                           <div class="tab-pane" id="tab-notifications" role="tabpanel">
-                              <div class="card-inner">
-                                 <h5 class="title">Notifications</h5>
-                                 <p>Conteúdo da aba Notifications...</p>
-                              </div>
-                           </div>
-
+ 
                            <!-- ABA 5: ACTIVITIES -->
                            <div class="tab-pane" id="tab-activities" role="tabpanel">
                               <div class="card-inner">
@@ -277,8 +267,8 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
                            <div class="card-inner">
                               <div class="user-card user-card-s2">
                                  <div class="user-avatar lg bg-primary">
-   <span><?= $iniciais ?></span>
-</div>
+                                    <span><?= $iniciais ?></span>
+                                 </div>
                                  <div class="user-info">
                                     <div class="badge bg-outline-light rounded-pill ucap">
                                        <?= esc($cliente['tipo'] ?? '') ?></div>
@@ -288,11 +278,14 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
                               </div>
                            </div>
                            <div class="card-inner card-inner-sm">
-                              <ul class="btn-toolbar justify-center gx-1"> 
-                                 <li><a href="<?= base_url('clientes/editar/' . esc($cliente['id_cliente'] ?? '', 'url')) ?>" class="btn btn-trigger btn-icon"><em class="icon ni ni-edit-profile"></em></a></li> 
+                              <ul class="btn-toolbar justify-center gx-1">
+                                 <li><a href="<?= base_url('clientes/editar/' . esc($cliente['id_cliente'] ?? '', 'url')) ?>"
+                                       class="btn btn-trigger btn-icon"><em class="icon ni ni-edit-profile"></em></a>
+                                 </li>
                                  <li>
-                                    <a href="#" class="btn btn-trigger btn-icon text-danger btn-excluir" data-id="<?= $cliente['id_cliente'] ?>">
-                                      <em class="icon ni ni-trash-alt"></em>
+                                    <a href="#" class="btn btn-trigger btn-icon text-danger btn-excluir"
+                                       data-id="<?= $cliente['id_cliente'] ?>">
+                                       <em class="icon ni ni-trash-alt"></em>
                                     </a>
                                  </li>
                               </ul>
@@ -304,14 +297,17 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
                                  <div class="profile-balance-group d-flex justify-content-between align-items-center">
                                     <div class="profile-balance-sub">
                                        <div class="profile-balance-amount">
-                                          <div class="number"> 
-                                             <span id="displaySaldo">R$ <?= number_format($saldo_cliente, 2, ',', '.') ?></span>
+                                          <div class="number">
+                                             <span id="displaySaldo">R$
+                                                <?= number_format($saldo_cliente, 2, ',', '.') ?></span>
                                           </div>
                                        </div>
                                     </div>
                                     <!-- Botão para abrir o modal alinhado à direita -->
                                     <div class="profile-balance-sub text-end">
-                                       <button type="button" class="btn btn-outline-light btn-white btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarSaldo" title="Editar Saldo">
+                                       <button type="button" class="btn btn-outline-light btn-white btn-sm"
+                                          data-bs-toggle="modal" data-bs-target="#modalEditarSaldo"
+                                          title="Editar Saldo">
                                           Atualizar saldo
                                        </button>
                                     </div>
@@ -319,7 +315,7 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
                               </div>
                            </div>
 
-                           
+
                            <div class="card-inner">
                               <div class="row text-center">
                                  <div class="col-6">
@@ -407,7 +403,8 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
                   <label class="form-label" for="valorInputVisual">Valor</label>
                   <div class="form-control-wrap">
                      <!-- Input visual com máscara -->
-                     <input type="text" class="form-control" id="valorInputVisual" placeholder="0,00" autocomplete="off" required>
+                     <input type="text" class="form-control" id="valorInputVisual" placeholder="0,00" autocomplete="off"
+                        required>
                      <!-- Input real enviado em centavos inteiros -->
                      <input type="hidden" id="valor" name="valor">
                   </div>
@@ -453,7 +450,8 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
                </div>
             </form>
          </div>
-         <div class="modal-footer bg-light"><span class="sub-text">Apenas a equipe poderá ver as observações</span></div>
+         <div class="modal-footer bg-light"><span class="sub-text">Apenas a equipe poderá ver as observações</span>
+         </div>
       </div>
    </div>
 </div>
@@ -462,35 +460,36 @@ $mesPt = $mesesPt[$mesIngles] ?? $mesIngles;
 document.addEventListener("DOMContentLoaded", function() {
 
    // --- 1. FUNÇÃO DE COPIAR TEXTO ---
-const itensParaCopiar = document.querySelectorAll('.copiar-texto');
-itensParaCopiar.forEach(function(item) {
-    item.addEventListener('click', function() {
-        let valorElemento = this.querySelector('.profile-ud-value') || this.querySelector('#texto-endereco');
-        if (!valorElemento) return;
+   const itensParaCopiar = document.querySelectorAll('.copiar-texto');
+   itensParaCopiar.forEach(function(item) {
+      item.addEventListener('click', function() {
+         let valorElemento = this.querySelector('.profile-ud-value') || this.querySelector(
+            '#texto-endereco');
+         if (!valorElemento) return;
 
-        const textoParaCopiar = valorElemento.innerText.trim();
-        if (textoParaCopiar === '') return;
+         const textoParaCopiar = valorElemento.innerText.trim();
+         if (textoParaCopiar === '') return;
 
-        navigator.clipboard.writeText(textoParaCopiar).then(function() {
+         navigator.clipboard.writeText(textoParaCopiar).then(function() {
             item.style.transition = 'background-color 0.2s';
             item.style.backgroundColor = 'rgba(78, 140, 255, 0.1)';
             setTimeout(function() {
-                item.style.backgroundColor = '';
+               item.style.backgroundColor = '';
             }, 300);
 
             // Alerta nativo do DashLite (NioApp.Toast)
             if (typeof NioApp !== 'undefined' && NioApp.Toast) {
-                NioApp.Toast('Copiado para a área de transferência!', 'success', {
-                    position: 'bottom-right'
-                });
+               NioApp.Toast('Copiado para a área de transferência!', 'success', {
+                  position: 'bottom-right'
+               });
             } else {
-                console.log('Copiado: ' + textoParaCopiar);
+               console.log('Copiado: ' + textoParaCopiar);
             }
-        }).catch(function(err) {
+         }).catch(function(err) {
             console.error('Erro ao tentar copiar: ', err);
-        });
-    });
-});
+         });
+      });
+   });
 
    // --- 2. SALVAR NOTA VIA AJAX ---
    const formNota = document.getElementById('formAdicionarNota');
@@ -621,8 +620,8 @@ itensParaCopiar.forEach(function(item) {
       });
    });
 
-    
-// --- EXCLUIR CLIENTE VIA AJAX ---
+
+   // --- EXCLUIR CLIENTE VIA AJAX ---
    document.body.addEventListener('click', function(e) {
       const btnExcluir = e.target.closest('.btn-excluir');
       if (!btnExcluir) return;
@@ -641,192 +640,199 @@ itensParaCopiar.forEach(function(item) {
          cancelButtonText: 'Cancelar'
       }).then((result) => {
          if (result.isConfirmed) {
-            
+
             // Prepara os dados incluindo o token CSRF exatamente como nas notas
             const formData = new FormData();
             formData.append('<?= csrf_token() ?>', '<?= csrf_hash() ?>');
 
             fetch('<?= base_url('clientes/excluir/') ?>' + idCliente, {
-               method: 'POST',
-               headers: {
-                  'X-Requested-With': 'XMLHttpRequest'
-               },
-               body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-               if (data.status === 'sucesso') {
-                  Swal.fire({
-                     icon: 'success',
-                     title: 'Excluído!',
-                     text: data.mensagem,
-                     timer: 1200,
-                     showConfirmButton: false
-                  }).then(() => {
-                     // Redireciona para a listagem geral de clientes
-                     window.location.href = '<?= base_url('clientes') ?>';
-                  });
-               } else {
+                  method: 'POST',
+                  headers: {
+                     'X-Requested-With': 'XMLHttpRequest'
+                  },
+                  body: formData
+               })
+               .then(response => response.json())
+               .then(data => {
+                  if (data.status === 'sucesso') {
+                     Swal.fire({
+                        icon: 'success',
+                        title: 'Excluído!',
+                        text: data.mensagem,
+                        timer: 1200,
+                        showConfirmButton: false
+                     }).then(() => {
+                        // Redireciona para a listagem geral de clientes
+                        window.location.href = '<?= base_url('clientes') ?>';
+                     });
+                  } else {
+                     Swal.fire({
+                        icon: 'error',
+                        title: 'Atenção!',
+                        text: data.mensagem || 'Não foi possível excluir o cliente.'
+                     });
+                  }
+               })
+               .catch(err => {
+                  console.error('Erro na requisição:', err);
                   Swal.fire({
                      icon: 'error',
-                     title: 'Atenção!',
-                     text: data.mensagem || 'Não foi possível excluir o cliente.'
+                     title: 'Erro',
+                     text: 'Erro ao conectar com o servidor.'
                   });
-               }
-            })
-            .catch(err => {
-               console.error('Erro na requisição:', err);
-               Swal.fire({
-                  icon: 'error',
-                  title: 'Erro',
-                  text: 'Erro ao conectar com o servidor.'
                });
-            });
          }
       });
    });
 
    // --- MÁSCARA E PRÉVIA EM TEMPO REAL ---
-const inputVisual = document.getElementById('valorInputVisual');
-const inputRealCentavos = document.getElementById('valor');
-const selectOperacao = document.getElementById('operacao');
-const previewSaldo = document.getElementById('previewSaldo');
+   const inputVisual = document.getElementById('valorInputVisual');
+   const inputRealCentavos = document.getElementById('valor');
+   const selectOperacao = document.getElementById('operacao');
+   const previewSaldo = document.getElementById('previewSaldo');
 
-// Lê o saldo atual da tela de forma segura e converte para centavos
-function getSaldoAtualEmCentavos() {
-   const displayEl = document.getElementById('displaySaldo');
-   if (!displayEl) return 0;
-   
-   // Pega o texto (ex: "R$ 1.500,50" ou "1500,50")
-   let texto = displayEl.innerText.replace('R$', '').trim();
-   // Remove pontos de milhar e troca vírgula por ponto
-   texto = texto.replace(/\./g, '').replace(',', '.');
-   let valorFloat = parseFloat(texto) || 0;
-   return Math.round(valorFloat * 100);
-}
+   // Lê o saldo atual da tela de forma segura e converte para centavos
+   function getSaldoAtualEmCentavos() {
+      const displayEl = document.getElementById('displaySaldo');
+      if (!displayEl) return 0;
 
-function atualizarPreview() {
-   if (!previewSaldo || !inputRealCentavos) return;
-   
-   let centavosInput = parseInt(inputRealCentavos.value) || 0;
-   let saldoAtual = getSaldoAtualEmCentavos();
-   let operacao = selectOperacao ? selectOperacao.value : 'adicionar';
-   
-   let novoTotalCentavos = (operacao === 'adicionar') ? (saldoAtual + centavosInput) : (saldoAtual - centavosInput);
-   if (novoTotalCentavos < 0) novoTotalCentavos = 0;
+      // Pega o texto (ex: "R$ 1.500,50" ou "1500,50")
+      let texto = displayEl.innerText.replace('R$', '').trim();
+      // Remove pontos de milhar e troca vírgula por ponto
+      texto = texto.replace(/\./g, '').replace(',', '.');
+      let valorFloat = parseFloat(texto) || 0;
+      return Math.round(valorFloat * 100);
+   }
 
-   // Formata para exibição em Reais
-   let formatado = (novoTotalCentavos / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-   previewSaldo.innerText = formatado;
-}
+   function atualizarPreview() {
+      if (!previewSaldo || !inputRealCentavos) return;
 
-if (inputVisual) {
-   inputVisual.addEventListener('input', function(e) {
-      let valorLimpo = e.target.value.replace(/\D/g, ''); 
-      if (valorLimpo === '') {
-         inputVisual.value = '';
-         inputRealCentavos.value = '';
-         atualizarPreview();
-         return;
-      }
+      let centavosInput = parseInt(inputRealCentavos.value) || 0;
+      let saldoAtual = getSaldoAtualEmCentavos();
+      let operacao = selectOperacao ? selectOperacao.value : 'adicionar';
 
-      let centavos = parseInt(valorLimpo, 10);
-      inputRealCentavos.value = centavos; // Envia o valor puro em centavos
+      let novoTotalCentavos = (operacao === 'adicionar') ? (saldoAtual + centavosInput) : (saldoAtual -
+         centavosInput);
+      if (novoTotalCentavos < 0) novoTotalCentavos = 0;
 
-      // Formata o input visual como moeda (ex: 150 -> 1,50)
-      let reais = centavos / 100;
-      inputVisual.value = reais.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-      atualizarPreview();
-   });
-}
-
-if (selectOperacao) {
-   selectOperacao.addEventListener('change', atualizarPreview);
-}
-
-// Atualiza a prévia sempre que o modal for aberto
-const modalEl = document.getElementById('modalEditarSaldo');
-if (modalEl) {
-   modalEl.addEventListener('shown.bs.modal', function () {
-      if (inputVisual) inputVisual.focus();
-      atualizarPreview();
-   });
-}
-
-
-// --- ATUALIZAR SALDO VIA AJAX ---
-const formSaldo = document.getElementById('formSaldo');
-if (formSaldo) {
-   formSaldo.addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const formData = new FormData(formSaldo);
-      const btnSubmit = document.getElementById('btnSalvarSaldo');
-      btnSubmit.setAttribute('disabled', 'true');
-
-      // Token CSRF padrão do sistema
-      const csrfName = '<?= csrf_token() ?>';
-      const csrfHash = '<?= csrf_hash() ?>';
-      formData.append(csrfName, csrfHash);
-
-      fetch('<?= base_url('clientes/attsaldo') ?>', {
-         method: 'POST',
-         body: formData,
-         headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-         }
-      })
-      .then(response => response.json())
-      .then(data => {
-         btnSubmit.removeAttribute('disabled');
-
-         if (data.status === 'sucesso') {
-            // Fecha o modal
-            const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
-            modalInstance.hide();
-
-            // Reseta o form e campos visuais
-            formSaldo.reset();
-            if (inputVisual) inputVisual.value = '';
-            if (inputRealCentavos) inputRealCentavos.value = '';
-            if (previewSaldo) previewSaldo.innerText = 'R$ 0,00';
-
-            // Atualiza o saldo na tela em tempo real sem precisar recarregar
-            const displaySaldo = document.getElementById('displaySaldo');
-            if (displaySaldo) {
-               displaySaldo.innerText =  'R$ '+data.novo_saldo_formatado;
-            }
-
-            Swal.fire({
-               icon: 'success',
-               title: 'Sucesso!',
-               text: data.mensagem,
-               timer: 500,
-               showConfirmButton: false
-            }).then(() => {
-               location.reload(); 
-            });
-
-         } else {
-            Swal.fire({
-               icon: 'error',
-               title: 'Atenção',
-               text: data.mensagem || 'Ocorreu um erro.'
-            });
-         }
-      })
-      .catch(error => {
-         btnSubmit.removeAttribute('disabled');
-         console.error('Erro:', error);
-         Swal.fire({
-            icon: 'error',
-            title: 'Erro',
-            text: 'Ocorreu um erro ao processar a requisição.'
-         });
+      // Formata para exibição em Reais
+      let formatado = (novoTotalCentavos / 100).toLocaleString('pt-BR', {
+         style: 'currency',
+         currency: 'BRL'
       });
-   });
-}
+      previewSaldo.innerText = formatado;
+   }
+
+   if (inputVisual) {
+      inputVisual.addEventListener('input', function(e) {
+         let valorLimpo = e.target.value.replace(/\D/g, '');
+         if (valorLimpo === '') {
+            inputVisual.value = '';
+            inputRealCentavos.value = '';
+            atualizarPreview();
+            return;
+         }
+
+         let centavos = parseInt(valorLimpo, 10);
+         inputRealCentavos.value = centavos; // Envia o valor puro em centavos
+
+         // Formata o input visual como moeda (ex: 150 -> 1,50)
+         let reais = centavos / 100;
+         inputVisual.value = reais.toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+         });
+
+         atualizarPreview();
+      });
+   }
+
+   if (selectOperacao) {
+      selectOperacao.addEventListener('change', atualizarPreview);
+   }
+
+   // Atualiza a prévia sempre que o modal for aberto
+   const modalEl = document.getElementById('modalEditarSaldo');
+   if (modalEl) {
+      modalEl.addEventListener('shown.bs.modal', function() {
+         if (inputVisual) inputVisual.focus();
+         atualizarPreview();
+      });
+   }
+
+
+   // --- ATUALIZAR SALDO VIA AJAX ---
+   const formSaldo = document.getElementById('formSaldo');
+   if (formSaldo) {
+      formSaldo.addEventListener('submit', function(e) {
+         e.preventDefault();
+
+         const formData = new FormData(formSaldo);
+         const btnSubmit = document.getElementById('btnSalvarSaldo');
+         btnSubmit.setAttribute('disabled', 'true');
+
+         // Token CSRF padrão do sistema
+         const csrfName = '<?= csrf_token() ?>';
+         const csrfHash = '<?= csrf_hash() ?>';
+         formData.append(csrfName, csrfHash);
+
+         fetch('<?= base_url('clientes/attsaldo') ?>', {
+               method: 'POST',
+               body: formData,
+               headers: {
+                  'X-Requested-With': 'XMLHttpRequest'
+               }
+            })
+            .then(response => response.json())
+            .then(data => {
+               btnSubmit.removeAttribute('disabled');
+
+               if (data.status === 'sucesso') {
+                  // Fecha o modal
+                  const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(
+                     modalEl);
+                  modalInstance.hide();
+
+                  // Reseta o form e campos visuais
+                  formSaldo.reset();
+                  if (inputVisual) inputVisual.value = '';
+                  if (inputRealCentavos) inputRealCentavos.value = '';
+                  if (previewSaldo) previewSaldo.innerText = 'R$ 0,00';
+
+                  // Atualiza o saldo na tela em tempo real sem precisar recarregar
+                  const displaySaldo = document.getElementById('displaySaldo');
+                  if (displaySaldo) {
+                     displaySaldo.innerText = 'R$ ' + data.novo_saldo_formatado;
+                  }
+
+                  Swal.fire({
+                     icon: 'success',
+                     title: 'Sucesso!',
+                     text: data.mensagem, 
+                     confirmButtonText: 'OK'
+                  }).then(() => {
+                     location.reload();
+                  });
+
+               } else {
+                  Swal.fire({
+                     icon: 'error',
+                     title: data.title,
+                     text: data.mensagem || 'Ocorreu um erro.'
+                  });
+               }
+            })
+            .catch(error => {
+               btnSubmit.removeAttribute('disabled');
+               console.error('Erro:', error);
+               Swal.fire({
+                  icon: 'error',
+                  title: 'Erro',
+                  text: 'Ocorreu um erro ao processar a requisição.'
+               });
+            });
+      });
+   }
 
 });
 </script>

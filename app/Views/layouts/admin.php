@@ -33,7 +33,7 @@
    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<body class="nk-body npc-default has-apps-sidebar has-sidebar ">
+<body class="nk-body npc-default has-apps-sidebar has-sidebar -mode" theme=""> 
    <!-- Tela de Loading Inicial do PWA -->
    <div id="pwa-loader"
       style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f5f6fa; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999999; transition: opacity 0.3s ease;">
@@ -246,6 +246,18 @@
    }, {
       passive: false
    });
+
+   document.addEventListener("DOMContentLoaded", function() {
+    <?php if (session()->has('swal')): ?>
+        <?php $swal = session()->getFlashdata('swal'); ?>
+        Swal.fire({
+            icon: '<?= $swal['icon'] ?? 'info' ?>',
+            title: '<?= $swal['title'] ?? 'Aviso' ?>',
+            text: '<?= $swal['text'] ?? '' ?>',
+            confirmButtonText: '<?= $swal['confirmButtonText'] ?? 'OK' ?>'
+        });
+    <?php endif; ?>
+});
    </script>
 
 </body>

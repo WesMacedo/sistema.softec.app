@@ -26,7 +26,7 @@ class Auth extends BaseController
         return view('auth/cadastro');
     }
 
-   public function registrar()
+    public function registrar()
     {
         $model = new UsuariosModel();
 
@@ -65,10 +65,8 @@ class Auth extends BaseController
 
         // 4. Inserção
         if ($model->insert($data)) {
-            // Cria a mensagem flash para a página de login
             session()->setFlashdata('msg', 'Cadastro realizado com sucesso! Faça login para continuar.');
 
-            // Retorna JSON indicando sucesso e a URL para onde o JS deve ir
             return $this->response->setJSON([
                 'success'  => true,
                 'redirect' => base_url('auth/login')
@@ -87,6 +85,7 @@ class Auth extends BaseController
 
         $email = $this->request->getPost('email');
         $senha = $this->request->getPost('senha');
+        $salvarConta = $this->request->getPost('salvar_conta'); // Verifica se marcou o checkbox
 
         // Consulta o usuário
         $usuario = $model->where('email', $email)->first();
@@ -126,21 +125,36 @@ class Auth extends BaseController
 
         // Se o usuário e senha são válidos
         if (password_verify($senha, $usuario['senha'])) {
-            // Gera um token único
             $token = $model->gerarToken();
+            $rememberToken = null;
 
-            // Login OK — zera tentativas, bloqueio e salva o token
-            $model->atualizarTentativas($usuario['id'], 0, null, $token);
+            // Se marcou "Salvar conta", gera um token persistente seguro
+            if ($salvarConta) {
+                $rememberToken = bin2hex(random_bytes(32));
+            }
 
-            // Regenera a sessão com o token
+            // Login OK — zera tentativas, bloqueio, salva o token de sessão e o remember_token se aplicável
+            $model->update($usuario['id'], [
+                'tentativas_login' => 0,
+                'bloqueado_ate'    => null,
+                'token'            => $token,
+                'remember_token'   => $rememberToken
+            ]);
+
             session()->set([
-                'user_token' => $token,  // Usamos o token no lugar do ID ou e-mail
+                'user_token' => $token,
             ]);
             session()->regenerate();
 
             return $this->response->setJSON([
-                'success' => true,
-                'redirect' => base_url('dash')  // ajuste conforme sua rota de sucesso
+                'success'      => true,
+                'redirect'     => base_url('dash'),
+                'usuario_info' => [
+                    'id'             => $usuario['id'],
+                    'nome'           => $usuario['nome'],
+                    'email'          => $usuario['email'],
+                    'remember_token' => $rememberToken
+                ]
             ]);
         }
 
@@ -148,15 +162,12 @@ class Auth extends BaseController
         $tentativas++;
         $bloqueado_ate = null;
 
-        // Se chegou a 5 tentativas, bloqueia por 5 minutos
         if ($tentativas >= 5) {
             $bloqueado_ate = date('Y-m-d H:i:s', time() + (5 * 60)); // 5 minutos
         }
 
-        // Atualiza o banco com as novas tentativas e bloqueio (usando ID do usuário)
         $result = $model->atualizarTentativas($usuario['id'], $tentativas, $bloqueado_ate);
 
-        // Verificar se a atualização foi bem-sucedida
         if (!$result) { 
             return $this->response->setJSON([
                 'success' => false,
@@ -170,9 +181,40 @@ class Auth extends BaseController
         ]);
     }
 
+    public function loginRapido()
+    {
+        $json = $this->request->getJSON(true);
+        $email = $json['email'] ?? null;
+        $rememberToken = $json['remember_token'] ?? null;
+
+        if (empty($email) || empty($rememberToken)) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Dados de autenticação rápida inválidos.']);
+        }
+
+        $model = new UsuariosModel();
+        $usuario = $model->where('email', $email)->where('remember_token', $rememberToken)->first();
+
+        if (!$usuario) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Sessão salva expirada ou inválida. Faça login com a senha.']);
+        }
+
+        // Gera novo token de sessão e atualiza no banco
+        $token = $model->gerarToken();
+        $model->update($usuario['id'], ['token' => $token]);
+
+        session()->set([
+            'user_token' => $token,
+        ]);
+        session()->regenerate();
+
+        return $this->response->setJSON([
+            'success'  => true,
+            'redirect' => base_url('dash')
+        ]);
+    }
+
     public function logout()
     {
-        // Remove o token da sessão e destrói
         session()->remove('user_token');
         session()->destroy();
         return redirect()->to(base_url('auth/login'))->with('msg', 'Você saiu da conta.');
