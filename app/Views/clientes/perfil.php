@@ -319,11 +319,11 @@
                            <div class="card-inner">
                               <div class="row text-center">
                                  <div class="col-6">
-                                    <div class="profile-stats"><span class="amount">23</span><span
+                                    <div class="profile-stats"><span class="amount">0</span><span
                                           class="sub-text">Compras</span></div>
                                  </div>
                                  <div class="col-6">
-                                    <div class="profile-stats"><span class="amount">20</span><span
+                                    <div class="profile-stats"><span class="amount">0</span><span
                                           class="sub-text">Consertos</span></div>
                                  </div>
                               </div>
