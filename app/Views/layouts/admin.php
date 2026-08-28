@@ -38,6 +38,7 @@
    <div id="pwa-loader"
       style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;  display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999999; transition: opacity 0.3s ease;">
       <div class="spinner-border text-primary" role="status"></div>
+      
    </div>
 
 
@@ -49,7 +50,7 @@
          loader.style.opacity = '0';
          setTimeout(function() {
             loader.style.display = 'none';
-         }, 100);
+         }, 500);
       }
    });
    </script>
