@@ -13,10 +13,4 @@ class produtos extends AdminController
             'usuario'  => $this->usuario
         ]);
     }
-
-    
-
-  
-
-
 }

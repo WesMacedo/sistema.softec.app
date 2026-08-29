@@ -1,32 +1,4 @@
 <div class="nk-sidebar" data-content="sidebarMenu" style="left: 0px !important;">
-   <div style="">
-
-      <div class="dropdown w-100">
-         <a href="#" class="dropdown-toggle btn btn-dim btn-outline-light btn-white w-100 d-flex align-items-center text-start"
-            data-bs-toggle="dropdown" aria-expanded="false"
-            style="border-radius: 0px; padding: 4px 7px; border-right: none; border-top: none;">
-
-            <!-- Ícone -->
-            <em class="icon ni ni-building fs-3"></em>
-
-            <!-- Textos empilhados -->
-            <span class="d-flex flex-column text-start" style="line-height: 1.2;">
-               <span class="fw-bold" style="font-size: 14px;">Evolutec</span>
-               <span style="font-size: 12px; font-weight: normal; opacity: 0.8;"> Alternar entre empresas</span>
-            </span>
-
-         </a>
-
-         <div class="dropdown-menu w-100" style="left: 0; margin-top: 5px;">
-            <ul class="link-check">
-               <li><a href="#"> Evolutec</a></li>
-               <li><a href="#"> Wesley cell</a></li>
-            </ul>
-         </div>
-      </div>
-
-
-   </div>
    <div class="nk-sidebar-inner" data-simplebar>
       <ul class="nk-menu nk-menu-md">
          <li class="nk-menu-heading">
