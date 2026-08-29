@@ -314,8 +314,6 @@
                                  </div>
                               </div>
                            </div>
-
-
                            <div class="card-inner">
                               <div class="row text-center">
                                  <div class="col-6">
@@ -388,7 +386,6 @@
          <div class="modal-body">
             <form id="formSaldo" class="form-validate is-alter">
                <input type="hidden" name="id_cliente" value="<?= esc($cliente['id_cliente']) ?>">
-
                <div class="form-group mb-3">
                   <label class="form-label" for="operacao">Ação</label>
                   <div class="form-control-wrap">
@@ -398,7 +395,6 @@
                      </select>
                   </div>
                </div>
-
                <div class="form-group mb-3">
                   <label class="form-label" for="valorInputVisual">Valor</label>
                   <div class="form-control-wrap">
