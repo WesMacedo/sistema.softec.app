@@ -47,11 +47,11 @@
          <li class="nk-menu-item"><a href="<?= base_url('clientes') ?>" class="nk-menu-link"><span class="nk-menu-icon"><em
                      class="icon ni ni-users"></em></span><span class="nk-menu-text">Clientes</span></a>
          </li>
-         <li class="nk-menu-item"><a href="#" class="nk-menu-link"><span class="nk-menu-icon"
+         <li class="nk-menu-item"><a href="<?= base_url('produtos') ?>" class="nk-menu-link"><span class="nk-menu-icon"
                   style="font-size: 16px;"><i class="bi bi-box-seam"></i></span><span
                   class="nk-menu-text">Produtos</span></a>
          </li>
-         <li class="nk-menu-item"><a href="#" class="nk-menu-link"><span class="nk-menu-icon"><em
+         <li class="nk-menu-item"><a href="<?= base_url('fornecedores') ?>" class="nk-menu-link"><span class="nk-menu-icon"><em
                      class="icon ni ni-truck"></em></span><span class="nk-menu-text">Fornecedores</span></a>
          </li>
          <li class="nk-menu-item has-sub">
