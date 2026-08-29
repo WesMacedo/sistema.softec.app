@@ -28,16 +28,13 @@ class Produtos extends AdminController
         ]);
     }
 
-    /**
-     * Valida se o produto existe pelo SKU, se pertence à empresa logada 
-     * e retorna os dados do produto com segurança.
-     */
-    protected function produtoGuard($sku)
+    protected function produtoGuard($idProduto)
     {
         $produtosModel = new ProdutosModel();
         $idEmpresa = $this->usuario['id_empresa'] ?? null;
 
-        $query = $produtosModel->where('sku', $sku);
+        // Busca utilizando a coluna id_produto
+        $query = $produtosModel->where('id_produto', $idProduto);
         
         if (!empty($idEmpresa)) {
             $query->where('id_empresa', $idEmpresa);
@@ -66,22 +63,22 @@ class Produtos extends AdminController
         return $produto;
     }
 
-    public function editar($sku = null)
+    public function editar($idProduto = null)
     { 
         helper('form');
         
-        $data['produto'] = $this->produtoGuard($sku); 
+        $data['produto'] = $this->produtoGuard($idProduto); 
         $data['usuario'] = $this->usuario;
         $data['titulo'] = 'Editar Produto';
         
         return view('produtos/editar', $data);
     }
 
-    public function perfil($sku = null)
+    public function visualizar($idProduto = null)
     {
-        $produto = $this->produtoGuard($sku);
+        $produto = $this->produtoGuard($idProduto);
 
-        $nomeBruto = $produto['nome'] ?? 'Produto';
+        $nomeBruto = $produto['produto'] ?? 'Produto';
         preg_match_all('/[a-zA-ZáàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ]+/u', $nomeBruto, $matches);
         $palavras = $matches[0] ?? [];
 
@@ -97,7 +94,7 @@ class Produtos extends AdminController
             'usuario'  => $this->usuario,
             'produto'  => $produto,
             'iniciais' => $iniciais,
-            'titulo'   => 'Visualizar produto'
+            'titulo'   => 'Visualizar Produto'
         ];
 
         return view('produtos/visualizar', $dados);
@@ -112,21 +109,21 @@ class Produtos extends AdminController
 
         $validation = \Config\Services::validation();
         $validation->setRules([
-            'nome'         => 'required|min_length[2]',
+            'produto'      => 'required|min_length[2]',
             'valor_varejo' => 'required'
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
             return $this->response->setJSON([
                 'status'   => 'error',
-                'mensagem' => 'Preencha os campos obrigatórios corretamente (Nome e Valor de Varejo).'
+                'mensagem' => 'Preencha os campos obrigatórios corretamente (Nome do Produto e Valor de Varejo).'
             ]);
         }
 
         $model = new ProdutosModel();
         $dados = $this->request->getPost();
 
-        $camposExcecao = ['sku', 'id_empresa', 'id_user', 'estoque', 'garantia_dias', 'valor_custo', 'valor_atacado', 'valor_varejo', 'valor_desconto', 'ativo', 'catalogo', 'desconto'];
+        $camposExcecao = ['id_produto', 'id_empresa', 'id_user', 'estoque', 'garantia', 'valor_custo', 'valor_atacado', 'valor_varejo', 'valor_desconto', 'ativo', 'catalogo', 'atacado', 'tipo_desconto', 'desconto'];
         
         foreach ($dados as $campo => $valor) {
             if (!in_array($campo, $camposExcecao) && is_string($valor)) {  
@@ -134,22 +131,22 @@ class Produtos extends AdminController
             }
         }
 
-        // Geração automática do SKU se estiver vazio
-        if (empty($dados['sku'])) {
+        // Geração automática do id_produto se estiver vazio
+        if (empty($dados['id_produto'])) {
             do {
-                $skuGerado = 'PRD-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
-                $existeSku = $model->where('sku', $skuGerado)->first();
-            } while ($existeSku);
+                $idGerado = 'PRD-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
+                $existeId = $model->where('id_produto', $idGerado)->first();
+            } while ($existeId);
 
-            $dados['sku'] = $skuGerado;
+            $dados['id_produto'] = $idGerado;
         } else {
-            $dados['sku'] = mb_strtoupper(trim($dados['sku']), 'UTF-8');
+            $dados['id_produto'] = mb_strtoupper(trim($dados['id_produto']), 'UTF-8');
             
-            $skuExistente = $model->where('sku', $dados['sku'])->first();
-            if ($skuExistente) {
+            $idExistente = $model->where('id_produto', $dados['id_produto'])->first();
+            if ($idExistente) {
                 return $this->response->setJSON([
                     'status'   => 'error',
-                    'mensagem' => 'O SKU informado já está em uso por outro produto.'
+                    'mensagem' => 'O ID/SKU informado já está em uso por outro produto.'
                 ]);
             }
         }
@@ -162,8 +159,8 @@ class Produtos extends AdminController
                 return $this->response->setJSON([
                     'status'     => 'sucesso',
                     'mensagem'   => 'Produto cadastrado com sucesso.',
-                    'id_produto' => $model->getInsertID(),
-                    'sku'        => $dados['sku']
+                    'id_interno' => $model->getInsertID(),
+                    'id_produto' => $dados['id_produto']
                 ]);
             } else {
                 return $this->response->setJSON([
@@ -180,13 +177,13 @@ class Produtos extends AdminController
     }
 
     // --- MÉTODO PARA ATUALIZAR PRODUTO VIA AJAX ---
-    public function atualizarProduto($sku = null)
+    public function atualizarProduto($idProduto = null)
     {
-        $produtoExistente = $this->produtoGuard($sku);
+        $produtoExistente = $this->produtoGuard($idProduto);
 
         $dados = $this->request->getPost();
         
-        $camposExcecao = ['sku', 'id_empresa', 'id_user', 'estoque', 'garantia_dias', 'valor_custo', 'valor_atacado', 'valor_varejo', 'valor_desconto', 'ativo', 'catalogo', 'desconto'];
+        $camposExcecao = ['id_produto', 'id_empresa', 'id_user', 'estoque', 'garantia', 'valor_custo', 'valor_atacado', 'valor_varejo', 'valor_desconto', 'ativo', 'catalogo', 'atacado', 'tipo_desconto', 'desconto'];
         
         foreach ($dados as $campo => $valor) {
             if (!in_array($campo, $camposExcecao) && is_string($valor)) {  
@@ -194,13 +191,14 @@ class Produtos extends AdminController
             }
         }
 
-        if (!empty($dados['sku'])) {
-            $dados['sku'] = mb_strtoupper(trim($dados['sku']), 'UTF-8');
+        if (!empty($dados['id_produto'])) {
+            $dados['id_produto'] = mb_strtoupper(trim($dados['id_produto']), 'UTF-8');
         }
 
         $dados['alterado_por'] = $this->usuario['id'] ?? null;
 
         $model = new ProdutosModel();
+        // Atualiza usando o ID numérico primário interno do registro
         $atualizado = $model->update($produtoExistente['id'], $dados);
 
         if ($this->request->isAJAX()) {
@@ -208,7 +206,7 @@ class Produtos extends AdminController
                 return $this->response->setJSON([
                     'status'     => 'sucesso', 
                     'mensagem'   => 'Produto atualizado com sucesso!',
-                    'sku'        => $dados['sku'] ?? $sku
+                    'id_produto' => $dados['id_produto'] ?? $idProduto
                 ]);
             } else {
                 return $this->response->setJSON([
@@ -221,25 +219,25 @@ class Produtos extends AdminController
         return redirect()->to('produtos')->with('swal', [
             'icon'  => 'success',
             'title' => 'Sucesso!',
-            'text'  => 'Produto atualizado com sucesso!'    
+            'text'  => 'Produto atualizado com sucesso!'
         ]);
     }
 
     // --- MÉTODO PARA EXCLUIR PRODUTO VIA AJAX ---
-    public function excluir($sku = null)
+    public function excluir($idProduto = null)
     {
         if (!$this->request->isAJAX()) {
             return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'mensagem' => 'Acesso negado.']);
         }
 
-        if (empty($sku)) {
+        if (empty($idProduto)) {
             return $this->response->setJSON([
                 'status'   => 'error',
-                'mensagem' => 'SKU do produto não identificado.'
+                'mensagem' => 'Identificador do produto não informado.'
             ]);
         }
 
-        $produto = $this->produtoGuard($sku);
+        $produto = $this->produtoGuard($idProduto);
         $model = new ProdutosModel();
 
         try {
