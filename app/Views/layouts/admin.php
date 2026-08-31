@@ -99,8 +99,8 @@
 
    <script src="<?= base_url('assets/js/bundle9b70.js')?>"></script>
    <script src="<?= base_url('assets/js/scripts9b70.js')?>"></script>
-   <script src="<?= base_url('assets/js/demo-settings9b70.js')?>"></script>
-
+   <script src="<?= base_url('assets/js/demo-settings9b70.js')?>"></script>   
+   <script src="<?= base_url('assets/js/libs/datatable-btns9b70.js?ver=3.3.0')?>"></script>
 
    <script>
    if ('serviceWorker' in navigator) {

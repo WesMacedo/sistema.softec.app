@@ -35,7 +35,7 @@
                               <th class="text-end">Ações</th>
                            </tr>
                         </thead>
-                        <tbody>
+                        <tbody style="font-size: 13px;">
                            <?php if (!empty($clientes)): ?>
                            <?php foreach ($clientes as $cliente): ?>
                            <tr>

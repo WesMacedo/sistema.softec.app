@@ -33,7 +33,6 @@ class Produtos extends AdminController
         $produtosModel = new ProdutosModel();
         $idEmpresa = $this->usuario['id_empresa'] ?? null;
 
-        // Busca utilizando a coluna id_produto
         $query = $produtosModel->where('id_produto', $idProduto);
         
         if (!empty($idEmpresa)) {
@@ -100,6 +99,21 @@ class Produtos extends AdminController
         return view('produtos/visualizar', $dados);
     }
 
+    // --- FUNÇÃO AUXILIAR PARA LIMPAR E CONVERTER PARA CENTAVOS ---
+    private function limparCentavos($valor)
+    {
+        if (empty($valor)) {
+            return 0;
+        }
+        
+        // Remove símbolos de moeda, espaços e pontos de milhar, depois troca vírgula por ponto
+        $valor = str_replace(['R$', ' ', '.'], '', $valor);
+        $valor = str_replace(',', '.', $valor);
+
+        // Multiplica por 100 para converter em centavos inteiros
+        return (int) round((float) $valor * 100);
+    }
+
     // --- MÉTODO PARA SALVAR PRODUTO VIA AJAX ---
     public function salvar()
     {
@@ -122,6 +136,20 @@ class Produtos extends AdminController
 
         $model = new ProdutosModel();
         $dados = $this->request->getPost();
+
+        // Tratamento dos valores monetários para centavos
+        if (isset($dados['valor_varejo'])) {
+            $dados['valor_varejo'] = $this->limparCentavos($dados['valor_varejo']);
+        }
+        if (isset($dados['valor_custo'])) {
+            $dados['valor_custo'] = $this->limparCentavos($dados['valor_custo']);
+        }
+        if (isset($dados['valor_atacado'])) {
+            $dados['valor_atacado'] = $this->limparCentavos($dados['valor_atacado']);
+        }
+        if (isset($dados['valor_desconto'])) {
+            $dados['valor_desconto'] = $this->limparCentavos($dados['valor_desconto']);
+        }
 
         $camposExcecao = ['id_produto', 'id_empresa', 'id_user', 'estoque', 'garantia', 'valor_custo', 'valor_atacado', 'valor_varejo', 'valor_desconto', 'ativo', 'catalogo', 'atacado', 'tipo_desconto', 'desconto'];
         
@@ -182,6 +210,20 @@ class Produtos extends AdminController
         $produtoExistente = $this->produtoGuard($idProduto);
 
         $dados = $this->request->getPost();
+
+        // Tratamento dos valores monetários para centavos
+        if (isset($dados['valor_varejo'])) {
+            $dados['valor_varejo'] = $this->limparCentavos($dados['valor_varejo']);
+        }
+        if (isset($dados['valor_custo'])) {
+            $dados['valor_custo'] = $this->limparCentavos($dados['valor_custo']);
+        }
+        if (isset($dados['valor_atacado'])) {
+            $dados['valor_atacado'] = $this->limparCentavos($dados['valor_atacado']);
+        }
+        if (isset($dados['valor_desconto'])) {
+            $dados['valor_desconto'] = $this->limparCentavos($dados['valor_desconto']);
+        }
         
         $camposExcecao = ['id_produto', 'id_empresa', 'id_user', 'estoque', 'garantia', 'valor_custo', 'valor_atacado', 'valor_varejo', 'valor_desconto', 'ativo', 'catalogo', 'atacado', 'tipo_desconto', 'desconto'];
         
@@ -198,7 +240,6 @@ class Produtos extends AdminController
         $dados['alterado_por'] = $this->usuario['id'] ?? null;
 
         $model = new ProdutosModel();
-        // Atualiza usando o ID numérico primário interno do registro
         $atualizado = $model->update($produtoExistente['id'], $dados);
 
         if ($this->request->isAJAX()) {
