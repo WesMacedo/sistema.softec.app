@@ -147,7 +147,7 @@
                            <!-- Preenchido via JavaScript -->
                         </div>
                         <div class="pt-2" style="padding-top: 3.75rem !important;">
-                           <button type="button" id="btn-add-another" class="btn btn-lg btn-primary btn-block" style="font-weight: 500;">
+                           <button type="button" id="btn-add-another" class="btn btn-lg btn-dark btn-block" style="font-weight: 500;">
                               <em class="icon ni ni-user-add me-1"></em><span>Fazer login com outra conta</span>
                            </button>
                         </div>
@@ -229,7 +229,7 @@
                card.className = 'saved-account-card p-3 shadow-sm d-flex align-items-center justify-content-between';
                card.innerHTML = `
                   <div class="d-flex align-items-center account-trigger" data-email="${acc.email}" data-token="${acc.remember_token}" style="cursor: pointer; flex-grow: 1; overflow: hidden;">
-                     <div class="user-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 45px; height: 45px; font-weight: 600; font-size: 18px;">
+                     <div class="user-avatar bg-dark text-white rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 45px; height: 45px; font-weight: 600; font-size: 18px;">
                         ${acc.nome.charAt(0).toUpperCase()}
                      </div>
                      <div class="ms-3" style="overflow: hidden;">
