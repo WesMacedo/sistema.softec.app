@@ -67,7 +67,7 @@
    <!-- Tela de Loading Inicial do PWA -->
    <div id="pwa-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f5f6fa; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999999; transition: opacity 0.3s ease;">
       <img src="<?= base_url() ?>images/logo.png" alt="Softec" style="width: 120px; margin-bottom: 20px; animation: pulse 1.5s infinite;">
-      <div class="spinner-border text-primary" role="status"></div>
+      <div class="spinner-border text-dark" role="status"></div>
    </div>
 
    <script>
@@ -165,7 +165,7 @@
                         <div class="form-group">
                            <div class="form-label-group">
                               <label class="form-label" for="senha">Senha</label>
-                              <a class="link link-primary link-sm" href="auth-reset-v2.html">Esqueceu a senha?</a>
+                              <a class="link link-dark link-sm" href="auth-reset-v2.html">Esqueceu a senha?</a>
                            </div>
                            <div class="form-control-wrap">
                               <a href="#" class="form-icon form-icon-right passcode-switch lg" data-target="senha">
@@ -185,12 +185,12 @@
                         </div>
 
                         <div class="form-group">
-                           <button class="btn btn-lg btn-primary btn-block" id="btnEntrar">Entrar</button>
+                           <button class="btn btn-lg btn-dark btn-block" id="btnEntrar">Entrar</button>
                         </div>
                      </form>
 
                      <div class="form-note-s2 text-center pt-4" id="register-note">
-                        Não possui uma conta? <a href="cadastro">Cadastre-se</a>
+                        Não possui uma conta? <a class="link link-dark link-sm" href="cadastro" >Cadastre-se</a>
                      </div>
                   </div>
                </div>

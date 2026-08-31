@@ -9,9 +9,8 @@
          </div>
          <div class="nk-header-app-name">
             <div class="nk-header-app-logo">
-               <em class="icon ni ni-dashlite bg-purple-dim">
-               </em>
-            </div>
+    <img src="<?= base_url('images/logo.svg') ?>" alt="Logo" class="logo-svg">
+</div>
             <div class="nk-header-app-info">
                <span class="lead-text">
                   SOFTEC

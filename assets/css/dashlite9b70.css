@@ -2484,7 +2484,7 @@ div.dt-container div.dt-search input[type=file]:not(:disabled):not([readonly]) {
 div.dt-container div.dt-search input:focus {
     color: #3c4d62;
     background-color: #fff;
-    border-color: #6576ff;
+    border-color: #1f2b3a;
     outline: 0;
     box-shadow: 0 0 0 3px rgba(101, 118, 255, .1)
 }
@@ -19242,8 +19242,8 @@ div.dt-container div.dt-search input {
 
 .custom-control-input:checked~.custom-control-label::before {
     color: #fff;
-    border-color: #6576ff;
-    background-color: #6576ff;
+    border-color: #1f2b3a;
+    background-color: #1f2b3a;
     box-shadow: none
 }
 
@@ -19252,13 +19252,13 @@ div.dt-container div.dt-search input {
 }
 
 .custom-control-input:focus:not(:checked)~.custom-control-label::before {
-    border-color: #6576ff
+    border-color: #1f2b3a
 }
 
 .custom-control-input:not(:disabled):active~.custom-control-label::before {
     color: #fff;
-    background-color: #6576ff;
-    border-color: #6576ff;
+    background-color: #1f2b3a;
+    border-color: #1f2b3a;
     box-shadow: none
 }
 
@@ -34672,7 +34672,7 @@ body.nav-shown {
 }
 
 .logo-img-lg {
-    max-height: 60px
+    max-height: 91px;
 }
 
 .logo-img-sm {
