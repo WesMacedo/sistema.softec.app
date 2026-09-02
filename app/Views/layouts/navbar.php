@@ -9,16 +9,9 @@
          </div>
          <div class="nk-header-app-name">
             <div class="nk-header-app-logo">
-    <img src="<?= base_url('images/logo.svg') ?>" alt="Logo" class="logo-svg">
+    <img src="<?= base_url('images/logo.png') ?>" alt="Logo" class="logo-svg">
 </div>
-            <div class="nk-header-app-info">
-               <span class="lead-text">
-                  SOFTEC
-               </span>
-               <span class="sub-text">
-                  Sistema de gestão
-               </span>
-            </div>
+             
          </div>
          <div class="nk-header-menu is-light">
             <div class="nk-header-menu-inner">

@@ -66,8 +66,8 @@
 <body class="nk-body npc-default pg-auth">
    <!-- Tela de Loading Inicial do PWA -->
    <div id="pwa-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f5f6fa; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999999; transition: opacity 0.3s ease;">
-      <img src="<?= base_url() ?>images/logo.png" alt="Softec" style="width: 120px; margin-bottom: 20px; animation: pulse 1.5s infinite;">
-      <div class="spinner-border text-dark" role="status"></div>
+      <img src="<?= base_url() ?>images/logo_1.svg" alt="Softec" style="width: 120px; margin-bottom: 20px; animation: pulse 1.5s infinite;">
+    
    </div>
 
    <script>
