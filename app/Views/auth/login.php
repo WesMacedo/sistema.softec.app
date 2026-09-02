@@ -254,7 +254,7 @@
                            </g>
                         </svg>
                         <div class="nk-block-des" style="font: menu;">
-                              O SOFTWARE DAS ASSISTÊNCIAS TÉCNICAS
+                              O SOFTWARE DA SUA ASSISTÊNCIA TÉCNICA
                            </div>
                      </div>
                      <div id="mensagem" class="mt-2"></div>
