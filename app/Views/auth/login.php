@@ -252,7 +252,7 @@
                               </g>
                            </g>
                         </svg>
-                        <div class="nk-block-des" style="font: menu; font-weight: 500;">
+                        <div class="nk-block-des" style="font: menu;">
                               <p>O SOFTWARE DAS ASSISTÊNCIAS TÉCNICAS</p>
                            </div>
                      </div>
