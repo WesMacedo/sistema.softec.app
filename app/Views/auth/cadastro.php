@@ -154,7 +154,7 @@
                            </div>
                         </form>
                         <div class="form-note-s2 text-center pt-4">
-                        Já tem uma conta ? <a class="link link-dark link-sm" href="cadastro">Entrar</a>
+                        Já tem uma conta ? <a class="link link-dark link-sm" href="<?= base_url() ?>auth/login">Entrar</a>
                      </div>
                      </div>
                   </div>

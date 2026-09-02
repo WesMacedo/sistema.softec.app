@@ -363,7 +363,7 @@
                      </form>
 
                      <div class="form-note-s2 text-center pt-4" id="register-note">
-                        Não possui uma conta? <a class="link link-dark link-sm" href="cadastro">Cadastre-se</a>
+                        Não possui uma conta? <a class="link link-dark link-sm" href="<?= base_url() ?>auth/cadastro">Cadastre-se</a>
                      </div>
                   </div>
                </div>
