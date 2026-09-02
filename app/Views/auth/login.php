@@ -212,7 +212,7 @@
                <div class="nk-block nk-block-middle nk-auth-body wide-xs">
                   <div class="brand-logo pb-3 text-center">
                      <div class="logo-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="70mm"
+                        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="80mm"
                            height="14.3932mm" version="1.1"
                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
                            viewBox="0 0 8364.88 1439.32" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -253,7 +253,7 @@
                            </g>
                         </svg>
                         <div class="nk-block-des" style="font: menu;">
-                              <p>O SOFTWARE DAS ASSISTÊNCIAS TÉCNICAS</p>
+                              O SOFTWARE DAS ASSISTÊNCIAS TÉCNICAS
                            </div>
                      </div>
                      <div id="mensagem" class="mt-2"></div>
