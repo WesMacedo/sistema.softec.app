@@ -209,6 +209,7 @@
       <div class="nk-main">
          <div class="nk-wrap nk-wrap-nosidebar">
             <div class="nk-content">
+               
                <div class="nk-block nk-block-middle nk-auth-body wide-xs">
                   <div class="brand-logo pb-3 text-center">
                      <div class="logo-link">
