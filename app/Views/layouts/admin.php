@@ -10,8 +10,8 @@
       content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
    <link rel="shortcut icon" href="<?= base_url('images/favicon.png')?>">
    <title>Softec</title>
-   <link rel="stylesheet" href="<?= base_url('assets/css/dashlite9b70.css')?>">
-   <link id="skin-default" rel="stylesheet" href="<?= base_url('assets/css/theme9b70.css')?>">
+   <link rel="stylesheet" href="<?= base_url('assets/css/dashlite9b70.css?v=1')?>">
+   <link id="skin-default" rel="stylesheet" href="<?= base_url('assets/css/theme9b70.css?v=1')?>">
    <link rel="manifest" href="<?= base_url('manifest.json')?>">
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
  
