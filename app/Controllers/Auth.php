@@ -36,60 +36,80 @@ class Auth extends BaseController
         return view('auth/redefinir');
     }
 
+    
+
+ 
     public function enviarOtp()
     {
-        $model = new UsuariosModel();
         $email = trim($this->request->getPost('email'));
+        $model = new UsuariosModel();
 
         $usuario = $model->where('email', $email)->first();
-
         if (!$usuario) {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Este e-mail não está cadastrado no sistema.'
+                'message' => 'O e-mail informado não está cadastrado no sistema.'
             ]);
         }
 
-        // Gera um código OTP de 6 dígitos numéricos
-        $otp = rand(100000, 999999);
-        // Define a validade para daqui a 15 minutos
-        $otpValidade = date('Y-m-d H:i:s', time() + (15 * 60));
+        // Gera um OTP de 6 dígitos formatado como string
+        $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        
+        // Define a expiração para daqui a 5 minutos na coluna 'otp_validade'
+        $expiracao = date('Y-m-d H:i:s', time() + (5 * 60));
 
-        // Salva no banco
+        // Salva na coluna 'otp' e o timer em 'otp_validade'
         $model->update($usuario['id'], [
-            'otp'          => $otp,
-            'otp_validade' => $otpValidade
+            'otp' => $otp,
+            'otp_validade' => $expiracao 
         ]);
 
-        // TODO: Aqui você integraria o envio real do e-mail (ex: CodeIgniter Email)
-        // Para testes, você pode retornar o $otp no JSON se quiser visualizar na tela.
+        // Formata o WhatsApp para exibir (caso esteja vazio, manda um texto genérico)
+        $whatsapp = !empty($usuario['whatsapp']) ? $usuario['whatsapp'] : 'cadastrado';
 
         return $this->response->setJSON([
             'success' => true,
-            'email'   => $email,
-            'message' => 'Código de verificação enviado com sucesso!'
+            'whatsapp' => $whatsapp,
+            'message' => 'Código gerado com sucesso! (Modo teste - Seu OTP é: ' . $otp . ')'
         ]);
     }
 
     public function validarOtp()
     {
-        $model = new UsuariosModel();
         $email = trim($this->request->getPost('email'));
         $otp   = trim($this->request->getPost('otp'));
 
+        if (empty($email) || empty($otp)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Dados incompletos para validação.'
+            ]);
+        }
+
+        $model = new UsuariosModel();
         $usuario = $model->where('email', $email)->first();
 
         if (!$usuario) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Usuário não encontrado.']);
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Usuário não encontrado.'
+            ]);
         }
 
-        // Verifica se o OTP bate e se não expirou
-        if ($usuario['otp'] !== $otp) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Código OTP incorreto.']);
+        // Compara o código digitado com a coluna 'otp'
+        if (trim($usuario['otp']) !== trim($otp)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Código OTP incorreto.'
+            ]);
         }
 
-        if (strtotime($usuario['otp_validade']) < time()) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Este código expirou. Solicite um novo.']);
+        // Valida se o código expirou comparando com 'otp_validade'
+        if (!empty($usuario['otp_validade']) && strtotime($usuario['otp_validade']) < time()) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Este código OTP expirou. Solicite um novo.'
+            ]);
         }
 
         return $this->response->setJSON([
@@ -100,11 +120,10 @@ class Auth extends BaseController
 
     public function atualizarSenha()
     {
-        $model         = new UsuariosModel();
-        $email         = trim($this->request->getPost('email'));
-        $otp           = trim($this->request->getPost('otp'));
-        $senha         = $this->request->getPost('senha');
-        $confirmaSenha = $this->request->getPost('confirma_senha');
+        $email          = trim($this->request->getPost('email'));
+        $otp            = trim($this->request->getPost('otp'));
+        $senha          = $this->request->getPost('senha');
+        $confirmaSenha  = $this->request->getPost('confirma_senha');
 
         if (empty($senha) || $senha !== $confirmaSenha) {
             return $this->response->setJSON([
@@ -113,30 +132,31 @@ class Auth extends BaseController
             ]);
         }
 
-        $usuario = $model->where('email', $email)->where('otp', $otp)->first();
+        $model = new UsuariosModel();
+        $usuario = $model->where('email', $email)->first();
 
-        if (!$usuario) {
+        if (!$usuario || trim($usuario['otp']) !== trim($otp)) {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Requisição inválida.'
+                'message' => 'Sessão inválida ou expirada. Refaça o processo.'
             ]);
         }
 
-        // Atualiza a senha, limpa o OTP para não ser reutilizado e salva
+        // Atualiza a senha e limpa o otp e a validade do banco
         $model->update($usuario['id'], [
-            'senha'        => password_hash($senha, PASSWORD_DEFAULT),
-            'otp'          => null,
+            'senha' => password_hash($senha, PASSWORD_DEFAULT),
+            'otp' => null,
             'otp_validade' => null
         ]);
 
-        session()->setFlashdata('msg', 'Senha redefinida com sucesso! Faça login com sua nova senha.');
+        session()->setFlashdata('msg', 'Senha alterada com sucesso! Faça login para continuar.');
 
         return $this->response->setJSON([
-            'success'  => true,
+            'success' => true,
             'redirect' => base_url('auth/login')
         ]);
     }
-    
+
     public function registrar()
     {
         $model = new UsuariosModel();

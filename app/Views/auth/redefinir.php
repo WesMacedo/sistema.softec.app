@@ -12,49 +12,77 @@
    <link rel="manifest" href="/manifest.json">
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
    <style>
-      html,
-      body {
-         touch-action: pan-x pan-y;
-         overscroll-behavior-y: none;
-         -webkit-user-select: none;
-         user-select: none;
-         -webkit-tap-highlight-color: transparent;
-      }
+   html,
+   body {
+      touch-action: pan-x pan-y;
+      overscroll-behavior-y: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+   }
 
-      @keyframes pulse {
-         0% {
-            transform: scale(0.95);
-            opacity: 0.8;
-         }
+   /* Estilo das caixinhas individuais para o OTP */
+   .otp-inputs-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 15px 0 10px 0;
+   }
 
-         50% {
-            transform: scale(1.05);
-            opacity: 1;
-         }
+   .otp-box {
+      width: 45px;
+      height: 55px;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      border: 1px solid #ced4da; /* Borda fina e cor padrão do Dashlite */
+      border-radius: 8px;        /* Mantém os cantos arredondados */
+      background-color: #fff;
+      transition: all 0.2s ease;
+   }
 
-         100% {
-            transform: scale(0.95);
-            opacity: 0.8;
-         }
-      }
- 
+   .otp-box:focus {
+      border-color: #1f2b3a;
+      box-shadow: 0 0 0 3px rgba(31, 43, 58, 0.15);
+      outline: none;
+   }
+
+   /* Estilo para erro nas caixinhas */
+   .otp-box.is-invalid {
+      border-color: #e85347 !important;
+      background-color: #fff5f5;
+   }
+
+   /* Animação de erro (tremor) */
+   @keyframes shake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+      100% { transform: translateX(0); }
+   }
+
+   .shake {
+      animation: shake 0.4s ease-in-out;
+   }
    </style>
 </head>
 
-<body class="nk-body npc-default pg-auth"> 
+<body class="nk-body npc-default pg-auth">
    <div class="nk-app-root">
       <div class="nk-main">
          <div class="nk-wrap nk-wrap-nosidebar">
             <div class="nk-content">
 
                <div class="nk-block nk-block-middle nk-auth-body wide-xs">
-    <div class="brand-logo pb-3 text-center">
-        <div class="logo-link">
+                  <div class="brand-logo pb-3 text-center" id="card-logo">
+                     <div class="logo-link">
                         <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="80mm" height="14.3932mm"
-                           version="1.1"
-                           style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                           viewBox="0 0 8364.88 1439.32" xmlns:xlink="http://www.w3.org/1999/xlink"
-                           xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+                            version="1.1"
+                            style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                            viewBox="0 0 8364.88 1439.32" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
                            <defs>
                               <style type="text/css">
                               <![CDATA[
@@ -94,74 +122,105 @@
                            O SOFTWARE DA SUA ASSISTÊNCIA TÉCNICA
                         </div>
                      </div>
-        <div id="mensagem" class="mt-2"></div>
-    </div>
+                     <div id="mensagem" class="mt-2"></div>
+                  </div> 
+                  <div class="card-inner card-inner-lg">
+                     <div class="nk-block-head">
+                        <div class="nk-block-head-content">
+                           <h4 class="nk-block-title" id="titulo-etapa">Redefinir senha de acesso</h4>
+                        </div>
+                     </div>
 
-    <div class="card-inner card-inner-lg">
-        <div class="nk-block-head">
-            <div class="nk-block-head-content">
-                <h4 class="nk-block-title" id="titulo-etapa">Redefinir senha de acesso</h4> 
-            </div>
-        </div> 
+                     <!-- PASSO 1: Informar E-mail -->
+                     <form id="formEmail">
+                        <div class="form-group">
+                           <div class="form-label-group"><label class="form-label" for="email">Informe o email
+                              cadastrado</label></div>
+                           <div class="form-control-wrap">
+                              <input type="email" class="form-control form-control-lg" id="email" name="email"
+                                 placeholder="Seu e-mail cadastrado">
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <button type="button" class="btn btn-lg btn-dark btn-block"
+                              id="btnEnviarOtp">Avançar</button>
+                        </div>
+                     </form>
 
-        <!-- PASSO 1: Informar E-mail -->
-        <form id="formEmail">
-            <div class="form-group">
-                <div class="form-label-group"><label class="form-label" for="email">Informe o email cadastrado</label></div>
-                <div class="form-control-wrap">
-                    <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="Seu e-mail cadastrado">
-                </div>
-            </div> 
-            <div class="form-group">
-                <button type="button" class="btn btn-lg btn-dark btn-block" id="btnEnviarOtp">Avançar</button>
-            </div>
-        </form>
+                     <!-- PASSO 2: Inserir Código OTP em Caixinhas (Oculto inicialmente) -->
+                     <form id="formOtp" style="display: none;">
+                        <input type="hidden" id="emailOculto" name="email">
+                        
+                        <div class="form-group text-center mb-2">
+                           <div class="form-label-group justify-content-center">
+                              <label class="form-label" style="font-size: 15px; font-weight: 600;">Digite o código de verificação</label>
+                           </div>
+                           <span class="text-muted small">O código de verificação foi enviado para</span><br>
+                           <strong id="whatsappDestino" class="text-dark"></strong>
+                        </div>
 
-        <!-- PASSO 2: Inserir Código OTP (Oculto inicialmente) -->
-        <form id="formOtp" style="display: none;">
-            <input type="hidden" id="emailOculto" name="email">
-            <div class="form-group">
-                <div class="form-label-group"><label class="form-label" for="otp">Código de Verificação (OTP)</label></div>
-                <div class="form-control-wrap">
-                    <input type="text" class="form-control form-control-lg text-center" id="otp" name="otp" placeholder="000000" maxlength="6">
-                </div>
-                <div class="text-center mt-2 text-muted small">Código expira em: <span id="timer" class="fw-bold text-danger">15:00</span></div>
-            </div> 
-            <div class="form-group">
-                <button type="button" class="btn btn-lg btn-dark btn-block" id="btnValidarOtp">Validar Código</button>
-            </div>
-        </form>
+                        <!-- Caixinhas Separadas (6 dígitos) -->
+                        <div class="form-group mb-1">
+                           <div class="otp-inputs-container" id="otpContainer">
+                              <input type="text" class="otp-box" maxlength="1" pattern="[0-9]*" inputmode="numeric" autocomplete="one-time-code" />
+                              <input type="text" class="otp-box" maxlength="1" pattern="[0-9]*" inputmode="numeric" />
+                              <input type="text" class="otp-box" maxlength="1" pattern="[0-9]*" inputmode="numeric" />
+                              <input type="text" class="otp-box" maxlength="1" pattern="[0-9]*" inputmode="numeric" />
+                              <input type="text" class="otp-box" maxlength="1" pattern="[0-9]*" inputmode="numeric" />
+                              <input type="text" class="otp-box" maxlength="1" pattern="[0-9]*" inputmode="numeric" />
+                           </div>
+                           <!-- Input real oculto que armazena os 6 dígitos para o AJAX -->
+                           <input type="hidden" id="otp" name="otp">
 
-        <!-- PASSO 3: Nova Senha (Oculto inicialmente) -->
-        <form id="formNovaSenha" style="display: none;">
-            <input type="hidden" id="emailSenha" name="email">
-            <input type="hidden" id="otpSenha" name="otp">
-            
-            <div class="form-group">
-                <div class="form-label-group"><label class="form-label" for="senha">Nova Senha</label></div>
-                <div class="form-control-wrap">
-                    <input type="password" class="form-control form-control-lg" id="senha" name="senha" placeholder="Nova senha">
-                </div>
-            </div>
+                           <!-- Label exclusiva para exibir mensagem de código errado -->
+                           <div class="text-center mb-2">
+                              <span id="labelErroOtp" class="text-danger small fw-bold" style="display: none;"></span>
+                           </div>
 
-            <div class="form-group">
-                <div class="form-label-group"><label class="form-label" for="confirma_senha">Confirme a Nova Senha</label></div>
-                <div class="form-control-wrap">
-                    <input type="password" class="form-control form-control-lg" id="confirma_senha" name="confirma_senha" placeholder="Repita a nova senha">
-                </div>
-            </div>
+                           <div class="text-center mt-2 text-muted small">
+                              Não recebeu ainda? Reenviar após <span id="timer" class="fw-bold text-danger">05:00</span>
+                           </div>
+                        </div> 
+                     </form>
 
-            <div class="form-group">
-                <button type="button" class="btn btn-lg btn-dark btn-block" id="btnSalvarSenha">Salvar Nova Senha</button>
-            </div>
-        </form>
+                     <!-- PASSO 3: Nova Senha (Oculto inicialmente) -->
+                     <form id="formNovaSenha" style="display: none;">
+                        <input type="hidden" id="emailSenha" name="email">
+                        <input type="hidden" id="otpSenha" name="otp">
 
-        <div class="form-note-s2 text-center pt-4">
-            Lembrou a senha? <a class="link link-dark link-sm" href="<?= base_url('auth/login') ?>">Entrar</a>
-        </div>
-    </div>
-</div>
- 
+                        <div class="form-group">
+                           <div class="form-label-group"><label class="form-label" for="senha">Nova senha</label></div>
+                           <div class="form-control-wrap">
+                              <input type="password" class="form-control form-control-lg" id="senha" name="senha"
+                                 placeholder="Nova senha">
+                           </div>
+                        </div>
+
+                        <div class="form-group">
+                           <div class="form-label-group"><label class="form-label" for="confirma_senha">Confirme a nova
+                                 senha</label></div>
+                           <div class="form-control-wrap">
+                              <input type="password" class="form-control form-control-lg" id="confirma_senha"
+                                 name="confirma_senha" placeholder="Repita a nova senha">
+                           </div>
+                           <!-- Label de validação em tempo real para as senhas -->
+                           <div class="mt-1">
+                              <span id="labelErroSenha" class="text-danger small fw-bold" style="display: none;">As senhas não coincidem.</span>
+                           </div>
+                        </div>
+
+                        <div class="form-group mt-3">
+                           <button type="button" class="btn btn-lg btn-dark btn-block" id="btnSalvarSenha">Redefinir senha</button>
+                        </div>
+                     </form>
+
+                     <div class="form-note-s2 text-center pt-4">
+                        Lembrou a senha? <a class="link link-dark link-sm"
+                           href="<?= base_url('auth/login') ?>">Entrar</a>
+                     </div>
+                  </div>
+               </div>
+
             </div>
          </div>
       </div>
@@ -169,8 +228,7 @@
 
    <script src="<?= base_url() ?>assets/js/bundle9b70.js?ver=3.3.0"></script>
    <script src="<?= base_url() ?>assets/js/scripts9b70.js?ver=3.3.0"></script>
- 
-<script>
+   <script>
 document.addEventListener("DOMContentLoaded", function() {
     let countdownInterval;
 
@@ -190,18 +248,86 @@ document.addEventListener("DOMContentLoaded", function() {
             if (--timer < 0) {
                 clearInterval(countdownInterval);
                 $('#timer').text("Expirado");
-                $('#btnValidarOtp').prop('disabled', true);
+                $('.otp-box').prop('disabled', true);
             }
         }, 1000);
     }
 
+    const $otpBoxes = $('.otp-box');
+    
+    // Ao digitar, limpa o aviso de erro anterior e remove borda vermelha
+    $otpBoxes.on('input', function() {
+        const $this = $(this);
+        const val = $this.val();
+        
+        if (!/^[0-9]$/.test(val)) {
+            $this.val('');
+            return;
+        }
+
+        $('#labelErroOtp').fadeOut();
+        $otpBoxes.removeClass('is-invalid');
+
+        const $next = $this.next('.otp-box');
+        if ($next.length && val) {
+            $next.focus();
+        }
+
+        juntarEEnviarOtp();
+    });
+
+    $otpBoxes.on('keydown', function(e) {
+        const $this = $(this);
+        if (e.key === 'Backspace') {
+            $('#labelErroOtp').fadeOut();
+            $otpBoxes.removeClass('is-invalid');
+
+            if ($this.val() === '') {
+                const $prev = $this.prev('.otp-box');
+                if ($prev.length) {
+                    $prev.focus().val('');
+                }
+            } else {
+                $this.val('');
+            }
+            e.preventDefault();
+            juntarEEnviarOtp();
+        }
+    });
+
+    $otpBoxes.on('paste', function(e) {
+        e.preventDefault();
+        const pasteData = e.originalEvent.clipboardData.getData('text').trim();
+        if (/^\d{6}$/.test(pasteData)) {
+            $otpBoxes.each(function(index) {
+                $(this).val(pasteData[index]);
+            });
+            $otpBoxes.last().focus();
+            juntarEEnviarOtp();
+        }
+    });
+
+    function juntarEEnviarOtp() {
+        let otpCompleto = '';
+        $otpBoxes.each(function() {
+            otpCompleto += $(this).val();
+        });
+        $('#otp').val(otpCompleto);
+
+        if (otpCompleto.length === 6) {
+            validarCodigoOtp(otpCompleto);
+        }
+    }
+
     // PASSO 1: Enviar E-mail e gerar OTP
-    $('#btnEnviarOtp').on('click', function() {
-        const email = $('#email').val().trim();
+    $('#btnEnviarOtp').on('click', function(e) {
+        e.preventDefault();
         $('#mensagem').empty();
 
+        const email = $('#email').val().trim();
+
         if (email === '') {
-            $('#mensagem').html(`<div class="alert alert-fill alert-warning alert-dismissible fade show shadow-sm mb-0" role="alert">Informe o seu e-mail.</div>`);
+            $('#mensagem').html(`<div class="alert alert-fill alert-warning alert-dismissible fade show shadow-sm mb-0" role="alert">Por favor, informe o e-mail.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
             return;
         }
 
@@ -211,34 +337,34 @@ document.addEventListener("DOMContentLoaded", function() {
             data: { email: email },
             dataType: 'json',
             success: function(response) {
+                $('#mensagem').empty();
                 if (response.success) {
-                    $('#emailOculto').val(response.email);
-                    $('#emailSenha').val(response.email);
+                    $('#emailOculto').val(email);
+                    $('#emailSenha').val(email);
                     
-                    // Transição visual de formulários
+                    $('#whatsappDestino').text(response.whatsapp);
+                    
                     $('#formEmail').hide();
+                    $('#card-logo').hide();
                     $('#formOtp').fadeIn();
-                    $('#titulo-etapa').text('Digite o Código OTP');
-                    $('#mensagem').html(`<div class="alert alert-fill alert-success">${response.message}</div>`);
+                    $('#titulo-etapa').text('');
                     
-                    iniciarTimer(15 * 60); // 15 minutos
+                    iniciarTimer(5 * 60);
+                    $otpBoxes.first().focus();
                 } else {
-                    $('#mensagem').html(`<div class="alert alert-fill alert-danger">${response.message}</div>`);
+                    $('#mensagem').html(`<div class="alert alert-fill alert-danger alert-dismissible alert-icon">${response.message}<button class="close" data-bs-dismiss="alert"></button></div>`);
                 }
+            },
+            error: function() {
+                $('#mensagem').html(`<div class="alert alert-fill alert-danger alert-dismissible alert-icon">Erro ao processar a requisição.<button class="close" data-bs-dismiss="alert"></button></div>`);
             }
         });
     });
 
-    // PASSO 2: Validar OTP
-    $('#btnValidarOtp').on('click', function() {
-        const email = $('#emailOculto').val();
-        const otp = $('#otp').val().trim();
-        $('#mensagem').empty();
-
-        if (otp.length !== 6) {
-            $('#mensagem').html(`<div class="alert alert-fill alert-warning">O código deve conter 6 dígitos.</div>`);
-            return;
-        }
+    // PASSO 2: Validação Automática via AJAX com exibição na Label de Erro
+    function validarCodigoOtp(otp) {
+        const email = $('#emailOculto').val().trim();
+        $('#labelErroOtp').hide();
 
         $.ajax({
             url: '<?= base_url('auth/validarOtp') ?>',
@@ -250,40 +376,93 @@ document.addEventListener("DOMContentLoaded", function() {
                     $('#otpSenha').val(otp);
                     clearInterval(countdownInterval);
 
-                    // Transição para o passo da senha
                     $('#formOtp').hide();
                     $('#formNovaSenha').fadeIn();
-                    $('#titulo-etapa').text('Cadastre a Nova Senha');
+                    $('#titulo-etapa').text('Cadastre uma nova senha');
                     $('#mensagem').empty();
                 } else {
-                    $('#mensagem').html(`<div class="alert alert-fill alert-danger">${response.message}</div>`);
+                    $('#labelErroOtp').text(response.message || 'Código incorreto. Tente novamente.').fadeIn();
+                    $otpBoxes.addClass('is-invalid');
+                    $('#otpContainer').addClass('shake');
+                    
+                    setTimeout(() => {
+                        $('#otpContainer').removeClass('shake');
+                    }, 400);
+
+                    $otpBoxes.val('');
+                    $('#otp').val('');
+                    $otpBoxes.first().focus();
                 }
+            },
+            error: function() {
+                $('#labelErroOtp').text('Erro ao validar o código. Tente novamente.').fadeIn();
+                $otpBoxes.addClass('is-invalid');
+                $otpBoxes.val('');
+                $('#otp').val('');
+                $otpBoxes.first().focus();
             }
         });
+    }
+
+    // Validação em tempo real se as senhas coincidem ao digitar
+    $('#senha, #confirma_senha').on('input', function() {
+        const senha = $('#senha').val();
+        const confirma = $('#confirma_senha').val();
+
+        if (confirma !== '' && senha !== confirma) {
+            $('#labelErroSenha').fadeIn();
+            $('#confirma_senha').addClass('is-invalid');
+        } else {
+            $('#labelErroSenha').fadeOut();
+            $('#confirma_senha').removeClass('is-invalid');
+        }
     });
 
     // PASSO 3: Salvar Nova Senha
-    $('#btnSalvarSenha').on('click', function() {
-        const dados = $('#formNovaSenha').serialize();
+    $('#btnSalvarSenha').on('click', function(e) {
+        e.preventDefault();
         $('#mensagem').empty();
+
+        const email = $('#emailSenha').val().trim();
+        const otp = $('#otpSenha').val().trim();
+        const senha = $('#senha').val().trim();
+        const confirmaSenha = $('#confirma_senha').val().trim();
+
+        if (senha === '' || confirmaSenha === '') {
+            $('#mensagem').html(`<div class="alert alert-fill alert-warning alert-dismissible fade show shadow-sm mb-0" role="alert">Por favor, preencha todos os campos de senha.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
+            return;
+        }
+
+        if (senha !== confirmaSenha) {
+            $('#labelErroSenha').fadeIn();
+            $('#confirma_senha').addClass('is-invalid');
+            return;
+        }
 
         $.ajax({
             url: '<?= base_url('auth/atualizarSenha') ?>',
             type: 'POST',
-            data: dados,
+            data: { 
+                email: email, 
+                otp: otp, 
+                senha: senha, 
+                confirma_senha: confirmaSenha 
+            },
             dataType: 'json',
             success: function(response) {
+                $('#mensagem').empty();
                 if (response.success) {
                     window.location.href = response.redirect;
                 } else {
-                    $('#mensagem').html(`<div class="alert alert-fill alert-danger">${response.message}</div>`);
+                    $('#mensagem').html(`<div class="alert alert-fill alert-danger alert-dismissible alert-icon">${response.message}<button class="close" data-bs-dismiss="alert"></button></div>`);
                 }
+            },
+            error: function() {
+                $('#mensagem').html(`<div class="alert alert-fill alert-danger alert-dismissible alert-icon">Erro ao atualizar a senha.<button class="close" data-bs-dismiss="alert"></button></div>`);
             }
         });
     });
 });
 </script>
 </body>
-
-
 </html>

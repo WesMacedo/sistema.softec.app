@@ -16,6 +16,8 @@ class UsuariosModel extends Model
         'senha', 
         'tentativas_login', 
         'bloqueado_ate', 
+        'otp',          // <-- Adicione esta linha
+        'otp_validade', // <-- Adicione esta linha
         'remember_token',
         'token'
     ];
