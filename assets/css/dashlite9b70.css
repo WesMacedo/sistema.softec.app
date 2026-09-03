@@ -34972,9 +34972,9 @@ body.nav-shown {
 
 .nk-header-app-logo {
     flex-shrink: 0;
-    width: 32px;
+    width: 140px;
     height: 32px;
-    margin-right: .75rem
+    margin-right: 2.75rem;
 }
 
 .nk-header-app-logo .icon {
@@ -35499,7 +35499,7 @@ body.nav-shown {
 
 .active>.nk-menu-link,
 .nk-menu-link:hover {
-    color: #7f8dff
+    color: #1f2b3a;
 }
 
 .active>.nk-menu-link .count,
@@ -35584,7 +35584,7 @@ body.nav-shown {
 .nk-menu-item.active>.nk-menu-link .nk-menu-icon,
 .nk-menu-item.current-menu>.nk-menu-link .nk-menu-icon,
 .nk-menu-link:hover .nk-menu-icon {
-    color: #7f8dff
+    color: #1f2b3a;
 }
 
 .is-theme .nk-menu-item.active>.nk-menu-link .nk-menu-icon,

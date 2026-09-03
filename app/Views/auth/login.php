@@ -309,7 +309,7 @@
                         </div>
                      </div>
 
-                     <!-- TELA DE CONTAS SALVAS (ESTILO INSTAGRAM) -->
+                     <!-- TELA DE CONTAS SALVAS -->
                      <div id="saved-accounts-section" class="mb-3" style="display: none;">
                         <div id="accounts-list" class="d-flex flex-column gap-3 mb-3">
                            <!-- Preenchido via JavaScript -->
@@ -322,7 +322,7 @@
                         </div>
                      </div>
 
-                     <!-- FORMULÁRIO DE LOGIN NORMAL -->
+                     <!-- FORMULÁRIO DE LOGIN  -->
                      <form id="loginForm">
                         <div class="form-group">
                            <div class="form-label-group"><label class="form-label" for="email">Email</label></div>
