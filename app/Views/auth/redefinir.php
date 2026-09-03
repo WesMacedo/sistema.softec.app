@@ -119,7 +119,7 @@
                            </g>
                         </svg>
                         <div class="nk-block-des" style="font: menu;">
-                           O SOFTWARE DA SUA ASSISTÊNCIA TÉCNICA
+                            O SOFTWARE DA SUA ASSISTÊNCIA TÉCNICA
                         </div>
                      </div>
                      <div id="mensagem" class="mt-2"></div>
@@ -178,7 +178,8 @@
                            </div>
 
                            <div class="text-center mt-2 text-muted small">
-                              Não recebeu ainda? Reenviar após <span id="timer" class="fw-bold text-danger">05:00</span>
+                              <span id="textoTimer">Não recebeu ainda? Reenviar após <span id="timer" class="fw-bold text-danger">05:00</span></span>
+                              <button type="button" id="btnReenviarOtp" class="btn btn-sm btn-outline-dark mt-1" style="display: none;">Reenviar código</button>
                            </div>
                         </div> 
                      </form>
@@ -236,6 +237,11 @@ document.addEventListener("DOMContentLoaded", function() {
         let timer = duracaoEmSegundos, minutos, segundos;
         clearInterval(countdownInterval);
         
+        // Garante que o texto do timer aparece e o botão de reenvio some ao reiniciar
+        $('#textoTimer').show();
+        $('#btnReenviarOtp').hide();
+        $('.otp-box').prop('disabled', false);
+
         countdownInterval = setInterval(function () {
             minutos = parseInt(timer / 60, 10);
             segundos = parseInt(timer % 60, 10);
@@ -247,7 +253,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (--timer < 0) {
                 clearInterval(countdownInterval);
-                $('#timer').text("Expirado");
+                $('#textoTimer').hide();
+                $('#btnReenviarOtp').fadeIn(); // Exibe o botão de reenviar
                 $('.otp-box').prop('disabled', true);
             }
         }, 1000);
@@ -319,12 +326,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // PASSO 1: Enviar E-mail e gerar OTP
-    $('#btnEnviarOtp').on('click', function(e) {
+    // PASSO 1 e REENVIO: Enviar E-mail e gerar OTP
+    $('#btnEnviarOtp, #btnReenviarOtp').on('click', function(e) {
         e.preventDefault();
         $('#mensagem').empty();
 
-        const email = $('#email').val().trim();
+        const email = $('#emailOculto').val().trim() || $('#email').val().trim();
 
         if (email === '') {
             $('#mensagem').html(`<div class="alert alert-fill alert-warning alert-dismissible fade show shadow-sm mb-0" role="alert">Por favor, informe o e-mail.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
@@ -349,6 +356,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     $('#formOtp').fadeIn();
                     $('#titulo-etapa').text('');
                     
+                    // Limpa caixas caso venha do reenvio
+                    $otpBoxes.val('').removeClass('is-invalid');
+                    $('#otp').val('');
+
                     iniciarTimer(5 * 60);
                     $otpBoxes.first().focus();
                 } else {
