@@ -26,6 +26,117 @@ class Auth extends BaseController
         return view('auth/cadastro');
     }
 
+    public function redefinir()
+    {
+        // Se o usuário já estiver logado, redireciona direto para o painel
+        if (session()->get('user_token')) {
+            return redirect()->to(base_url('dash'));
+        }
+
+        return view('auth/redefinir');
+    }
+
+    public function enviarOtp()
+    {
+        $model = new UsuariosModel();
+        $email = trim($this->request->getPost('email'));
+
+        $usuario = $model->where('email', $email)->first();
+
+        if (!$usuario) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Este e-mail não está cadastrado no sistema.'
+            ]);
+        }
+
+        // Gera um código OTP de 6 dígitos numéricos
+        $otp = rand(100000, 999999);
+        // Define a validade para daqui a 15 minutos
+        $otpValidade = date('Y-m-d H:i:s', time() + (15 * 60));
+
+        // Salva no banco
+        $model->update($usuario['id'], [
+            'otp'          => $otp,
+            'otp_validade' => $otpValidade
+        ]);
+
+        // TODO: Aqui você integraria o envio real do e-mail (ex: CodeIgniter Email)
+        // Para testes, você pode retornar o $otp no JSON se quiser visualizar na tela.
+
+        return $this->response->setJSON([
+            'success' => true,
+            'email'   => $email,
+            'message' => 'Código de verificação enviado com sucesso!'
+        ]);
+    }
+
+    public function validarOtp()
+    {
+        $model = new UsuariosModel();
+        $email = trim($this->request->getPost('email'));
+        $otp   = trim($this->request->getPost('otp'));
+
+        $usuario = $model->where('email', $email)->first();
+
+        if (!$usuario) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Usuário não encontrado.']);
+        }
+
+        // Verifica se o OTP bate e se não expirou
+        if ($usuario['otp'] !== $otp) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Código OTP incorreto.']);
+        }
+
+        if (strtotime($usuario['otp_validade']) < time()) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Este código expirou. Solicite um novo.']);
+        }
+
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => 'Código validado com sucesso!'
+        ]);
+    }
+
+    public function atualizarSenha()
+    {
+        $model         = new UsuariosModel();
+        $email         = trim($this->request->getPost('email'));
+        $otp           = trim($this->request->getPost('otp'));
+        $senha         = $this->request->getPost('senha');
+        $confirmaSenha = $this->request->getPost('confirma_senha');
+
+        if (empty($senha) || $senha !== $confirmaSenha) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'As senhas informadas não coincidem ou estão vazias.'
+            ]);
+        }
+
+        $usuario = $model->where('email', $email)->where('otp', $otp)->first();
+
+        if (!$usuario) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Requisição inválida.'
+            ]);
+        }
+
+        // Atualiza a senha, limpa o OTP para não ser reutilizado e salva
+        $model->update($usuario['id'], [
+            'senha'        => password_hash($senha, PASSWORD_DEFAULT),
+            'otp'          => null,
+            'otp_validade' => null
+        ]);
+
+        session()->setFlashdata('msg', 'Senha redefinida com sucesso! Faça login com sua nova senha.');
+
+        return $this->response->setJSON([
+            'success'  => true,
+            'redirect' => base_url('auth/login')
+        ]);
+    }
+    
     public function registrar()
     {
         $model = new UsuariosModel();

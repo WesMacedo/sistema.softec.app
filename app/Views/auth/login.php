@@ -329,7 +329,7 @@
                         <div class="form-group">
                            <div class="form-label-group">
                               <label class="form-label" for="senha">Senha</label>
-                              <a class="link link-dark link-sm" href="auth-reset-v2.html">Esqueceu a senha?</a>
+                              <a class="link link-dark link-sm" href="<?= base_url() ?>auth/redefinir">Esqueceu a senha?</a>
                            </div>
                            <div class="form-control-wrap">
                               <a href="#" class="form-icon form-icon-right passcode-switch lg" data-target="senha">
@@ -357,7 +357,7 @@
                      </form>
 
                      <div class="form-note-s2 text-center pt-4" id="register-note">
-                        Não possui uma conta? <a class="link link-dark link-sm"
+                        Não tem uma conta? <a class="link link-dark link-sm"
                            href="<?= base_url() ?>auth/cadastro">Cadastre-se</a>
                      </div>
                   </div>
