@@ -11,78 +11,7 @@
    <link id="skin-default" rel="stylesheet" href="<?= base_url() ?>assets/css/theme9b70.css?ver=3.3.0">
    <link rel="manifest" href="/manifest.json">
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-   <style>
-      html,
-      body {
-         touch-action: pan-x pan-y;
-         overscroll-behavior-y: none;
-         -webkit-user-select: none;
-         user-select: none;
-         -webkit-tap-highlight-color: transparent;
-      }
-
-      @keyframes pulse {
-         0% {
-            transform: scale(0.95);
-            opacity: 0.8;
-         }
-
-         50% {
-            transform: scale(1.05);
-            opacity: 1;
-         }
-
-         100% {
-            transform: scale(0.95);
-            opacity: 0.8;
-         }
-      }
  
-       
-      .d-none {
-         display: none !important;
-      }
-
-      /* Estilo refinado dos cards de contas salvas (Estilo Instagram) */
-      .saved-account-card {
-         background: #ffffff;
-         border: 1px solid #e2e8f0;
-         border-radius: 10px;
-         transition: all 0.2s ease;
-      }
-
-      .saved-account-card:hover {
-         border-color: #cbd5e1;
-         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-         background: #f8fafc;
-      }
-      .draw-path {
-            fill: transparent;
-            /* Começa sem preenchimento */
-            stroke: #1f2b3a;
-            stroke-width: 35;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: 5000;
-            stroke-dashoffset: 5000;
-            /* Executa o desenho (2s) e depois aplica o preenchimento (0.6s) */
-            animation: draw 2s ease forwards, fillIn 0.6s ease 2s forwards;
-         }
-
-         /* Etapa 1: Desenha o contorno */
-         @keyframes draw {
-            to {
-               stroke-dashoffset: 0;
-            }
-         }
-
-         /* Etapa 2: Preenche com a cor sólida após o desenho */
-         @keyframes fillIn {
-            to {
-               fill: #1f2b3a;
-            }
-         }
-   </style>
 </head>
 
 <body class="nk-body npc-default pg-auth">
