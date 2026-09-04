@@ -70,7 +70,7 @@ class Auth extends BaseController
         return $this->response->setJSON([
             'success' => true,
             'whatsapp' => $whatsapp,
-            'message' => 'Código gerado com sucesso! (Modo teste - Seu OTP é: ' . $otp . ')'
+            'message' => 'Código gerado com sucesso!'
         ]);
     }
 
